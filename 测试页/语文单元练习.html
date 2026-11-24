@@ -1,0 +1,4780 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>人教版二年级上册（2025秋版）语文全功能学习工作台</title>
+<style>
+  :root {
+    --primary: #1b5e3a;
+    --primary-hover: #14472c;
+    --primary-light: #e8f5ee;
+    --accent: #2e7d32;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --bg: #f1f5f9;
+    --paper: #ffffff;
+    --text: #1e293b;
+    --muted: #64748b;
+    --border: #cbd5e1;
+    --grid-red: #dc2626;
+    --grid-light: #fca5a5;
+    --line-color: #94a3b8;
+    --line-mid: #f87171;
+    --success: #16a34a;
+    --success-bg: #f0fdf4;
+    --error: #dc2626;
+    --error-bg: #fef2f2;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: "KaiTi", "STKaiti", "楷体", "Microsoft YaHei", "PingFang SC", sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    padding-bottom: 50px;
+  }
+
+  /* ================= 顶级模块导航栏 ================= */
+  .top-nav {
+    background: #ffffff;
+    border-bottom: 1px solid #e2e8f0;
+    padding: 10px 18px;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  }
+
+  .top-nav-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .brand-title {
+    font-size: 16px;
+    font-weight: 800;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .brand-badge {
+    font-size: 11.5px;
+    font-weight: 600;
+    background: var(--primary-light);
+    color: var(--primary);
+    padding: 2px 8px;
+    border-radius: 99px;
+    border: 1px solid #bbf7d0;
+  }
+
+  .main-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .main-tab-btn {
+    padding: 7px 16px;
+    border-radius: 99px;
+    border: 1.5px solid #cbd5e1;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.16s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .main-tab-btn:hover {
+    background: #e2e8f0;
+  }
+
+  .main-tab-btn.active {
+    background: var(--primary);
+    color: #ffffff;
+    border-color: var(--primary);
+    box-shadow: 0 2px 8px rgba(27, 94, 58, 0.25);
+  }
+
+  /* 通用模块容器 */
+  .module-view {
+    display: none;
+  }
+  .module-view.active {
+    display: block;
+  }
+
+  /* ================= 顶部控制栏（粘性） ================= */
+  .toolbar {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.97);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid #e2e8f0;
+    box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06);
+    padding: 10px 18px;
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+  }
+
+  .toolbar-inner {
+    max-width: 980px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .toolbar-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .control-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    align-items: center;
+  }
+
+  select, button, input[type="number"] {
+    font-family: "Microsoft YaHei", "PingFang SC", sans-serif;
+    font-size: 13.5px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    padding: 6px 11px;
+    background: #fff;
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.16s ease;
+  }
+
+  select:focus, button:focus, input[type="number"]:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(27, 94, 58, 0.12);
+  }
+
+  button:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+  }
+
+  .btn-primary {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    font-weight: 600;
+  }
+  .btn-primary:hover {
+    background: var(--primary-hover);
+    border-color: var(--primary-hover);
+  }
+
+  .btn-blue {
+    background: var(--blue);
+    color: #fff;
+    border-color: var(--blue);
+    font-weight: 600;
+  }
+  .btn-blue:hover {
+    background: #1d4ed8;
+    border-color: #1d4ed8;
+  }
+
+  .btn-accent {
+    background: #0d9488;
+    color: #fff;
+    border-color: #0d9488;
+    font-weight: 600;
+  }
+  .btn-accent:hover {
+    background: #0f766e;
+    border-color: #0f766e;
+  }
+
+  .btn-refresh {
+    background: #fffbeb;
+    color: #b45309;
+    border-color: #fcd34d;
+    font-weight: 600;
+  }
+  .btn-refresh:hover {
+    background: #fef3c7;
+    border-color: #f59e0b;
+  }
+
+  .btn-outline-danger {
+    color: var(--error);
+    border-color: #fecaca;
+    background: #fff;
+  }
+  .btn-outline-danger:hover {
+    background: var(--error-bg);
+  }
+
+  /* 胶囊选择器 */
+  .pill-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    background: #f8fafc;
+    padding: 5px 8px;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+
+  .pill-label {
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--muted);
+    margin-right: 2px;
+  }
+
+  .pill-btn {
+    font-size: 13px;
+    padding: 4px 12px;
+    border-radius: 99px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    color: #475569;
+    font-weight: 500;
+  }
+
+  .pill-btn:hover {
+    background: #e2e8f0;
+  }
+
+  .pill-btn.active {
+    background: var(--primary);
+    color: #fff;
+    border-color: var(--primary);
+    font-weight: 600;
+  }
+
+  .mode-btn {
+    font-size: 13px;
+    padding: 4px 11px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: #475569;
+    font-weight: 500;
+  }
+  .mode-btn:hover {
+    background: #e2e8f0;
+  }
+  .mode-btn.active {
+    background: var(--blue);
+    color: #fff;
+    font-weight: 600;
+  }
+
+  .scope-select {
+    font-size: 12.5px;
+    padding: 4px 8px;
+    background: #fff;
+    border-color: #cbd5e1;
+    color: #0f172a;
+    font-weight: 600;
+  }
+
+  /* ================= 通用 A4 试卷/练习纸外壳 ================= */
+  .paper-wrapper {
+    max-width: 840px;
+    margin: 18px auto;
+    padding: 0 12px;
+  }
+
+  .paper {
+    width: 100%;
+    min-height: 1120px;
+    background: var(--paper);
+    border-radius: 10px;
+    box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+    padding: 30px 40px 36px;
+    border: 1px solid #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  /* 试卷抬头 */
+  .paper-header {
+    text-align: center;
+    border-bottom: 2px solid #1e293b;
+    padding-bottom: 12px;
+    margin-bottom: 18px;
+  }
+
+  .paper-subtitle {
+    font-family: "Microsoft YaHei", sans-serif;
+    font-size: 12.5px;
+    color: var(--muted);
+    letter-spacing: 1px;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+  }
+
+  .variant-badge {
+    background: #eff6ff;
+    color: #1d4ed8;
+    border: 1px solid #bfdbfe;
+    padding: 1px 7px;
+    border-radius: 99px;
+    font-size: 11.5px;
+    font-weight: 600;
+  }
+
+  .paper-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #0f172a;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+
+  .student-meta {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    font-size: 14.5px;
+    color: #334155;
+    flex-wrap: wrap;
+  }
+
+  .student-meta span {
+    display: inline-flex;
+    align-items: center;
+  }
+
+  .meta-line {
+    display: inline-block;
+    width: 72px;
+    border-bottom: 1px solid #475569;
+    margin-left: 4px;
+    height: 17px;
+  }
+
+  /* 成绩横幅 */
+  .score-banner {
+    display: none;
+    background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+    border: 1.5px solid #93c5fd;
+    border-radius: 10px;
+    padding: 12px 18px;
+    margin-bottom: 16px;
+    font-family: "Microsoft YaHei", sans-serif;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .score-banner.show {
+    display: flex;
+  }
+  .score-main {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+  }
+  .score-num {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--primary);
+  }
+  .score-detail {
+    font-size: 13.5px;
+    color: #334155;
+  }
+
+  /* =========================================================
+     模块一：同步练习卷（保留原版全部功能与样式）
+  ========================================================= */
+  .paper-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  .section {
+    margin-bottom: 18px;
+  }
+  .section.hidden {
+    display: none !important;
+  }
+  .paper.single-mode .paper-body {
+    justify-content: flex-start;
+  }
+  .paper.single-mode .section {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0;
+  }
+  .section-title {
+    font-size: 17px;
+    font-weight: bold;
+    color: #0f172a;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .section-hint {
+    font-family: "Microsoft YaHei", sans-serif;
+    font-size: 12px;
+    font-weight: normal;
+    color: var(--muted);
+  }
+  .passage-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 1;
+    justify-content: flex-start;
+  }
+  .passage-box {
+    background: #fafafa;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 18px;
+    line-height: 2.15;
+    color: #1e293b;
+    text-indent: 2em;
+  }
+  .paper.single-mode .passage-box {
+    padding: 11px 18px;
+    font-size: 18.5px;
+    line-height: 2.22;
+  }
+  .passage-label {
+    display: inline-block;
+    font-family: "Microsoft YaHei", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--blue);
+    background: var(--blue-light);
+    border: 1px solid #bfdbfe;
+    border-radius: 5px;
+    padding: 1px 7px;
+    margin-right: 8px;
+    text-indent: 0;
+    vertical-align: middle;
+  }
+  .char-slot {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    vertical-align: bottom;
+    margin: 2px 3px 4px;
+    text-indent: 0;
+    line-height: 1;
+    position: relative;
+  }
+  .pinyin-grid {
+    width: 42px;
+    height: 18px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 3px;
+    text-indent: 0;
+    background-image:
+      linear-gradient(to bottom, var(--line-color) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line-mid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line-mid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--line-color) 1px, transparent 1px);
+    background-size: 100% 1px;
+    background-position: 0 1px, 0 6px, 0 11px, 0 16px;
+    background-repeat: no-repeat;
+  }
+  .pinyin-text {
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: #0f172a;
+    line-height: 1;
+    letter-spacing: 0.2px;
+    text-align: center;
+    text-indent: 0;
+    transform: translateY(-0.5px);
+    user-select: none;
+  }
+  .tianzige {
+    width: 36px;
+    height: 36px;
+    border: 1.5px solid var(--grid-red);
+    border-radius: 3px;
+    position: relative;
+    background-color: #fff;
+    text-indent: 0;
+    box-shadow: 0 1px 2px rgba(220, 38, 38, 0.06);
+  }
+  .tianzige::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed var(--grid-light);
+    pointer-events: none;
+  }
+  .tianzige::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 0;
+    bottom: 0;
+    border-left: 1px dashed var(--grid-light);
+    pointer-events: none;
+  }
+  .tianzige input {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    border: none;
+    background: transparent;
+    text-align: center;
+    font-family: "KaiTi", "STKaiti", "楷体", serif;
+    font-size: 23px;
+    font-weight: bold;
+    color: #1e293b;
+    padding: 0;
+    outline: none;
+  }
+  .tianzige:focus-within {
+    border-color: var(--blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.18);
+  }
+  .tianzige.correct {
+    border-color: var(--success);
+    background-color: var(--success-bg);
+  }
+  .tianzige.correct input {
+    color: var(--success);
+  }
+  .tianzige.wrong {
+    border-color: var(--error);
+    background-color: var(--error-bg);
+  }
+  .tianzige.wrong input {
+    color: var(--error);
+  }
+  .ans-tip {
+    position: absolute;
+    bottom: -15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 11px;
+    font-family: "KaiTi", "STKaiti", serif;
+    font-weight: bold;
+    color: var(--success);
+    white-space: nowrap;
+    background: #dcfce7;
+    padding: 0 3px;
+    border-radius: 3px;
+    z-index: 5;
+  }
+
+  .q2-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px 12px;
+    padding: 4px 2px;
+    flex: 1;
+    align-content: space-between;
+  }
+  .paper.single-mode .q2-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px 14px;
+    padding: 10px 4px;
+  }
+  .q2-item {
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 9px 6px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    transition: all 0.15s;
+  }
+  .paper.single-mode .q2-item {
+    padding: 14px 8px;
+    font-size: 19.5px;
+  }
+  .q2-item.correct {
+    background: var(--success-bg);
+    border-color: #86efac;
+  }
+  .q2-item.wrong {
+    background: var(--error-bg);
+    border-color: #fca5a5;
+  }
+  .opt-char {
+    display: inline-block;
+    padding: 2px 5px;
+    margin: 0 2px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: relative;
+    transition: background 0.15s;
+    user-select: none;
+  }
+  .opt-char:hover {
+    background: #e0e7ff;
+  }
+  .opt-char.selected {
+    color: var(--blue);
+    font-weight: bold;
+    background: #dbeafe;
+  }
+  .opt-char.selected::after {
+    content: "✓";
+    position: absolute;
+    bottom: -9px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    font-weight: 900;
+    color: var(--blue);
+    line-height: 1;
+  }
+  .q2-item.correct .opt-char.selected {
+    color: var(--success);
+    background: #dcfce7;
+  }
+  .q2-item.correct .opt-char.selected::after {
+    color: var(--success);
+  }
+  .q2-item.wrong .opt-char.selected {
+    color: var(--error);
+    background: #fee2e2;
+  }
+  .q2-item.wrong .opt-char.selected::after {
+    color: var(--error);
+  }
+  .opt-char.right-hint {
+    outline: 1.5px dashed var(--success);
+    color: var(--success);
+    font-weight: bold;
+  }
+
+  .q3-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    flex: 1;
+    justify-content: space-between;
+  }
+  .q3-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 10px 14px;
+  }
+  .paper.single-mode .q3-row {
+    padding: 15px 16px;
+  }
+  .q3-pair {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #0f172a;
+    min-width: 108px;
+  }
+  .pair-btn {
+    padding: 2px 7px;
+    font-size: 17.5px;
+    font-family: "KaiTi", "STKaiti", serif;
+    font-weight: bold;
+    border-radius: 5px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    color: var(--blue);
+    cursor: pointer;
+  }
+  .pair-btn:hover {
+    background: var(--blue-light);
+    border-color: var(--blue);
+  }
+  .q3-words {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px 16px;
+    flex: 1;
+    min-width: 260px;
+  }
+  .q3-word {
+    font-size: 18.5px;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+  }
+  .blank-bracket {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 42px;
+    height: 30px;
+    margin: 0 2px;
+    padding: 0 4px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--blue);
+    background: #fff;
+    border: 1px solid #cbd5e1;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .blank-bracket:hover {
+    border-color: var(--blue);
+    background: var(--blue-light);
+  }
+  .blank-bracket.active {
+    border: 2px solid var(--blue);
+    box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+  }
+  .blank-bracket.correct {
+    color: var(--success);
+    background: var(--success-bg);
+    border-color: #86efac;
+  }
+  .blank-bracket.wrong {
+    color: var(--error);
+    background: var(--error-bg);
+    border-color: #fca5a5;
+  }
+  .kkt-card {
+    margin-top: 18px;
+    background: #fffbeb;
+    border: 1px solid #fde68a;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-family: "Microsoft YaHei", sans-serif;
+    font-size: 13px;
+    color: #78350f;
+  }
+  .kkt-title {
+    font-weight: 700;
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: #92400e;
+  }
+  .kkt-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 6px;
+  }
+  .kkt-tag {
+    background: #fef3c7;
+    border: 1px solid #fcd34d;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-family: "KaiTi", "STKaiti", serif;
+    font-size: 14.5px;
+    color: #78350f;
+  }
+
+  /* =========================================================
+     模块二：单元测试卷（十大题型全还原）
+  ========================================================= */
+  .ut-sec {
+    margin-bottom: 18px;
+  }
+  .ut-sec-header {
+    font-size: 16.5px;
+    font-weight: bold;
+    color: #0f172a;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+  .ut-sec-score {
+    font-family: "Microsoft YaHei", sans-serif;
+    font-size: 12.5px;
+    font-weight: normal;
+    color: var(--muted);
+  }
+
+  /* 一、看拼音写词语（田字格 + 我写对了打勾按钮） */
+  .ut-p1-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px 10px;
+  }
+  .ut-p1-item {
+    display: flex;
+    align-items: flex-end;
+    gap: 5px;
+    padding: 4px;
+    border-radius: 8px;
+  }
+  .ut-qnum {
+    font-family: "Microsoft YaHei", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    color: #1e293b;
+    min-width: 24px;
+    padding-bottom: 6px;
+  }
+  .ut-word-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .ut-py-row {
+    display: flex;
+    gap: 2px;
+    margin-bottom: 2px;
+  }
+  .ut-py-cell {
+    width: 34px;
+    text-align: center;
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--primary);
+  }
+  .ut-box-row {
+    display: flex;
+    gap: 2px;
+  }
+  .ut-tzg {
+    width: 34px;
+    height: 34px;
+    border: 1.3px solid var(--grid-red);
+    position: relative;
+    background: #fff;
+  }
+  .ut-tzg::before {
+    content: "";
+    position: absolute;
+    top: 50%; left: 0; right: 0;
+    border-top: 1px dashed var(--grid-light);
+  }
+  .ut-tzg::after {
+    content: "";
+    position: absolute;
+    left: 50%; top: 0; bottom: 0;
+    border-left: 1px dashed var(--grid-light);
+  }
+  .ut-tzg-char {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: bold;
+    color: var(--primary);
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+  .ut-paper.show-ans .ut-tzg-char {
+    opacity: 1;
+  }
+  .ut-self-check {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    border: 1.5px solid #cbd5e1;
+    background: #fff;
+    color: #94a3b8;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    margin-bottom: 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+  .ut-self-check.checked {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+  }
+
+  /* 选择题通用布局（二、四、五、六、七、九） */
+  .ut-mc-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px 24px;
+  }
+  .ut-mc-list-1 {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .ut-mc-item {
+    padding: 6px 4px;
+    border-bottom: 1px dashed #e2e8f0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ut-mc-item.inline-opts {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+  .ut-mc-stem {
+    font-size: 16.5px;
+    color: #1e293b;
+  }
+  .ut-mc-stem b {
+    font-family: "Microsoft YaHei", sans-serif;
+    font-size: 14.5px;
+    margin-right: 4px;
+  }
+  .ut-opts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding-left: 20px;
+  }
+  .ut-mc-item.inline-opts .ut-opts {
+    padding-left: 0;
+  }
+  .ut-opt-pill {
+    font-family: "Microsoft YaHei", "KaiTi", sans-serif;
+    font-size: 14px;
+    padding: 3px 12px;
+    border-radius: 99px;
+    border: 1px solid #cbd5e1;
+    background: #fff;
+    color: #334155;
+    cursor: pointer;
+    transition: all 0.14s;
+  }
+  .ut-opt-pill:hover {
+    background: #f1f5f9;
+  }
+  .ut-opt-pill.selected {
+    background: var(--primary-light);
+    border-color: var(--primary);
+    color: var(--primary);
+    font-weight: bold;
+  }
+  .ut-opt-pill.correct-ans {
+    background: #dcfce7 !important;
+    border-color: #16a34a !important;
+    color: #15803d !important;
+    font-weight: bold;
+  }
+  .ut-opt-pill.wrong-ans {
+    background: #fee2e2 !important;
+    border-color: #dc2626 !important;
+    color: #b91c1c !important;
+    text-decoration: line-through;
+  }
+
+  /* 三、词语补全 */
+  .ut-p3-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px 14px;
+  }
+  .ut-p3-item {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+  }
+  .ut-char-col {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 2px;
+  }
+  .ut-char-col small {
+    font-family: Arial, sans-serif;
+    font-size: 11.5px;
+    color: var(--primary);
+    font-weight: 600;
+    line-height: 1.2;
+  }
+  .ut-blank-input {
+    width: 34px;
+    height: 28px;
+    border: none;
+    border-bottom: 1.8px solid #1e293b;
+    text-align: center;
+    font-family: "KaiTi", "STKaiti", serif;
+    font-size: 20px;
+    font-weight: bold;
+    color: var(--primary);
+    background: transparent;
+    border-radius: 0;
+    padding: 0;
+  }
+  .ut-blank-input:focus {
+    outline: none;
+    border-bottom-color: var(--blue);
+    background: #eff6ff;
+  }
+  .ut-blank-input.correct {
+    color: var(--success);
+    border-bottom-color: var(--success);
+    background: var(--success-bg);
+  }
+  .ut-blank-input.wrong {
+    color: var(--error);
+    border-bottom-color: var(--error);
+    background: var(--error-bg);
+  }
+
+  /* 八、十、根据拼音写词语补充句子 */
+  .ut-sent-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ut-sent-item {
+    font-size: 16.5px;
+    line-height: 2.2;
+    border-bottom: 1px dashed #e2e8f0;
+    padding-bottom: 4px;
+  }
+  .ut-sent-blank {
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    vertical-align: bottom;
+    margin: 0 4px;
+    line-height: 1.1;
+  }
+  .ut-sent-blank small {
+    font-family: Arial, sans-serif;
+    font-size: 11.5px;
+    color: var(--primary);
+    font-weight: 600;
+  }
+  .ut-sent-input {
+    width: 68px;
+    height: 26px;
+    border: none;
+    border-bottom: 1.8px solid #1e293b;
+    text-align: center;
+    font-family: "KaiTi", "STKaiti", serif;
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--primary);
+    background: transparent;
+    border-radius: 0;
+    padding: 0 2px;
+  }
+  .ut-sent-input:focus {
+    outline: none;
+    border-bottom-color: var(--blue);
+    background: #eff6ff;
+  }
+  .ut-sent-input.correct {
+    color: var(--success);
+    border-bottom-color: var(--success);
+    background: var(--success-bg);
+  }
+  .ut-sent-input.wrong {
+    color: var(--error);
+    border-bottom-color: var(--error);
+    background: var(--error-bg);
+  }
+  .ut-inline-ans {
+    font-size: 13px;
+    color: var(--success);
+    font-weight: bold;
+    margin-left: 3px;
+  }
+
+  /* =========================================================
+     模块三：段落练字（楷体字帖 + 描红 + 拼音 + 横线仿写）
+  ========================================================= */
+  .cw-sheet-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 14px;
+    border-bottom: 1.5px solid #cbd5e1;
+  }
+  .cw-title {
+    font-family: "Microsoft YaHei", sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    color: #0f172a;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .cw-meta {
+    font-family: "KaiTi", "STKaiti", serif;
+    font-size: 15px;
+    color: #334155;
+    display: flex;
+    gap: 18px;
+  }
+  .cw-rows {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .cw-row-block {
+    display: flex;
+    flex-direction: column;
+  }
+  .cw-model-line {
+    display: grid;
+    align-items: end;
+    padding-bottom: 4px;
+  }
+  .cw-char-cell {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  .cw-py {
+    font-family: Arial, sans-serif;
+    font-size: 11.5px;
+    color: #334155;
+    line-height: 1.2;
+    margin-bottom: 2px;
+    height: 15px;
+    user-select: none;
+  }
+  .cw-py.hide-py {
+    display: none;
+  }
+  .cw-glyph {
+    font-family: "KaiTi", "STKaiti", "楷体", serif;
+    line-height: 1.15;
+    color: #0f172a;
+    user-select: none;
+  }
+  .cw-glyph.trace-gray {
+    color: #cbd5e1;
+  }
+  .cw-write-line {
+    width: 100%;
+    border-bottom: 1.4px solid #475569;
+  }
+
+  /* 移动端适配 */
+  @media (max-width: 720px) {
+    .paper {
+      min-height: auto;
+      padding: 20px 14px 26px;
+    }
+    .q2-grid, .paper.single-mode .q2-grid, .ut-p1-grid, .ut-p3-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .q3-words, .ut-mc-grid-2 {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+
+  /* ================= 打印样式（按当前激活模块精准打印） ================= */
+  @media print {
+    html, body {
+      background: #fff !important;
+      padding: 0 !important;
+      margin: 0 !important;
+    }
+    .top-nav, .toolbar, .score-banner, .kkt-card, .section-hint, .ans-tip, .variant-badge, .ut-self-check {
+      display: none !important;
+    }
+    .module-view {
+      display: none !important;
+    }
+    .module-view.active {
+      display: block !important;
+    }
+    .paper-wrapper {
+      width: 210mm !important;
+      max-width: none !important;
+      margin: 0 !important;
+      padding: 0 !important;
+    }
+    .paper {
+      width: 210mm !important;
+      box-shadow: none !important;
+      border: none !important;
+      border-radius: 0 !important;
+      padding: 11mm 13mm 12mm !important;
+    }
+    /* 同步练习卷保持严格单页A4满版 */
+    #mod-sync .paper {
+      height: 297mm !important;
+      min-height: 297mm !important;
+      overflow: hidden !important;
+    }
+    .tianzige input {
+      color: transparent !important;
+    }
+    .opt-char.selected {
+      background: transparent !important;
+      color: inherit !important;
+      font-weight: normal !important;
+    }
+    .opt-char.selected::after {
+      display: none !important;
+    }
+    .blank-bracket {
+      border: none !important;
+      background: transparent !important;
+      color: transparent !important;
+      min-width: 36px !important;
+    }
+    .ut-opt-pill.selected {
+      background: #fff !important;
+      border-color: #cbd5e1 !important;
+      color: #334155 !important;
+      font-weight: normal !important;
+    }
+    @page {
+      size: A4 portrait;
+      margin: 0;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ==================== 顶级模块导航栏 ==================== -->
+<header class="top-nav">
+  <div class="top-nav-inner">
+    <div class="brand-title">
+      <span>📚 二年级上册语文学习工作台</span>
+      <span class="brand-badge">2025秋版</span>
+    </div>
+    <nav class="main-tabs" id="mainTabs">
+      <button type="button" class="main-tab-btn active" data-target="mod-sync">📖 课文同步练习</button>
+      <button type="button" class="main-tab-btn" data-target="mod-unit">📝 单元测试</button>
+      <button type="button" class="main-tab-btn" data-target="mod-copy">✍️ 段落练字</button>
+    </nav>
+  </div>
+</header>
+
+<!-- =========================================================================
+     模块一：课文同步练习（完全保留原有功能、数据结构与A4单页满版排版）
+========================================================================= -->
+<div class="module-view active" id="mod-sync">
+  <div class="toolbar">
+    <div class="toolbar-inner">
+      <div class="toolbar-row">
+        <div class="control-group">
+          <select id="unitSelect" title="选择单元"></select>
+          <select id="lessonSelect" title="选择课文"></select>
+          <button id="prevBtn" title="上一课">◀ 上一课</button>
+          <button id="nextBtn" title="下一课">下一课 ▶</button>
+        </div>
+        <div class="control-group">
+          <button id="refreshBtn" class="btn-refresh" title="重新生成全新一套变式题目">🔄 更新一套新题</button>
+          <button id="submitBtn" class="btn-blue">✔ 提交批改</button>
+          <button id="retryWrongBtn" class="btn-outline-danger" style="display:none;">↺ 重做错题</button>
+          <button id="resetBtn">清空重做</button>
+          <button id="printSyncBtn" class="btn-accent">🖨 打印整页A4</button>
+        </div>
+      </div>
+
+      <div class="toolbar-row">
+        <div class="pill-bar" id="modeBar">
+          <span class="pill-label">📋 练习模式：</span>
+          <button type="button" class="mode-btn active" data-mode="all">综合三合一</button>
+          <button type="button" class="mode-btn" data-mode="q1">专项① 看拼音写字词</button>
+          <button type="button" class="mode-btn" data-mode="q2">专项② 括号选字打钩</button>
+          <button type="button" class="mode-btn" data-mode="q3">专项③ 辨字组词填空</button>
+        </div>
+        <div class="control-group">
+          <span style="font-size:12.5px;color:#64748b;font-weight:600;">题库范围：</span>
+          <select id="scopeSelect" class="scope-select" title="选择抽题范围">
+            <option value="lesson">当前课文（自动补足一页）</option>
+            <option value="unit">本单元全部课文汇总</option>
+            <option value="all">全册总复习随机抽题</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="paper-wrapper">
+    <div class="paper" id="paper">
+      <div class="paper-header">
+        <div class="paper-subtitle">
+          <span id="paperSubtitleText">人教版小学语文二年级上册（2025秋版）· 课文与课课贴同步巩固卷</span>
+          <span class="variant-badge" id="variantBadge">第 1 套题</span>
+        </div>
+        <div class="paper-title" id="paperTitle">第一单元 第1课《小蝌蚪找妈妈》</div>
+        <div class="student-meta">
+          <span>班级：<i class="meta-line"></i></span>
+          <span>姓名：<i class="meta-line"></i></span>
+          <span>用时：<i class="meta-line"></i></span>
+          <span>得分：<i class="meta-line" id="headerScore"></i></span>
+        </div>
+      </div>
+
+      <div class="score-banner" id="scoreBanner">
+        <div class="score-main">
+          <span class="score-num" id="scoreNum">100分</span>
+          <span class="score-detail" id="scoreDetail">全对！太棒了！</span>
+        </div>
+        <div style="font-size:13px;color:#475569;">红色框内已标出正确答案，可点击“重做错题”或“更新一套新题”</div>
+      </div>
+
+      <div class="paper-body" id="paperBody">
+        <div class="section" id="secQ1">
+          <div class="section-title">
+            <span id="q1Title">一、读课文片段，看拼音在田字格里写字词。</span>
+            <span class="section-hint">提示：输入汉字后自动跳到下一格</span>
+          </div>
+          <div class="passage-list" id="q1Container"></div>
+        </div>
+
+        <div class="section" id="secQ2">
+          <div class="section-title">
+            <span id="q2Title">二、火眼金睛，用“✓”选出括号里搭配正确的字。</span>
+            <span class="section-hint">提示：点击括号中的正确汉字打钩</span>
+          </div>
+          <div class="q2-grid" id="q2Container"></div>
+        </div>
+
+        <div class="section" id="secQ3">
+          <div class="section-title">
+            <span id="q3Title">三、辨字组词，选字填空。</span>
+            <span class="section-hint">提示：点击括号切换汉字，或先点括号再点前方【 】中的字</span>
+          </div>
+          <div class="q3-list" id="q3Container"></div>
+        </div>
+      </div>
+
+      <div class="kkt-card" id="kktCard">
+        <div class="kkt-title">📌 课课贴核心考点速览（打印时自动隐藏，版面自动铺满整张A4纸）</div>
+        <div id="kktTheme" style="margin-bottom:4px;"></div>
+        <div class="kkt-tags" id="kktTags"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     模块二：单元测试（独立顶级模块，覆盖第一~八单元及期末综合，十大题型）
+========================================================================= -->
+<div class="module-view" id="mod-unit">
+  <div class="toolbar">
+    <div class="toolbar-inner">
+      <div class="toolbar-row">
+        <div class="pill-bar" id="utUnitTabs"></div>
+      </div>
+      <div class="toolbar-row">
+        <span style="font-size:12.5px;color:#475569;">
+          依据课本生字词 + 课课贴（近义词、反义词、词语搭配、词语解释、日积月累）出题，重点在：会写字、会认字、词语积累、补充句子。“看拼音写词语”写在本子上，核对答案后点「✓」自评。
+        </span>
+        <div class="control-group">
+          <button type="button" id="utNewSetBtn" class="btn-primary">🔄 换一套题</button>
+          <button type="button" id="utCheckBtn">✓ 检查（出成绩）</button>
+          <button type="button" id="utToggleAnsBtn">显示答案</button>
+          <button type="button" id="utPrintBtn" class="btn-primary">🖨 打印</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="paper-wrapper">
+    <div class="paper ut-paper" id="utPaper">
+      <div>
+        <div class="paper-header" style="text-align:left;border-bottom:1.5px solid #cbd5e1;padding-bottom:10px;">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;flex-wrap:wrap;gap:10px;">
+            <div>
+              <span style="font-size:19px;font-weight:bold;color:#0f172a;" id="utPaperTitle">二年级上册语文 第一单元（第1-3课·语文园地一）测试卷</span>
+              <span style="font-size:14px;font-weight:bold;color:var(--primary);margin-left:10px;" id="utMaxScore">满分 100 分</span>
+            </div>
+            <div style="font-size:14.5px;color:#334155;">
+              姓名：<span style="display:inline-block;width:65px;border-bottom:1px dashed #475569;"></span>&nbsp;&nbsp;
+              日期：<span style="display:inline-block;width:65px;border-bottom:1px dashed #475569;"></span>&nbsp;&nbsp;
+              得分：<span id="utScoreDisplay" style="display:inline-block;min-width:45px;border-bottom:1px dashed #475569;color:var(--error);font-weight:bold;text-align:center;"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="score-banner" id="utScoreBanner">
+          <div class="score-main">
+            <span class="score-num" id="utBannerScore">0 分</span>
+            <span class="score-detail" id="utBannerDetail"></span>
+          </div>
+          <div style="font-size:12.5px;color:#475569;">提示：第一大题需点击右侧圆圈「✓」确认自评得分</div>
+        </div>
+
+        <div id="utBody"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================================
+     模块三：段落练字（独立顶级模块，精选美文、字数/字号/描红/拼音/横线仿写）
+========================================================================= -->
+<div class="module-view" id="mod-copy">
+  <div class="toolbar">
+    <div class="toolbar-inner">
+      <div class="toolbar-row">
+        <div class="control-group">
+          <select id="cwSelect" title="选择美文段落"></select>
+          <button type="button" id="cwPrevBtn">◀ 上一段</button>
+          <button type="button" id="cwNextBtn">下一段 ▶</button>
+          <button type="button" id="cwPrintBtn" class="btn-primary">🖨 打印</button>
+        </div>
+        <div class="control-group">
+          <span style="font-size:12.5px;color:#64748b;font-weight:600;">每行字数：</span>
+          <button type="button" id="cwColsMinus" style="padding:4px 10px;">-</button>
+          <input type="number" id="cwColsInput" value="20" min="10" max="28" style="width:56px;text-align:center;padding:4px 4px;">
+          <button type="button" id="cwColsPlus" style="padding:4px 10px;">+</button>
+
+          <span style="font-size:12.5px;color:#64748b;font-weight:600;margin-left:6px;">个字</span>
+          <button type="button" class="pill-btn cw-col-preset" data-cols="16">16</button>
+          <button type="button" class="pill-btn cw-col-preset active" data-cols="20">20</button>
+          <button type="button" class="pill-btn cw-col-preset" data-cols="24">24</button>
+        </div>
+      </div>
+
+      <div class="toolbar-row">
+        <div class="control-group">
+          <span style="font-size:12.5px;color:#64748b;font-weight:600;">范字：</span>
+          <button type="button" class="pill-btn active" id="cwColorBlack">黑色</button>
+          <button type="button" class="pill-btn" id="cwColorGray">浅灰（描红）</button>
+
+          <span style="font-size:12.5px;color:#64748b;font-weight:600;margin-left:12px;">拼音：</span>
+          <button type="button" class="pill-btn" id="cwPyHide">不显示</button>
+          <button type="button" class="pill-btn active" id="cwPyShow">显示</button>
+        </div>
+        <span style="font-size:12px;color:#64748b;">上面一行是楷体范字，下面的横线上照着写。</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="paper-wrapper">
+    <div class="paper" id="cwPaper">
+      <div>
+        <div class="cw-sheet-header">
+          <div class="cw-title">✍️ <span id="cwSheetTitle">练字 · 春天来了</span></div>
+          <div class="cw-meta">
+            <span>姓名：<span style="display:inline-block;width:72px;border-bottom:1px dashed #475569;"></span></span>
+            <span>日期：<span style="display:inline-block;width:72px;border-bottom:1px dashed #475569;"></span></span>
+          </div>
+        </div>
+        <div class="cw-rows" id="cwRowsContainer"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================================================
+   0. 顶级模块切换逻辑
+============================================================================ */
+document.querySelectorAll(".main-tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".main-tab-btn").forEach(b => b.classList.remove("active"));
+    document.querySelectorAll(".module-view").forEach(v => v.classList.remove("active"));
+    btn.classList.add("active");
+    document.getElementById(btn.dataset.target).classList.add("active");
+  });
+});
+
+function shuffleArray(arr) {
+  const copy = [...arr];
+  for (let i = copy.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [copy[i], copy[j]] = [copy[j], copy[i]];
+  }
+  return copy;
+}
+
+/* ============================================================================
+   1. 模块一：课文同步练习（原版全量数据与交互）
+============================================================================ */
+const LESSONS = [
+  {
+    id: "u1-1", unit: "第一单元·阅读", title: "第1课《小蝌蚪找妈妈》",
+    theme: "介绍青蛙成长过程（长后腿→长前腿→尾巴变短→尾巴不见了），懂得从小独立生活、主动探索。",
+    writeChars: ["两(liǎng)", "条(tiáo)", "哪(nǎ)", "宽(kuān)", "那(nà)", "短(duǎn)", "孩(hái)", "成(chéng)"],
+    passages: [
+      [
+        "小蝌蚪游哇游，过了几天，长出了",
+        { w: "两", p: ["liǎng"] }, { w: "条", p: ["tiáo"] },
+        "后腿。鲤鱼妈妈说：“你们的妈妈四条腿，",
+        { w: "宽", p: ["kuān"] },
+        "嘴巴。你们到",
+        { w: "那", p: ["nà"] },
+        "边去找吧！”"
+      ],
+      [
+        "小蝌蚪游哇游，过了几天，尾巴变",
+        { w: "短", p: ["duǎn"] },
+        "了。青蛙妈妈低头一看，笑着说：“好",
+        { w: "孩子", p: ["hái", "zi"] },
+        "，你们已经长",
+        { w: "成", p: ["chéng"] },
+        "青蛙了，快跳上来吧！”"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["哪", "那"], ans: 0, post: "里" },
+      { pre: "", opts: ["那", "哪"], ans: 0, post: "边" },
+      { pre: "脑袋", opts: ["袋", "代"], ans: 0, post: "" },
+      { pre: "", opts: ["宽", "完"], ans: 0, post: "嘴巴" },
+      { pre: "长", opts: ["短", "豆"], ans: 0, post: "不一" },
+      { pre: "长", opts: ["成", "城"], ans: 0, post: "青蛙" },
+      { pre: "", opts: ["孩", "该"], ans: 0, post: "子" },
+      { pre: "一", opts: ["条", "杂"], ans: 0, post: "腿" }
+    ],
+    q3: [
+      { pair: ["哪", "那"], items: [
+        { pre: "(", ans: "哪", post: ")里" },
+        { pre: "(", ans: "那", post: ")边" },
+        { pre: "(", ans: "哪", post: ")个" },
+        { pre: "(", ans: "那", post: ")样" }
+      ]},
+      { pair: ["成", "城"], items: [
+        { pre: "长(", ans: "成", post: ")" },
+        { pre: "(", ans: "城", post: ")市" },
+        { pre: "(", ans: "成", post: ")功" },
+        { pre: "长(", ans: "城", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u1-2", unit: "第一单元·阅读", title: "第2课《我是什么》",
+    theme: "用拟人手法介绍水（汽、云、雨、冰雹、雪）的变化及利弊，倡导保护与合理利用水资源。",
+    writeChars: ["升(shēng)", "连(lián)", "起(qǐ)", "海(hǎi)", "洋(yáng)", "许(xǔ)", "作(zuò)", "办(bàn)", "法(fǎ)"],
+    passages: [
+      [
+        "太阳一晒，我就变成汽。",
+        { w: "升", p: ["shēng"] },
+        "到天空，我又变成无数极小极小的点儿，",
+        { w: "连", p: ["lián"] },
+        "成一片，在空中飘浮。小水滴聚在一",
+        { w: "起", p: ["qǐ"] },
+        "落下来，人们叫我“雨”。"
+      ],
+      [
+        "平常我在",
+        { w: "海洋", p: ["hǎi", "yáng"] },
+        "里跳舞，唱歌，开大会。我做过",
+        { w: "许多", p: ["xǔ", "duō"] },
+        "好事，帮助人们工",
+        { w: "作", p: ["zuò"] },
+        "。人们想出种种",
+        { w: "办法", p: ["bàn", "fǎ"] },
+        "管住我。"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["海", "每"], ans: 0, post: "洋" },
+      { pre: "", opts: ["洋", "羊"], ans: 0, post: "溢" },
+      { pre: "工", opts: ["作", "做"], ans: 0, post: "" },
+      { pre: "", opts: ["做", "作"], ans: 0, post: "好事" },
+      { pre: "", opts: ["办", "为"], ans: 0, post: "法" },
+      { pre: "", opts: ["升", "开"], ans: 0, post: "起" },
+      { pre: "", opts: ["许", "午"], ans: 0, post: "多" },
+      { pre: "淹", opts: ["没", "设"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["作", "做"], items: [
+        { pre: "工(", ans: "作", post: ")" },
+        { pre: "(", ans: "做", post: ")事" },
+        { pre: "(", ans: "作", post: ")业" },
+        { pre: "(", ans: "做", post: ")工" }
+      ]},
+      { pair: ["洋", "羊"], items: [
+        { pre: "海(", ans: "洋", post: ")" },
+        { pre: "小(", ans: "羊", post: ")" },
+        { pre: "远(", ans: "洋", post: ")" },
+        { pre: "山(", ans: "羊", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u1-3", unit: "第一单元·阅读", title: "第3课《植物妈妈有办法》",
+    theme: "介绍蒲公英、苍耳、石榴、豌豆四种植物传播种子的方法，培养仔细观察大自然的习惯。",
+    writeChars: ["如(rú)", "已(yǐ)", "经(jīng)", "别(bié)", "轻(qīng)", "发(fā)", "胆(dǎn)", "肚(dù)", "更(gèng)", "识(shí)"],
+    passages: [
+      [
+        "孩子",
+        { w: "如果", p: ["rú", "guǒ"] },
+        { w: "已经", p: ["yǐ", "jīng"] },
+        "长大，就得告",
+        { w: "别", p: ["bié"] },
+        "妈妈，四海为家。只要有风",
+        { w: "轻", p: ["qīng"] },
+        "轻吹过，孩子们就乘着风纷纷出",
+        { w: "发", p: ["fā"] },
+        "。"
+      ],
+      [
+        "石榴妈妈的",
+        { w: "胆", p: ["dǎn"] },
+        "子挺大，孩子们在鸟",
+        { w: "肚", p: ["dù"] },
+        "子里睡上一觉，就会钻出来落户安家。豌豆妈妈",
+        { w: "更", p: ["gèng"] },
+        "有办法。那里有许许多多的知",
+        { w: "识", p: ["shí"] },
+        "。"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["已", "己"], ans: 0, post: "经" },
+      { pre: "自", opts: ["己", "已"], ans: 0, post: "" },
+      { pre: "", opts: ["轻", "经"], ans: 0, post: "松" },
+      { pre: "", opts: ["经", "轻"], ans: 0, post: "常" },
+      { pre: "知", opts: ["识", "织"], ans: 0, post: "" },
+      { pre: "", opts: ["肚", "土"], ans: 0, post: "皮" },
+      { pre: "告", opts: ["别", "另"], ans: 0, post: "" },
+      { pre: "", opts: ["胆", "但"], ans: 0, post: "子" }
+    ],
+    q3: [
+      { pair: ["已", "己"], items: [
+        { pre: "(", ans: "已", post: ")经" },
+        { pre: "自(", ans: "己", post: ")" },
+        { pre: "(", ans: "已", post: ")然" },
+        { pre: "知(", ans: "己", post: ")" }
+      ]},
+      { pair: ["轻", "经"], items: [
+        { pre: "(", ans: "轻", post: ")松" },
+        { pre: "(", ans: "经", post: ")常" },
+        { pre: "年(", ans: "轻", post: ")" },
+        { pre: "(", ans: "经", post: ")过" }
+      ]}
+    ]
+  },
+  {
+    id: "u2-1", unit: "第二单元·识字", title: "识字1《场景歌》",
+    theme: "数量词归类识字，通过海边、乡村、公园、少先队员活动四幅图画感受美好生活。",
+    writeChars: ["处(chù)", "块(kuài)", "座(zuò)", "园(yuán)", "群(qún)", "队(duì)", "领(lǐng)"],
+    passages: [
+      [
+        "一只海鸥，一艘军舰，一条帆船。一",
+        { w: "处", p: ["chù"] },
+        "港湾。一方鱼塘，一行垂柳，一",
+        { w: "块", p: ["kuài"] },
+        "稻田。一",
+        { w: "座", p: ["zuò"] },
+        "花",
+        { w: "园", p: ["yuán"] },
+        "。"
+      ],
+      [
+        "一道小溪，一丛翠竹，一座石桥。一",
+        { w: "群", p: ["qún"] },
+        "飞鸟。一面",
+        { w: "队", p: ["duì"] },
+        "旗，一把铜号。一队“红",
+        { w: "领", p: ["lǐng"] },
+        "巾”，一片欢笑。"
+      ]
+    ],
+    q2: [
+      { pre: "花", opts: ["园", "圆"], ans: 0, post: "" },
+      { pre: "一", opts: ["座", "坐"], ans: 0, post: "桥" },
+      { pre: "一", opts: ["块", "快"], ans: 0, post: "田" },
+      { pre: "红", opts: ["领", "邻"], ans: 0, post: "巾" },
+      { pre: "一", opts: ["群", "裙"], ans: 0, post: "鸟" },
+      { pre: "到", opts: ["处", "外"], ans: 0, post: "" },
+      { pre: "", opts: ["队", "认"], ans: 0, post: "旗" },
+      { pre: "铜", opts: ["号", "另"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["园", "圆"], items: [
+        { pre: "花(", ans: "园", post: ")" },
+        { pre: "(", ans: "圆", post: ")形" },
+        { pre: "公(", ans: "园", post: ")" },
+        { pre: "汤(", ans: "圆", post: ")" }
+      ]},
+      { pair: ["座", "坐"], items: [
+        { pre: "一(", ans: "座", post: ")山" },
+        { pre: "请(", ans: "坐", post: ")" },
+        { pre: "让(", ans: "座", post: ")" },
+        { pre: "(", ans: "坐", post: ")下" }
+      ]}
+    ]
+  },
+  {
+    id: "u2-2", unit: "第二单元·识字", title: "识字2《树之歌》",
+    theme: "介绍杨树、榕树、梧桐、枫树、松柏、木棉、桦树、银杏、水杉和金桂11种树木的特征。",
+    writeChars: ["树(shù)", "之(zhī)", "杨(yáng)", "松(sōng)", "柏(bǎi)", "化(huà)", "金(jīn)", "桂(guì)"],
+    passages: [
+      [
+        { w: "杨树", p: ["yáng", "shù"] },
+        "高，榕树壮，梧桐",
+        { w: "树叶", p: ["shù", "yè"] },
+        "像手掌。枫树秋天叶儿红，",
+        { w: "松柏", p: ["sōng", "bǎi"] },
+        "四季披绿装。"
+      ],
+      [
+        "木棉喜暖在南方，桦树耐寒守北疆。银杏水杉活",
+        { w: "化石", p: ["huà", "shí"] },
+        "，",
+        { w: "金桂", p: ["jīn", "guì"] },
+        "开花满院香。"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["杨", "扬"], ans: 0, post: "树" },
+      { pre: "松", opts: ["柏", "怕"], ans: 0, post: "" },
+      { pre: "活", opts: ["化", "华"], ans: 0, post: "石" },
+      { pre: "", opts: ["松", "公"], ans: 0, post: "树" },
+      { pre: "金", opts: ["桂", "挂"], ans: 0, post: "花" },
+      { pre: "树", opts: ["之", "支"], ans: 0, post: "歌" },
+      { pre: "梧", opts: ["桐", "铜"], ans: 0, post: "" },
+      { pre: "", opts: ["枫", "风"], ans: 0, post: "树" }
+    ],
+    q3: [
+      { pair: ["杨", "扬"], items: [
+        { pre: "(", ans: "杨", post: ")树" },
+        { pre: "表(", ans: "扬", post: ")" },
+        { pre: "白(", ans: "杨", post: ")" },
+        { pre: "飞(", ans: "扬", post: ")" }
+      ]},
+      { pair: ["化", "华"], items: [
+        { pre: "(", ans: "化", post: "石" },
+        { pre: "中(", ans: "华", post: ")" },
+        { pre: "变(", ans: "化", post: ")" },
+        { pre: "(", ans: "华", post: "丽" }
+      ]}
+    ]
+  },
+  {
+    id: "u2-3", unit: "第二单元·识字", title: "识字3《拍手歌》",
+    theme: "通过拍手歌认识孔雀、锦鸡、雄鹰、大雁、猛虎、黄鹂、百灵、熊猫，懂得保护动物。",
+    writeChars: ["拍(pāi)", "世(shì)", "界(jiè)", "彩(cǎi)", "丛(cóng)", "休(xiū)", "朋(péng)", "友(yǒu)", "保(bǎo)", "护(hù)"],
+    passages: [
+      [
+        "你",
+        { w: "拍", p: ["pāi"] },
+        "一，我拍一，动物",
+        { w: "世界", p: ["shì", "jiè"] },
+        "很新奇。你拍三，我拍三，雄鹰飞翔云",
+        { w: "彩", p: ["cǎi"] },
+        "间。你拍五，我拍五，",
+        { w: "丛林", p: ["cóng", "lín"] },
+        "深处有猛虎。"
+      ],
+      [
+        "你拍六，我拍六，黄鹂百灵唱不",
+        { w: "休", p: ["xiū"] },
+        "。你拍九，我拍九，人和动物是",
+        { w: "朋友", p: ["péng", "you"] },
+        "。你拍十，我拍十，",
+        { w: "保护", p: ["bǎo", "hù"] },
+        "动物是大事。"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["休", "体"], ans: 0, post: "息" },
+      { pre: "", opts: ["丛", "从"], ans: 0, post: "林" },
+      { pre: "", opts: ["保", "宝"], ans: 0, post: "护" },
+      { pre: "云", opts: ["彩", "采"], ans: 0, post: "" },
+      { pre: "世", opts: ["界", "介"], ans: 0, post: "" },
+      { pre: "朋", opts: ["友", "有"], ans: 0, post: "" },
+      { pre: "", opts: ["拍", "怕"], ans: 0, post: "手" },
+      { pre: "爱", opts: ["护", "户"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["休", "体"], items: [
+        { pre: "(", ans: "休", post: ")息" },
+        { pre: "身(", ans: "体", post: ")" },
+        { pre: "午(", ans: "休", post: ")" },
+        { pre: "(", ans: "体", post: ")育" }
+      ]},
+      { pair: ["丛", "从"], items: [
+        { pre: "(", ans: "丛", post: ")林" },
+        { pre: "(", ans: "从", post: ")前" },
+        { pre: "草(", ans: "丛", post: ")" },
+        { pre: "(", ans: "从", post: ")来" }
+      ]}
+    ]
+  },
+  {
+    id: "u2-4", unit: "第二单元·识字", title: "识字4《田家四季歌》",
+    theme: "按春夏秋冬顺序描绘农民一年的农事活动，赞美辛勤劳动与丰收的喜悦。",
+    writeChars: ["季(jì)", "肥(féi)", "农(nóng)", "事(shì)", "谷(gǔ)", "体(tǐ)", "虽(suī)", "辛(xīn)", "苦(kǔ)", "初(chū)"],
+    passages: [
+      [
+        "春",
+        { w: "季", p: ["jì"] },
+        "里，春风吹，花开草长蝴蝶飞。麦苗儿多嫩，桑叶儿正",
+        { w: "肥", p: ["féi"] },
+        "。夏季里，",
+        { w: "农事", p: ["nóng", "shì"] },
+        "忙，采桑养蚕又插秧。"
+      ],
+      [
+        "秋季里，稻上场，",
+        { w: "谷", p: ["gǔ"] },
+        "像黄金粒粒香。身",
+        { w: "体", p: ["tǐ"] },
+        { w: "虽", p: ["suī"] },
+        { w: "辛苦", p: ["xīn", "kǔ"] },
+        "，心里喜洋洋。冬季里，雪",
+        { w: "初", p: ["chū"] },
+        "晴，新制棉衣暖又轻。"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["肥", "把"], ans: 0, post: "胖" },
+      { pre: "", opts: ["辛", "幸"], ans: 0, post: "苦" },
+      { pre: "四", opts: ["季", "李"], ans: 0, post: "" },
+      { pre: "", opts: ["农", "衣"], ans: 0, post: "民" },
+      { pre: "山", opts: ["谷", "公"], ans: 0, post: "" },
+      { pre: "雪", opts: ["初", "刀"], ans: 0, post: "晴" },
+      { pre: "", opts: ["虽", "虫"], ans: 0, post: "然" },
+      { pre: "农", opts: ["事", "争"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["辛", "幸"], items: [
+        { pre: "(", ans: "辛", post: ")苦" },
+        { pre: "(", ans: "幸", post: ")福" },
+        { pre: "(", ans: "辛", post: ")勤" },
+        { pre: "(", ans: "幸", post: ")运" }
+      ]},
+      { pair: ["季", "李"], items: [
+        { pre: "四(", ans: "季", post: ")" },
+        { pre: "(", ans: "李", post: ")子" },
+        { pre: "春(", ans: "季", post: ")" },
+        { pre: "行(", ans: "李", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u3-4", unit: "第三单元·阅读", title: "第4课《彩虹》",
+    theme: "通过“我”看到彩虹后想为爸爸浇田、为妈妈照镜子、荡秋千让哥哥高兴，展现丰富想象与关爱家人之情。",
+    writeChars: ["丽(lì)", "提(tí)", "吗(ma)", "圆(yuán)", "哥(gē)", "秋(qiū)", "挂(guà)", "啊(a)"],
+    passages: [
+      [
+        "雨停了，天上出现了一座美",
+        { w: "丽", p: ["lì"] },
+        "的桥。爸爸，如果我",
+        { w: "提", p: ["tí"] },
+        "着那把水壶，走到桥上，把水洒下来，那不就是我在下雨",
+        { w: "吗", p: ["ma"] },
+        "？"
+      ],
+      [
+        "我拿着",
+        { w: "圆", p: ["yuán"] },
+        "圆的月亮照着您梳头，您高兴吗？",
+        { w: "哥哥", p: ["gē", "ge"] },
+        "，如果我把",
+        { w: "秋", p: ["qiū"] },
+        "千",
+        { w: "挂", p: ["guà"] },
+        "在彩虹桥上，花裙子飘",
+        { w: "啊", p: ["a"] },
+        "飘的，不就成了一朵彩云吗？"
+      ]
+    ],
+    q2: [
+      { pre: "美", opts: ["丽", "力"], ans: 0, post: "" },
+      { pre: "", opts: ["提", "题"], ans: 0, post: "水" },
+      { pre: "", opts: ["圆", "园"], ans: 0, post: "月" },
+      { pre: "", opts: ["秋", "伙"], ans: 0, post: "千" },
+      { pre: "", opts: ["挂", "桂"], ans: 0, post: "在" },
+      { pre: "哥", opts: ["哥", "歌"], ans: 0, post: "" },
+      { pre: "彩", opts: ["虹", "红"], ans: 0, post: "" },
+      { pre: "水", opts: ["壶", "壳"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["提", "题"], items: [
+        { pre: "(", ans: "提", post: ")水" },
+        { pre: "问(", ans: "题", post: ")" },
+        { pre: "(", ans: "提", post: ")高" },
+        { pre: "(", ans: "题", post: ")目" }
+      ]},
+      { pair: ["挂", "桂"], items: [
+        { pre: "(", ans: "挂", post: ")念" },
+        { pre: "(", ans: "桂", post: "花" },
+        { pre: "牵(", ans: "挂", post: ")" },
+        { pre: "金(", ans: "桂", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u3-5", unit: "第三单元·阅读", title: "第5课《去外婆家》",
+    theme: "描写小时候去外婆家吃山果、逗山雀、赏野花的趣事，展现乡村生活的美好和亲情的温暖。",
+    writeChars: ["宝(bǎo)", "活(huó)", "些(xiē)", "总(zǒng)", "给(gěi)", "诉(sù)", "曲(qǔ)", "名(míng)", "香(xiāng)"],
+    passages: [
+      [
+        "外婆的家在山脚下。山上山下",
+        { w: "宝贝", p: ["bǎo", "bei"] },
+        "多，有吃的，有玩的，还有看的。有时候舅舅从山上干",
+        { w: "活", p: ["huó"] },
+        "回来，会带一",
+        { w: "些", p: ["xiē"] },
+        "山楂、柿子或毛栗子，外婆",
+        { w: "总", p: ["zǒng"] },
+        "要",
+        { w: "给", p: ["gěi"] },
+        "我留一份。"
+      ],
+      [
+        "外婆告",
+        { w: "诉", p: ["sù"] },
+        "我，从小喂大的山雀不会逃，唧唧一叫，就飞到你手上，唱支小",
+        { w: "曲", p: ["qǔ"] },
+        "给你听。山上还有许许多多说不出",
+        { w: "名字", p: ["míng", "zi"] },
+        "的野花，走起路来",
+        { w: "香", p: ["xiāng"] },
+        "气扑鼻。"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["宝", "保"], ans: 0, post: "贝" },
+      { pre: "干", opts: ["活", "话"], ans: 0, post: "" },
+      { pre: "告", opts: ["诉", "所"], ans: 0, post: "" },
+      { pre: "", opts: ["名", "各"], ans: 0, post: "字" },
+      { pre: "一", opts: ["些", "此"], ans: 0, post: "" },
+      { pre: "", opts: ["总", "聪"], ans: 0, post: "是" },
+      { pre: "送", opts: ["给", "结"], ans: 0, post: "" },
+      { pre: "歌", opts: ["曲", "由"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["宝", "保"], items: [
+        { pre: "(", ans: "宝", post: ")贝" },
+        { pre: "(", ans: "保", post: ")护" },
+        { pre: "(", ans: "宝", post: ")贵" },
+        { pre: "(", ans: "保", post: ")存" }
+      ]},
+      { pair: ["活", "话"], items: [
+        { pre: "干(", ans: "活", post: ")" },
+        { pre: "说(", ans: "话", post: ")" },
+        { pre: "生(", ans: "活", post: ")" },
+        { pre: "电(", ans: "话", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u3-6", unit: "第三单元·阅读", title: "第6课《数星星的孩子》",
+    theme: "讲述汉代张衡小时候数星星并仔细观察北斗七星绕北极星转动的故事，启示我们要保持好奇心、刻苦钻研。",
+    writeChars: ["数(shǔ)", "晚(wǎn)", "奶(nǎi)", "您(nín)", "爷(yé)", "很(hěn)", "变(biàn)", "勺(sháo)", "张(zhāng)", "汉(hàn)"],
+    passages: [
+      [
+        { w: "晚上", p: ["wǎn", "shang"] },
+        "，满天的星星像无数珍珠撒在碧玉盘里。一个孩子坐在院子里，靠着",
+        { w: "奶奶", p: ["nǎi", "nai"] },
+        "，仰起头，指着天空",
+        { w: "数", p: ["shǔ"] },
+        "星星。孩子说：“奶奶，",
+        { w: "您", p: ["nín"] },
+        "看，这颗星和那颗星，中间总是隔那么远。”"
+      ],
+      [
+        { w: "爷爷", p: ["yé", "ye"] },
+        "走过来，说：“孩子，你看得很仔细。可是看起来它们之间的距离好像是不",
+        { w: "变", p: ["biàn"] },
+        "的。那七颗星，连起来像一把",
+        { w: "勺子", p: ["sháo", "zi"] },
+        "，叫北斗七星。”这个孩子名叫",
+        { w: "张", p: ["zhāng"] },
+        "衡，是",
+        { w: "汉", p: ["hàn"] },
+        "朝人。"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["勺", "句"], ans: 0, post: "子" },
+      { pre: "", opts: ["奶", "扔"], ans: 0, post: "奶" },
+      { pre: "", opts: ["您", "你"], ans: 0, post: "好" },
+      { pre: "爷", opts: ["爷", "斧"], ans: 0, post: "" },
+      { pre: "", opts: ["很", "狠"], ans: 0, post: "多" },
+      { pre: "", opts: ["变", "弯"], ans: 0, post: "化" },
+      { pre: "", opts: ["数", "楼"], ans: 0, post: "星星" },
+      { pre: "", opts: ["汉", "汗"], ans: 0, post: "朝" }
+    ],
+    q3: [
+      { pair: ["勺", "句"], items: [
+        { pre: "(", ans: "勺", post: ")子" },
+        { pre: "(", ans: "句", post: ")号" },
+        { pre: "汤(", ans: "勺", post: ")" },
+        { pre: "语(", ans: "句", post: ")" }
+      ]},
+      { pair: ["变", "弯"], items: [
+        { pre: "(", ans: "变", post: ")化" },
+        { pre: "(", ans: "弯", post: ")腰" },
+        { pre: "改(", ans: "变", post: ")" },
+        { pre: "(", ans: "弯", post: ")曲" }
+      ]}
+    ]
+  },
+  {
+    id: "u4-7", unit: "第四单元·阅读", title: "第7课《古诗二首》",
+    theme: "《登鹳雀楼》道出站得高才能看得远的哲理；《望庐山瀑布》赞美庐山瀑布的雄伟壮丽。",
+    writeChars: ["依(yī)", "尽(jìn)", "穷(qióng)", "层(céng)", "照(zhào)", "炉(lú)", "烟(yān)", "川(chuān)", "直(zhí)", "银(yín)"],
+    passages: [
+      [
+        "白日",
+        { w: "依", p: ["yī"] },
+        "山",
+        { w: "尽", p: ["jìn"] },
+        "，黄河入海流。欲",
+        { w: "穷", p: ["qióng"] },
+        "千里目，更上一",
+        { w: "层", p: ["céng"] },
+        "楼。"
+      ],
+      [
+        "日",
+        { w: "照", p: ["zhào"] },
+        "香",
+        { w: "炉", p: ["lú"] },
+        "生紫",
+        { w: "烟", p: ["yān"] },
+        "，遥看瀑布挂前",
+        { w: "川", p: ["chuān"] },
+        "。飞流",
+        { w: "直", p: ["zhí"] },
+        "下三千尺，疑是",
+        { w: "银", p: ["yín"] },
+        "河落九天。"
+      ]
+    ],
+    q2: [
+      { pre: "香", opts: ["炉", "户"], ans: 0, post: "" },
+      { pre: "", opts: ["烟", "因"], ans: 0, post: "云" },
+      { pre: "山", opts: ["川", "州"], ans: 0, post: "" },
+      { pre: "", opts: ["银", "很"], ans: 0, post: "河" },
+      { pre: "一", opts: ["层", "屋"], ans: 0, post: "楼" },
+      { pre: "山", opts: ["穷", "穴"], ans: 0, post: "水尽" },
+      { pre: "笔", opts: ["直", "真"], ans: 0, post: "" },
+      { pre: "", opts: ["依", "衣"], ans: 0, post: "山" }
+    ],
+    q3: [
+      { pair: ["银", "很"], items: [
+        { pre: "(", ans: "银", post: ")河" },
+        { pre: "(", ans: "很", post: ")多" },
+        { pre: "白(", ans: "银", post: ")" },
+        { pre: "(", ans: "很", post: ")好" }
+      ]},
+      { pair: ["直", "真"], items: [
+        { pre: "笔(", ans: "直", post: ")" },
+        { pre: "(", ans: "真", post: ")正" },
+        { pre: "(", ans: "直", post: ")接" },
+        { pre: "认(", ans: "真", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u4-8", unit: "第四单元·阅读", title: "第8课《黄山奇石》",
+    theme: "生动介绍“仙桃石”“猴子观海”“仙人指路”“金鸡叫天都”等奇石，抒发对祖国山河的热爱。",
+    writeChars: ["仙(xiān)", "顶(dǐng)", "巨(jù)", "位(wèi)", "闪(shǎn)", "狗(gǒu)", "形(xíng)", "状(zhuàng)"],
+    passages: [
+      [
+        "就说“",
+        { w: "仙", p: ["xiān"] },
+        "桃石”吧，它好像从天上飞下来的一个大桃子，落在山",
+        { w: "顶", p: ["dǐng"] },
+        "的石盘上。远远望去，那",
+        { w: "巨", p: ["jù"] },
+        "石真像一",
+        { w: "位", p: ["wèi"] },
+        "仙人站在高高的山峰上。"
+      ],
+      [
+        "每当太阳升起，有座山峰上的几块巨石，就变成了一只金光",
+        { w: "闪", p: ["shǎn"] },
+        "闪的雄鸡。黄山的奇石还有很多，如“天",
+        { w: "狗", p: ["gǒu"] },
+        "望月”。那些叫不出名字的奇",
+        { w: "形", p: ["xíng"] },
+        "怪",
+        { w: "状", p: ["zhuàng"] },
+        "的岩石，正等你去给它们起名字呢！"
+      ]
+    ],
+    q2: [
+      { pre: "山", opts: ["顶", "订"], ans: 0, post: "" },
+      { pre: "一", opts: ["位", "拉"], ans: 0, post: "" },
+      { pre: "", opts: ["巨", "区"], ans: 0, post: "石" },
+      { pre: "", opts: ["仙", "山"], ans: 0, post: "人" },
+      { pre: "金光", opts: ["闪", "问"], ans: 0, post: "闪" },
+      { pre: "", opts: ["形", "行"], ans: 0, post: "状" },
+      { pre: "奇形怪", opts: ["状", "壮"], ans: 0, post: "" },
+      { pre: "小", opts: ["狗", "句"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["位", "拉"], items: [
+        { pre: "一(", ans: "位", post: ")" },
+        { pre: "(", ans: "拉", post: ")手" },
+        { pre: "座(", ans: "位", post: ")" },
+        { pre: "(", ans: "拉", post: ")开" }
+      ]},
+      { pair: ["状", "壮"], items: [
+        { pre: "形(", ans: "状", post: ")" },
+        { pre: "强(", ans: "壮", post: ")" },
+        { pre: "(", ans: "状", post: ")元" },
+        { pre: "粗(", ans: "壮", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u4-9", unit: "第四单元·阅读", title: "第9课《日月潭》",
+    theme: "介绍台湾省日月潭的地理位置、名字由来及清晨、中午、雨天的秀丽风光，热爱宝岛台湾。",
+    writeChars: ["湖(hú)", "区(qū)", "胜(shèng)", "岛(dǎo)", "弯(wān)", "现(xiàn)", "就(jiù)", "外(wài)"],
+    passages: [
+      [
+        "日月潭是我国台湾省最大的一个",
+        { w: "湖", p: ["hú"] },
+        "，它在台湾省中部的山",
+        { w: "区", p: ["qū"] },
+        "。那里群山环绕，树木茂盛，周围有许多名",
+        { w: "胜", p: ["shèng"] },
+        "古迹。"
+      ],
+      [
+        "湖中央有个美丽的小",
+        { w: "岛", p: ["dǎo"] },
+        "，把湖水分成两半：北边像圆圆的太阳，叫日潭；南边像",
+        { w: "弯", p: ["wān"] },
+        "弯的月亮，叫月潭。中午，整个日月潭的美景都清晰地展",
+        { w: "现", p: ["xiàn"] },
+        "在眼前，吸引了许许多多的中",
+        { w: "外", p: ["wài"] },
+        "游客。"
+      ]
+    ],
+    q2: [
+      { pre: "小", opts: ["岛", "鸟"], ans: 0, post: "" },
+      { pre: "", opts: ["湖", "胡"], ans: 0, post: "水" },
+      { pre: "名", opts: ["胜", "姓"], ans: 0, post: "" },
+      { pre: "展", opts: ["现", "观"], ans: 0, post: "" },
+      { pre: "山", opts: ["区", "巨"], ans: 0, post: "" },
+      { pre: "", opts: ["弯", "变"], ans: 0, post: "月" },
+      { pre: "中", opts: ["外", "处"], ans: 0, post: "" },
+      { pre: "成", opts: ["就", "京"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["岛", "鸟"], items: [
+        { pre: "小(", ans: "岛", post: ")" },
+        { pre: "飞(", ans: "鸟", post: ")" },
+        { pre: "海(", ans: "岛", post: ")" },
+        { pre: "水(", ans: "鸟", post: ")" }
+      ]},
+      { pair: ["现", "观"], items: [
+        { pre: "(", ans: "现", post: ")在" },
+        { pre: "(", ans: "观", post: "看" },
+        { pre: "出(", ans: "现", post: ")" },
+        { pre: "(", ans: "观", post: "众" }
+      ]}
+    ]
+  },
+  {
+    id: "u4-10", unit: "第四单元·阅读", title: "第10课《葡萄沟》",
+    theme: "介绍新疆吐鲁番葡萄沟出产的葡萄五光十色、老乡热情好客及葡萄干的制作，赞美葡萄沟真是个好地方。",
+    writeChars: ["份(fèn)", "枝(zhī)", "客(kè)", "城(chéng)", "市(shì)", "孔(kǒng)", "钉(dīng)", "味(wèi)"],
+    passages: [
+      [
+        "到了七月",
+        { w: "份", p: ["fèn"] },
+        "，人们最喜爱的葡萄成熟了。茂密的",
+        { w: "枝", p: ["zhī"] },
+        "叶向四面展开，就像搭起了一个个绿色的凉棚。热情好",
+        { w: "客", p: ["kè"] },
+        "的维吾尔族老乡，准会摘下最甜的葡萄。"
+      ],
+      [
+        "收下来的葡萄，有的运到",
+        { w: "城市", p: ["chéng", "shì"] },
+        "去。晾房四面墙上有许多小",
+        { w: "孔", p: ["kǒng"] },
+        "，里面",
+        { w: "钉", p: ["dīng"] },
+        "着许多木架子。这里生产的葡萄干颜色鲜，",
+        { w: "味", p: ["wèi"] },
+        "道甜，非常有名。"
+      ]
+    ],
+    q2: [
+      { pre: "月", opts: ["份", "分"], ans: 0, post: "" },
+      { pre: "好", opts: ["客", "容"], ans: 0, post: "" },
+      { pre: "", opts: ["城", "成"], ans: 0, post: "市" },
+      { pre: "树", opts: ["枝", "技"], ans: 0, post: "" },
+      { pre: "小", opts: ["孔", "孙"], ans: 0, post: "" },
+      { pre: "", opts: ["钉", "订"], ans: 0, post: "子" },
+      { pre: "", opts: ["味", "妹"], ans: 0, post: "道" },
+      { pre: "都", opts: ["市", "币"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["份", "分"], items: [
+        { pre: "月(", ans: "份", post: ")" },
+        { pre: "水(", ans: "分", post: ")" },
+        { pre: "一(", ans: "份", post: ")" },
+        { pre: "(", ans: "分", post: "开" }
+      ]},
+      { pair: ["客", "容"], items: [
+        { pre: "好(", ans: "客", post: ")" },
+        { pre: "(", ans: "容", post: "易" },
+        { pre: "(", ans: "客", post: "人" },
+        { pre: "笑(", ans: "容", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u5-11", unit: "第五单元·阅读", title: "第11课《坐井观天》",
+    theme: "通过青蛙和小鸟争论天的大小，说明看问题、认识事物站得要高才能看得全面，不能自以为是。",
+    writeChars: ["观(guān)", "呀(ya)", "答(dá)", "话(huà)", "抬(tái)", "能(néng)", "信(xìn)"],
+    passages: [
+      [
+        "青蛙坐在井里。小鸟飞来，落在井沿上。青蛙问小鸟：“你从哪儿来",
+        { w: "呀", p: ["ya"] },
+        "？”小鸟回",
+        { w: "答", p: ["dá"] },
+        "说：“我从天上来。”青蛙说：“朋友，别说大",
+        { w: "话", p: ["huà"] },
+        "了！”"
+      ],
+      [
+        "青蛙笑了，说：“朋友，我天天坐在井里，一",
+        { w: "抬", p: ["tái"] },
+        "头就",
+        { w: "能", p: ["néng"] },
+        "看见天。”小鸟也笑了，说：“朋友，你是弄错了。不",
+        { w: "信", p: ["xìn"] },
+        "，你跳出井来看一看吧。”"
+      ]
+    ],
+    q2: [
+      { pre: "坐井", opts: ["观", "现"], ans: 0, post: "天" },
+      { pre: "回", opts: ["答", "合"], ans: 0, post: "" },
+      { pre: "说", opts: ["话", "活"], ans: 0, post: "" },
+      { pre: "", opts: ["抬", "治"], ans: 0, post: "头" },
+      { pre: "相", opts: ["信", "言"], ans: 0, post: "" },
+      { pre: "", opts: ["能", "熊"], ans: 0, post: "够" },
+      { pre: "井", opts: ["沿", "没"], ans: 0, post: "" },
+      { pre: "口", opts: ["渴", "喝"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["渴", "喝"], items: [
+        { pre: "口(", ans: "渴", post: ")" },
+        { pre: "(", ans: "喝", post: "水" },
+        { pre: "(", ans: "渴", post: "望" },
+        { pre: "(", ans: "喝", post: "茶" }
+      ]},
+      { pair: ["抬", "治"], items: [
+        { pre: "(", ans: "抬", post: "头" },
+        { pre: "(", ans: "治", post: "病" },
+        { pre: "(", ans: "抬", post: "起" },
+        { pre: "防(", ans: "治", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u5-12", unit: "第五单元·阅读", title: "第12课《寒号鸟》",
+    theme: "对比喜鹊勤劳做窝与寒号鸟懒惰得过且过最终冻死的结果，说明美好生活要靠辛勤劳动来创造。",
+    writeChars: ["阵(zhèn)", "做(zuò)", "冻(dòng)", "第(dì)", "像(xiàng)", "冷(lěng)", "冰(bīng)", "亮(liàng)"],
+    passages: [
+      [
+        "几",
+        { w: "阵", p: ["zhèn"] },
+        "秋风，树叶落尽，冬天快要到了。喜鹊忙着",
+        { w: "做", p: ["zuò"] },
+        "窝，准备过冬。寒号鸟在崖缝里",
+        { w: "冻", p: ["dòng"] },
+        "得直打哆嗦。天",
+        { w: "亮", p: ["liàng"] },
+        "了，太阳出来了。"
+      ],
+      [
+        { w: "第", p: ["dì"] },
+        "二天清早，风停了。寒冬腊月，大雪纷飞。北风",
+        { w: "像", p: ["xiàng"] },
+        "狮子一样狂吼，崖缝里",
+        { w: "冷", p: ["lěng"] },
+        "得像",
+        { w: "冰", p: ["bīng"] },
+        "窖。"
+      ]
+    ],
+    q2: [
+      { pre: "一", opts: ["阵", "陈"], ans: 0, post: "风" },
+      { pre: "", opts: ["冻", "东"], ans: 0, post: "死" },
+      { pre: "", opts: ["第", "弟"], ans: 0, post: "一" },
+      { pre: "好", opts: ["像", "象"], ans: 0, post: "" },
+      { pre: "寒", opts: ["冷", "令"], ans: 0, post: "" },
+      { pre: "", opts: ["冰", "水"], ans: 0, post: "窖" },
+      { pre: "明", opts: ["亮", "高"], ans: 0, post: "" },
+      { pre: "", opts: ["做", "作"], ans: 0, post: "窝" }
+    ],
+    q3: [
+      { pair: ["冻", "东"], items: [
+        { pre: "冷(", ans: "冻", post: ")" },
+        { pre: "(", ans: "东", post: "西" },
+        { pre: "(", ans: "冻", post: "僵" },
+        { pre: "(", ans: "东", post: "方" }
+      ]},
+      { pair: ["第", "弟"], items: [
+        { pre: "(", ans: "第", post: "一" },
+        { pre: "兄(", ans: "弟", post: ")" },
+        { pre: "(", ans: "第", post: "二" },
+        { pre: "表(", ans: "弟", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u5-13", unit: "第五单元·阅读", title: "第13课《我要的是葫芦》",
+    theme: "种葫芦的人不懂叶子和果实的关系，不治蚜虫导致葫芦全落，告诉我们做事要注意事物之间的联系。",
+    writeChars: ["种(zhòng)", "棵(kē)", "以(yǐ)", "次(cì)", "想(xiǎng)", "邻(lín)", "居(jū)", "吧(ba)", "奇(qí)", "怪(guài)"],
+    passages: [
+      [
+        "从前，有个人",
+        { w: "种", p: ["zhòng"] },
+        "了一",
+        { w: "棵", p: ["kē"] },
+        "葫芦。花谢",
+        { w: "以后", p: ["yǐ", "hòu"] },
+        "，藤上挂了几个小葫芦。那个人每天都要去看几",
+        { w: "次", p: ["cì"] },
+        "。"
+      ],
+      [
+        "他心里",
+        { w: "想", p: ["xiǎng"] },
+        "，有几个虫子怕什么！一个",
+        { w: "邻居", p: ["lín", "jū"] },
+        "看见了，对他说：“快治一治",
+        { w: "吧", p: ["ba"] },
+        "！”那个人感到很",
+        { w: "奇怪", p: ["qí", "guài"] },
+        "。"
+      ]
+    ],
+    q2: [
+      { pre: "一", opts: ["棵", "颗"], ans: 0, post: "树" },
+      { pre: "", opts: ["以", "似"], ans: 0, post: "前" },
+      { pre: "", opts: ["邻", "领"], ans: 0, post: "居" },
+      { pre: "", opts: ["奇", "椅"], ans: 0, post: "怪" },
+      { pre: "一", opts: ["次", "吹"], ans: 0, post: "" },
+      { pre: "", opts: ["种", "和"], ans: 0, post: "地" },
+      { pre: "思", opts: ["想", "相"], ans: 0, post: "" },
+      { pre: "家", opts: ["居", "尾"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["棵", "颗"], items: [
+        { pre: "一(", ans: "棵", post: ")葫芦" },
+        { pre: "一(", ans: "颗", post: ")星星" },
+        { pre: "几(", ans: "棵", post: ")树" },
+        { pre: "一(", ans: "颗", post: ")珍珠" }
+      ]},
+      { pair: ["邻", "领"], items: [
+        { pre: "(", ans: "邻", post: ")居" },
+        { pre: "带(", ans: "领", post: ")" },
+        { pre: "(", ans: "邻", post: ")里" },
+        { pre: "红(", ans: "领", post: ")巾" }
+      ]}
+    ]
+  },
+  {
+    id: "u6-14", unit: "第六单元·阅读", title: "第14课《八角楼上》",
+    theme: "记叙毛主席在井冈山茅坪村八角楼的清油灯下忘我工作、撰写光辉著作，赞扬先辈公而忘私的奉献精神。",
+    writeChars: ["楼(lóu)", "代(dài)", "穿(chuān)", "视(shì)", "利(lì)", "路(lù)"],
+    passages: [
+      [
+        "在井冈山艰苦斗争的年",
+        { w: "代", p: ["dài"] },
+        "，毛主席住在茅坪村的八角",
+        { w: "楼", p: ["lóu"] },
+        "。这是个寒冬腊月的深夜，毛主席",
+        { w: "穿", p: ["chuān"] },
+        "着单军衣，披着薄毯子。"
+      ],
+      [
+        "凝",
+        { w: "视", p: ["shì"] },
+        "着这星星之火，毛主席在沉思。就在这盏清油灯下，毛主席写下了许多光辉著作，照亮了中国革命胜",
+        { w: "利", p: ["lì"] },
+        "的道",
+        { w: "路", p: ["lù"] },
+        "。"
+      ]
+    ],
+    q2: [
+      { pre: "高", opts: ["楼", "数"], ans: 0, post: "" },
+      { pre: "年", opts: ["代", "袋"], ans: 0, post: "" },
+      { pre: "", opts: ["穿", "窗"], ans: 0, post: "衣" },
+      { pre: "凝", opts: ["视", "见"], ans: 0, post: "" },
+      { pre: "胜", opts: ["利", "力"], ans: 0, post: "" },
+      { pre: "道", opts: ["路", "露"], ans: 0, post: "" },
+      { pre: "斗", opts: ["争", "事"], ans: 0, post: "" },
+      { pre: "明", opts: ["亮", "高"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["代", "袋"], items: [
+        { pre: "年(", ans: "代", post: ")" },
+        { pre: "口(", ans: "袋", post: ")" },
+        { pre: "古(", ans: "代", post: ")" },
+        { pre: "脑(", ans: "袋", post: ")" }
+      ]},
+      { pair: ["利", "力"], items: [
+        { pre: "胜(", ans: "利", post: ")" },
+        { pre: "活(", ans: "力", post: ")" },
+        { pre: "顺(", ans: "利", post: ")" },
+        { pre: "努(", ans: "力", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u6-15", unit: "第六单元·阅读", title: "第15课《朱德的扁担》",
+    theme: "记叙朱德同志与战士们一起挑粮上山，展现朱德同志以身作则、与战士同甘共苦的高尚品质。",
+    writeChars: ["同(tóng)", "志(zhì)", "军(jūn)", "敌(dí)", "常(cháng)", "非(fēi)", "每(měi)", "战(zhàn)", "士(shì)", "戴(dài)"],
+    passages: [
+      [
+        "1928年，朱德",
+        { w: "同志", p: ["tóng", "zhì"] },
+        "带领队伍到井冈山，跟毛泽东同志带领的队伍会师了。红",
+        { w: "军", p: ["jūn"] },
+        "在山上，山下不远处就是",
+        { w: "敌人", p: ["dí", "rén"] },
+        "。"
+      ],
+      [
+        "山高路陡，",
+        { w: "非常", p: ["fēi", "cháng"] },
+        "难走。可是",
+        { w: "每", p: ["měi"] },
+        "次挑粮，大家都争着去。朱德同志也跟",
+        { w: "战士", p: ["zhàn", "shì"] },
+        "们一块儿去挑粮。他穿着草鞋，",
+        { w: "戴", p: ["dài"] },
+        "着斗笠，挑起粮食。"
+      ]
+    ],
+    q2: [
+      { pre: "战", opts: ["士", "土"], ans: 0, post: "" },
+      { pre: "", opts: ["戴", "带"], ans: 0, post: "斗笠" },
+      { pre: "同", opts: ["志", "忘"], ans: 0, post: "" },
+      { pre: "红", opts: ["军", "车"], ans: 0, post: "" },
+      { pre: "", opts: ["每", "海"], ans: 0, post: "天" },
+      { pre: "", opts: ["常", "党"], ans: 0, post: "常" },
+      { pre: "", opts: ["敌", "故"], ans: 0, post: "人" },
+      { pre: "扁", opts: ["担", "但"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["士", "土"], items: [
+        { pre: "战(", ans: "士", post: ")" },
+        { pre: "(", ans: "土", post: ")地" },
+        { pre: "女(", ans: "士", post: ")" },
+        { pre: "泥(", ans: "土", post: ")" }
+      ]},
+      { pair: ["戴", "带"], items: [
+        { pre: "穿(", ans: "戴", post: ")" },
+        { pre: "(", ans: "带", post: ")领" },
+        { pre: "(", ans: "戴", post: ")帽" },
+        { pre: "皮(", ans: "带", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u6-16", unit: "第六单元·阅读", title: "第16课《难忘的泼水节》",
+    theme: "描写1961年周总理与傣族人民欢度泼水节的感人情景，体现总理与人民心连心的深厚情意。",
+    writeChars: ["难(nán)", "忘(wàng)", "民(mín)", "因(yīn)", "理(lǐ)", "串(chuàn)", "裤(kù)", "令(lìng)"],
+    passages: [
+      [
+        "1961年的泼水节，傣族人",
+        { w: "民", p: ["mín"] },
+        "特别高兴，",
+        { w: "因为", p: ["yīn", "wèi"] },
+        "敬爱的周恩来总",
+        { w: "理", p: ["lǐ"] },
+        "和他们一起过泼水节。一",
+        { w: "串", p: ["chuàn"] },
+        "串花炮升上天空。"
+      ],
+      [
+        "周总理身穿对襟白褂、咖啡色长",
+        { w: "裤", p: ["kù"] },
+        "，笑容满面地来到人群中。多么",
+        { w: "令人", p: ["lìng", "rén"] },
+        { w: "难忘", p: ["nán", "wàng"] },
+        "啊，1961年的泼水节！"
+      ]
+    ],
+    q2: [
+      { pre: "难", opts: ["忘", "望"], ans: 0, post: "" },
+      { pre: "人", opts: ["民", "眠"], ans: 0, post: "" },
+      { pre: "口", opts: ["令", "今"], ans: 0, post: "" },
+      { pre: "总", opts: ["理", "里"], ans: 0, post: "" },
+      { pre: "", opts: ["因", "烟"], ans: 0, post: "为" },
+      { pre: "一", opts: ["串", "穿"], ans: 0, post: "串" },
+      { pre: "长", opts: ["裤", "库"], ans: 0, post: "" },
+      { pre: "踩", opts: ["踏", "蹈"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["令", "今"], items: [
+        { pre: "命(", ans: "令", post: ")" },
+        { pre: "(", ans: "今", post: ")天" },
+        { pre: "口(", ans: "令", post: ")" },
+        { pre: "如(", ans: "今", post: ")" }
+      ]},
+      { pair: ["忘", "望"], items: [
+        { pre: "难(", ans: "忘", post: ")" },
+        { pre: "希(", ans: "望", post: ")" },
+        { pre: "(", ans: "忘", post: "记" },
+        { pre: "看(", ans: "望", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u6-17", unit: "第六单元·阅读", title: "第17课《刘胡兰》",
+    theme: "歌颂刘胡兰在敌人利诱与威胁面前坚贞不屈、英勇就义的伟大革命精神。",
+    writeChars: ["反(fǎn)", "村(cūn)", "由(yóu)", "于(yú)", "员(yuán)", "被(bèi)", "声(shēng)", "岁(suì)", "消(xiāo)", "息(xī)"],
+    passages: [
+      [
+        "1947年1月12日，国民党",
+        { w: "反", p: ["fǎn"] },
+        "动派包围了云周西",
+        { w: "村", p: ["cūn"] },
+        "。",
+        { w: "由于", p: ["yóu", "yú"] },
+        "叛徒的出卖，年轻的共产党员刘胡兰",
+        { w: "被", p: ["bèi"] },
+        "捕了。"
+      ],
+      [
+        "刘胡兰大",
+        { w: "声", p: ["shēng"] },
+        "回答：“给我一个金人，我也不说！”刘胡兰光荣地牺牲了，当时她还不到十五",
+        { w: "岁", p: ["suì"] },
+        "。毛主席听到这个",
+        { w: "消息", p: ["xiāo", "xi"] },
+        "，亲笔为她题词：“生的伟大，死的光荣。”"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["村", "对"], ans: 0, post: "庄" },
+      { pre: "", opts: ["被", "披"], ans: 0, post: "捕" },
+      { pre: "", opts: ["反", "后"], ans: 0, post: "对" },
+      { pre: "队", opts: ["员", "圆"], ans: 0, post: "" },
+      { pre: "", opts: ["岁", "多"], ans: 0, post: "月" },
+      { pre: "休", opts: ["息", "思"], ans: 0, post: "" },
+      { pre: "由", opts: ["于", "干"], ans: 0, post: "" },
+      { pre: "", opts: ["消", "悄"], ans: 0, post: "息" }
+    ],
+    q3: [
+      { pair: ["被", "披"], items: [
+        { pre: "棉(", ans: "被", post: ")" },
+        { pre: "(", ans: "披", post: ")风" },
+        { pre: "(", ans: "被", post: ")动" },
+        { pre: "(", ans: "披", post: ")着" }
+      ]},
+      { pair: ["村", "对"], items: [
+        { pre: "(", ans: "村", post: ")民" },
+        { pre: "(", ans: "对", post: ")面" },
+        { pre: "乡(", ans: "村", post: ")" },
+        { pre: "绝(", ans: "对", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u7-18", unit: "第七单元·阅读", title: "第18课《古诗二首》",
+    theme: "《江雪》描绘寒江独钓的凄清高洁；《敕勒歌》展现阴山脚下草原辽阔、牛羊成群的壮美风光。",
+    writeChars: ["绝(jué)", "灭(miè)", "舟(zhōu)", "独(dú)", "阴(yīn)", "似(sì)", "野(yě)", "低(dī)"],
+    passages: [
+      [
+        "千山鸟飞",
+        { w: "绝", p: ["jué"] },
+        "，万径人踪",
+        { w: "灭", p: ["miè"] },
+        "。孤",
+        { w: "舟", p: ["zhōu"] },
+        "蓑笠翁，",
+        { w: "独", p: ["dú"] },
+        "钓寒江雪。"
+      ],
+      [
+        "敕勒川，",
+        { w: "阴", p: ["yīn"] },
+        "山下，天",
+        { w: "似", p: ["sì"] },
+        "穹庐，笼盖四",
+        { w: "野", p: ["yě"] },
+        "。天苍苍，野茫茫，风吹草",
+        { w: "低", p: ["dī"] },
+        "见牛羊。"
+      ]
+    ],
+    q2: [
+      { pre: "孤", opts: ["舟", "船"], ans: 0, post: "" },
+      { pre: "消", opts: ["灭", "火"], ans: 0, post: "" },
+      { pre: "", opts: ["阴", "阳"], ans: 0, post: "天" },
+      { pre: "田", opts: ["野", "里"], ans: 0, post: "" },
+      { pre: "", opts: ["低", "纸"], ans: 0, post: "头" },
+      { pre: "相", opts: ["似", "以"], ans: 0, post: "" },
+      { pre: "单", opts: ["独", "虫"], ans: 0, post: "" },
+      { pre: "拒", opts: ["绝", "色"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["低", "纸"], items: [
+        { pre: "高(", ans: "低", post: ")" },
+        { pre: "报(", ans: "纸", post: ")" },
+        { pre: "(", ans: "低", post: ")头" },
+        { pre: "白(", ans: "纸", post: ")" }
+      ]},
+      { pair: ["似", "以"], items: [
+        { pre: "相(", ans: "似", post: ")" },
+        { pre: "(", ans: "以", post: "前" },
+        { pre: "(", ans: "似", post: ")乎" },
+        { pre: "可(", ans: "以", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u7-19", unit: "第七单元·阅读", title: "第19课《雾在哪里》",
+    theme: "写淘气的雾把大海、天空、太阳、海岸、城市和自己藏起来，展现大自然的奇妙与变化。",
+    writeChars: ["论(lùn)", "船(chuán)", "猫(māo)", "切(qiè)", "该(gāi)", "散(sàn)", "步(bù)", "失(shī)"],
+    passages: [
+      [
+        "于是，他把大海藏了起来。无",
+        { w: "论", p: ["lùn"] },
+        "是海水、",
+        { w: "船", p: ["chuán"] },
+        "只，还是蓝色的远方，都看不见了。房屋、街道、树木、桥梁，甚至行人和小黑",
+        { w: "猫", p: ["māo"] },
+        "，雾把一",
+        { w: "切", p: ["qiè"] },
+        "都藏了起来。"
+      ],
+      [
+        "他躲到城市的上空，说道：“现在，我",
+        { w: "该", p: ["gāi"] },
+        "把谁藏起来呢？”不久，小黑猫也出现了，悠闲地",
+        { w: "散步", p: ["sàn", "bù"] },
+        "。雾呢？消",
+        { w: "失", p: ["shī"] },
+        "了，不知到哪里去了。"
+      ]
+    ],
+    q2: [
+      { pre: "议", opts: ["论", "轮"], ans: 0, post: "" },
+      { pre: "应", opts: ["该", "孩"], ans: 0, post: "" },
+      { pre: "跑", opts: ["步", "少"], ans: 0, post: "" },
+      { pre: "消", opts: ["失", "先"], ans: 0, post: "" },
+      { pre: "熊", opts: ["猫", "苗"], ans: 0, post: "" },
+      { pre: "一", opts: ["切", "七"], ans: 0, post: "" },
+      { pre: "木", opts: ["船", "沿"], ans: 0, post: "" },
+      { pre: "", opts: ["散", "敢"], ans: 0, post: "步" }
+    ],
+    q3: [
+      { pair: ["论", "轮"], items: [
+        { pre: "议(", ans: "论", post: ")" },
+        { pre: "(", ans: "轮", post: "船" },
+        { pre: "讨(", ans: "论", post: ")" },
+        { pre: "车(", ans: "轮", post: ")" }
+      ]},
+      { pair: ["该", "孩"], items: [
+        { pre: "应(", ans: "该", post: ")" },
+        { pre: "(", ans: "孩", post: "子" },
+        { pre: "(", ans: "该", post: ")当" },
+        { pre: "女(", ans: "孩", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u7-20", unit: "第七单元·阅读", title: "第20课《雪孩子》",
+    theme: "讲述雪孩子冒着大火救出小白兔、自己却融化变成白云的故事，赞美勇敢无畏、舍己救人的品质。",
+    writeChars: ["要(yào)", "伙(huǒ)", "伴(bàn)", "歌(gē)", "得(de)", "闭(bì)", "忙(máng)", "谁(shuí)", "汽(qì)"],
+    passages: [
+      [
+        "小白兔有了小",
+        { w: "伙伴", p: ["huǒ", "bàn"] },
+        "，就不跟妈妈去了。小白兔跳舞给雪孩子看，唱",
+        { w: "歌", p: ["gē"] },
+        "给雪孩子听。他躺在床上，",
+        { w: "闭", p: ["bì"] },
+        "上眼睛，一会儿就睡着了。"
+      ],
+      [
+        "他连",
+        { w: "忙", p: ["máng"] },
+        "把小白兔抱起来，跑到屋外。“咦，是",
+        { w: "谁", p: ["shuí"] },
+        "救了小白兔？”瞧，太阳晒着晒着，他变成了很轻很轻的水",
+        { w: "汽", p: ["qì"] },
+        "。"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["伙", "火"], ans: 0, post: "伴" },
+      { pre: "同", opts: ["伴", "半"], ans: 0, post: "" },
+      { pre: "", opts: ["闭", "问"], ans: 0, post: "眼" },
+      { pre: "水", opts: ["汽", "气"], ans: 0, post: "" },
+      { pre: "是", opts: ["谁", "难"], ans: 0, post: "" },
+      { pre: "连", opts: ["忙", "忘"], ans: 0, post: "" },
+      { pre: "唱", opts: ["歌", "哥"], ans: 0, post: "" },
+      { pre: "记", opts: ["得", "很"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["汽", "气"], items: [
+        { pre: "水(", ans: "汽", post: ")" },
+        { pre: "空(", ans: "气", post: ")" },
+        { pre: "(", ans: "汽", post: ")车" },
+        { pre: "天(", ans: "气", post: ")" }
+      ]},
+      { pair: ["闭", "问"], items: [
+        { pre: "关(", ans: "闭", post: ")" },
+        { pre: "(", ans: "问", post: "好" },
+        { pre: "(", ans: "闭", post: ")目" },
+        { pre: "提(", ans: "问", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u8-21", unit: "第八单元·阅读", title: "第21课《称赞》",
+    theme: "小刺猬和小獾真诚地互相称赞，带来自信与快乐，告诉我们要善于发现别人的优点并真诚赞美。",
+    writeChars: ["拿(ná)", "仔(zǐ)", "极(jí)", "送(sòng)", "椅(yǐ)", "怎(zěn)", "拉(lā)", "收(shōu)", "接(jiē)"],
+    passages: [
+      [
+        "小刺猬走到小獾身边，",
+        { w: "拿", p: ["ná"] },
+        "起板凳",
+        { w: "仔细", p: ["zǐ", "xì"] },
+        "地看了看。小獾高兴",
+        { w: "极", p: ["jí"] },
+        "了。他",
+        { w: "送", p: ["sòng"] },
+        "给小刺猬一把",
+        { w: "椅子", p: ["yǐ", "zi"] },
+        "。"
+      ],
+      [
+        "小刺猬不好意思地说：“我",
+        { w: "怎么", p: ["zěn", "me"] },
+        "能要你的椅子呢？”小獾",
+        { w: "拉", p: ["lā"] },
+        "着小刺猬的手，说：“这是我的一点儿心意，",
+        { w: "收", p: ["shōu"] },
+        "下吧。”小獾",
+        { w: "接", p: ["jiē"] },
+        "过苹果闻了闻。"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["仔", "子"], ans: 0, post: "细" },
+      { pre: "", opts: ["椅", "奇"], ans: 0, post: "子" },
+      { pre: "", opts: ["拿", "合"], ans: 0, post: "起" },
+      { pre: "欢", opts: ["送", "远"], ans: 0, post: "" },
+      { pre: "", opts: ["怎", "作"], ans: 0, post: "么" },
+      { pre: "迎", opts: ["接", "按"], ans: 0, post: "" },
+      { pre: "积", opts: ["极", "级"], ans: 0, post: "" },
+      { pre: "丰", opts: ["收", "改"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["极", "级"], items: [
+        { pre: "积(", ans: "极", post: ")" },
+        { pre: "年(", ans: "级", post: ")" },
+        { pre: "好(", ans: "极", post: ")了" },
+        { pre: "班(", ans: "级", post: ")" }
+      ]},
+      { pair: ["椅", "奇"], items: [
+        { pre: "(", ans: "椅", post: ")子" },
+        { pre: "(", ans: "奇", post: "怪" },
+        { pre: "桌(", ans: "椅", post: ")" },
+        { pre: "好(", ans: "奇", post: ")" }
+      ]}
+    ]
+  },
+  {
+    id: "u8-22", unit: "第八单元·阅读", title: "第22课《纸船和风筝》",
+    theme: "松鼠和小熊用纸船和风筝传递祝福与和好，说明友谊的建立与维护需要彼此包容与谅解。",
+    writeChars: ["纸(zhǐ)", "抓(zhuā)", "线(xiàn)", "吵(chǎo)", "但(dàn)", "受(shòu)", "句(jù)", "哭(kū)"],
+    passages: [
+      [
+        "松鼠折了一只",
+        { w: "纸", p: ["zhǐ"] },
+        "船，放在小溪里。松鼠一把",
+        { w: "抓", p: ["zhuā"] },
+        "住风筝的",
+        { w: "线", p: ["xiàn"] },
+        "一看，也乐坏了。可是有一天，他们俩为了一点儿小事",
+        { w: "吵", p: ["chǎo"] },
+        "了一架。"
+      ],
+      [
+        "小熊很难过。",
+        { w: "但是", p: ["dàn", "shì"] },
+        "不好意思把风筝放起来。过了几天，松鼠再也",
+        { w: "受", p: ["shòu"] },
+        "不了啦。他在一只折好的纸船上写了一",
+        { w: "句", p: ["jù"] },
+        "话。松鼠高兴得",
+        { w: "哭", p: ["kū"] },
+        "了。"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["纸", "低"], ans: 0, post: "船" },
+      { pre: "", opts: ["抓", "爪"], ans: 0, post: "住" },
+      { pre: "毛", opts: ["线", "钱"], ans: 0, post: "" },
+      { pre: "", opts: ["吵", "炒"], ans: 0, post: "架" },
+      { pre: "", opts: ["但", "担"], ans: 0, post: "是" },
+      { pre: "感", opts: ["受", "爱"], ans: 0, post: "" },
+      { pre: "", opts: ["句", "勺"], ans: 0, post: "子" },
+      { pre: "啼", opts: ["哭", "笑"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["吵", "炒"], items: [
+        { pre: "(", ans: "吵", post: ")闹" },
+        { pre: "(", ans: "炒", post: ")菜" },
+        { pre: "(", ans: "吵", post: ")架" },
+        { pre: "(", ans: "炒", post: ")饭" }
+      ]},
+      { pair: ["但", "担"], items: [
+        { pre: "(", ans: "但", post: ")是" },
+        { pre: "扁(", ans: "担", post: ")" },
+        { pre: "不(", ans: "但", post: ")" },
+        { pre: "(", ans: "担", post: ")心" }
+      ]}
+    ]
+  },
+  {
+    id: "u8-23", unit: "第八单元·阅读", title: "第23课《快乐的小河》",
+    theme: "小河在大山引导下与勇敢的泉水、瀑布结伴前行，启示我们面对挫折不抱怨，勇敢乐观携手前行。",
+    writeChars: ["游(yóu)", "戏(xì)", "爱(ài)", "呢(ne)", "跳(tiào)", "咱(zán)"],
+    passages: [
+      [
+        "野花为我唱歌，青草跟我",
+        { w: "游戏", p: ["yóu", "xì"] },
+        "，大家都跟我好。别哭了，可",
+        { w: "爱", p: ["ài"] },
+        "的小河。这可以让你更有劲儿",
+        { w: "呢", p: ["ne"] },
+        "！"
+      ],
+      [
+        "你看这山里的泉水，从山上",
+        { w: "跳", p: ["tiào"] },
+        "下来，勇敢地向前奔跑，从来不叫苦。小河对泉水说：“",
+        { w: "咱", p: ["zán"] },
+        "们做好朋友吧！手拉着手，一块儿向前流。”"
+      ]
+    ],
+    q2: [
+      { pre: "", opts: ["游", "油"], ans: 0, post: "泳" },
+      { pre: "唱", opts: ["戏", "找"], ans: 0, post: "" },
+      { pre: "可", opts: ["爱", "受"], ans: 0, post: "" },
+      { pre: "", opts: ["跳", "桃"], ans: 0, post: "高" },
+      { pre: "", opts: ["咱", "自"], ans: 0, post: "们" },
+      { pre: "好", opts: ["呢", "泥"], ans: 0, post: "" },
+      { pre: "抱", opts: ["怨", "园"], ans: 0, post: "" },
+      { pre: "坚", opts: ["硬", "便"], ans: 0, post: "" }
+    ],
+    q3: [
+      { pair: ["爱", "受"], items: [
+        { pre: "可(", ans: "爱", post: ")" },
+        { pre: "感(", ans: "受", post: ")" },
+        { pre: "(", ans: "爱", post: "心" },
+        { pre: "接(", ans: "受", post: ")" }
+      ]},
+      { pair: ["跳", "桃"], items: [
+        { pre: "(", ans: "跳", post: ")远" },
+        { pre: "(", ans: "桃", post: "花" },
+        { pre: "奔(", ans: "跳", post: ")" },
+        { pre: "仙(", ans: "桃", post: ")" }
+      ]}
+    ]
+  }
+];
+
+let currentIdx = 0;
+let currentMode = "all";
+let currentScope = "lesson";
+let paperVersion = 1;
+let activeBracket = null;
+let isGraded = false;
+
+const paperEl = document.getElementById("paper");
+const unitSelect = document.getElementById("unitSelect");
+const lessonSelect = document.getElementById("lessonSelect");
+const scopeSelect = document.getElementById("scopeSelect");
+const paperSubtitleText = document.getElementById("paperSubtitleText");
+const variantBadge = document.getElementById("variantBadge");
+const paperTitle = document.getElementById("paperTitle");
+const secQ1 = document.getElementById("secQ1");
+const secQ2 = document.getElementById("secQ2");
+const secQ3 = document.getElementById("secQ3");
+const q1Title = document.getElementById("q1Title");
+const q2Title = document.getElementById("q2Title");
+const q3Title = document.getElementById("q3Title");
+const q1Container = document.getElementById("q1Container");
+const q2Container = document.getElementById("q2Container");
+const q3Container = document.getElementById("q3Container");
+const scoreBanner = document.getElementById("scoreBanner");
+const scoreNum = document.getElementById("scoreNum");
+const scoreDetail = document.getElementById("scoreDetail");
+const headerScore = document.getElementById("headerScore");
+const retryWrongBtn = document.getElementById("retryWrongBtn");
+
+function initSelectors() {
+  const units = ["全部单元", ...new Set(LESSONS.map(l => l.unit))];
+  units.forEach(u => {
+    const opt = document.createElement("option");
+    opt.value = u;
+    opt.textContent = u;
+    unitSelect.appendChild(opt);
+  });
+  populateLessonOptions("全部单元");
+}
+
+function populateLessonOptions(unitFilter) {
+  lessonSelect.innerHTML = "";
+  LESSONS.forEach((lesson, idx) => {
+    if (unitFilter === "全部单元" || lesson.unit === unitFilter) {
+      const opt = document.createElement("option");
+      opt.value = idx;
+      opt.textContent = `${lesson.unit.split("·")[0]} · ${lesson.title}`;
+      lessonSelect.appendChild(opt);
+    }
+  });
+  if (lessonSelect.options.length > 0) {
+    currentIdx = parseInt(lessonSelect.options[0].value, 10);
+    paperVersion = 1;
+    renderLesson();
+  }
+}
+
+function getTargetLessons() {
+  const cur = LESSONS[currentIdx];
+  if (currentScope === "lesson") return [cur];
+  if (currentScope === "unit") return LESSONS.filter(l => l.unit === cur.unit);
+  return LESSONS;
+}
+
+function buildDynamicWritePassage(lesson) {
+  const writeMap = {};
+  lesson.writeChars.forEach(item => {
+    const m = item.match(/^(.+)\((.+)\)$/);
+    if (m) writeMap[m[1]] = m[2];
+  });
+
+  const wordCandidates = [];
+  lesson.q2.forEach(q => {
+    const rightChar = q.opts[q.ans];
+    if (writeMap[rightChar]) {
+      const fullWord = `${q.pre}${rightChar}${q.post}`;
+      if (fullWord.length >= 2) {
+        wordCandidates.push({ pre: q.pre, target: rightChar, py: writeMap[rightChar], post: q.post });
+      }
+    }
+  });
+  lesson.q3.forEach(g => {
+    g.items.forEach(it => {
+      if (writeMap[it.ans]) {
+        wordCandidates.push({
+          pre: it.pre.replace("(", ""),
+          target: it.ans,
+          py: writeMap[it.ans],
+          post: it.post.replace(")", "")
+        });
+      }
+    });
+  });
+
+  const seen = new Set();
+  const uniqueWords = shuffleArray(wordCandidates).filter(w => {
+    const key = w.pre + w.target + w.post;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  }).slice(0, 8);
+
+  const segs = [];
+  uniqueWords.forEach((w, idx) => {
+    if (w.pre) segs.push(w.pre);
+    segs.push({ w: w.target, p: [w.py] });
+    if (w.post) segs.push(w.post);
+    segs.push(idx === uniqueWords.length - 1 ? "。" : "、");
+  });
+  return segs;
+}
+
+function buildExtraQ2FromLesson(lesson) {
+  const extras = [];
+  lesson.q3.forEach(group => {
+    const [a, b] = group.pair;
+    group.items.forEach(it => {
+      const isA = it.ans === a;
+      extras.push({
+        pre: it.pre.replace("(", ""),
+        opts: isA ? [a, b] : [b, a],
+        ans: 0,
+        post: it.post.replace(")", "")
+      });
+    });
+  });
+  return extras;
+}
+
+function buildExtraQ3FromLesson(lesson) {
+  const usedPairs = new Set(lesson.q3.map(g => g.pair.slice().sort().join("")));
+  const extraGroups = [];
+  lesson.q2.forEach(item => {
+    if (item.opts.length === 2) {
+      const key = item.opts.slice().sort().join("");
+      if (!usedPairs.has(key)) {
+        const rightChar = item.opts[item.ans];
+        const wrongChar = item.opts[1 - item.ans];
+        const wrongWords = [];
+        for (const l of LESSONS) {
+          for (const q of l.q2) {
+            if (q.opts[q.ans] === wrongChar) {
+              wrongWords.push({ pre: q.pre + "(", ans: wrongChar, post: ")" + q.post });
+            }
+          }
+          for (const g of l.q3) {
+            for (const it of g.items) {
+              if (it.ans === wrongChar) wrongWords.push(it);
+            }
+          }
+        }
+        if (wrongWords.length > 0) {
+          usedPairs.add(key);
+          const pickedWrong = shuffleArray(wrongWords).slice(0, 2);
+          const items = [{ pre: item.pre + "(", ans: rightChar, post: ")" + item.post }, ...pickedWrong];
+          for (const l of LESSONS) {
+            if (items.length >= 4) break;
+            for (const q of l.q2) {
+              if (q.opts[q.ans] === rightChar && (q.pre !== item.pre || q.post !== item.post)) {
+                items.push({ pre: q.pre + "(", ans: rightChar, post: ")" + q.post });
+                break;
+              }
+            }
+          }
+          extraGroups.push({ pair: [rightChar, wrongChar], items: items.slice(0, 4) });
+        }
+      }
+    }
+  });
+  return extraGroups;
+}
+
+function renderLesson() {
+  const curLesson = LESSONS[currentIdx];
+  const targetLessons = getTargetLessons();
+  lessonSelect.value = currentIdx;
+
+  paperEl.classList.toggle("single-mode", currentMode !== "all");
+  variantBadge.textContent = `第 ${paperVersion} 套题`;
+
+  const modeNames = {
+    all: "综合同步练习卷（整页A4版）",
+    q1: "专项训练① · 课文语段看拼音写字词",
+    q2: "专项训练② · 括号选字搭配打钩",
+    q3: "专项训练③ · 形近字辨析选字填空"
+  };
+  paperSubtitleText.textContent = `人教版小学语文二年级上册（2025秋版）· ${modeNames[currentMode]}`;
+
+  if (currentScope === "lesson") {
+    paperTitle.textContent = `${curLesson.unit} ${curLesson.title}`;
+  } else if (currentScope === "unit") {
+    paperTitle.textContent = `${curLesson.unit} · 单元复习专练`;
+  } else {
+    paperTitle.textContent = `二年级上册全册 · 期末分类总复习`;
+  }
+
+  secQ1.classList.toggle("hidden", currentMode !== "all" && currentMode !== "q1");
+  secQ2.classList.toggle("hidden", currentMode !== "all" && currentMode !== "q2");
+  secQ3.classList.toggle("hidden", currentMode !== "all" && currentMode !== "q3");
+
+  if (currentMode === "all") {
+    q1Title.textContent = "一、读课文片段，看拼音在田字格里写字词。";
+    q2Title.textContent = "二、火眼金睛，用“✓”选出括号里搭配正确的字。";
+    q3Title.textContent = "三、辨字组词，选字填空。";
+  } else if (currentMode === "q1") {
+    q1Title.textContent = "专项训练：读课文与重点词句，看拼音在田字格里写字词。";
+  } else if (currentMode === "q2") {
+    q2Title.textContent = "专项训练：火眼金睛，用“✓”选出括号里搭配正确的字。";
+  } else if (currentMode === "q3") {
+    q3Title.textContent = "专项训练：辨字组词，选字填空。";
+  }
+
+  isGraded = false;
+  scoreBanner.classList.remove("show");
+  headerScore.textContent = "";
+  retryWrongBtn.style.display = "none";
+  activeBracket = null;
+
+  q1Container.innerHTML = "";
+  const allInputs = [];
+  let selectedPassages = [];
+
+  if (currentScope === "lesson") {
+    const dynPassage = buildDynamicWritePassage(curLesson);
+    if (currentMode === "q1") {
+      const baseList = curLesson.passages.map((p, i) => ({ label: `课文语段 ${i + 1}`, segs: p }));
+      const rotated = paperVersion % 2 === 1 ? baseList : [...baseList].reverse();
+      selectedPassages = [
+        ...rotated,
+        { label: "本课重点字词", segs: dynPassage }
+      ];
+    } else {
+      const allThree = [...curLesson.passages, dynPassage];
+      const idx = (paperVersion - 1) % allThree.length;
+      selectedPassages = [{ label: idx === 2 ? "重点字词" : null, segs: allThree[idx] }];
+    }
+  } else {
+    const pool = [];
+    targetLessons.forEach(l => {
+      l.passages.forEach(p => {
+        pool.push({ label: l.title.replace(/第\d+课|识字\d+/, "").replace(/[《》]/g, ""), segs: p });
+      });
+      pool.push({
+        label: `${l.title.replace(/第\d+课|识字\d+/, "").replace(/[《》]/g, "")}·字词`,
+        segs: buildDynamicWritePassage(l)
+      });
+    });
+    const count = currentMode === "q1" ? Math.min(6, pool.length) : 1;
+    selectedPassages = shuffleArray(pool).slice(0, count);
+  }
+
+  selectedPassages.forEach(pObj => {
+    const box = document.createElement("div");
+    box.className = "passage-box";
+    if (pObj.label) {
+      const lbl = document.createElement("span");
+      lbl.className = "passage-label";
+      lbl.textContent = pObj.label;
+      box.appendChild(lbl);
+    }
+
+    pObj.segs.forEach(seg => {
+      if (typeof seg === "string") {
+        box.appendChild(document.createTextNode(seg));
+      } else {
+        const chars = seg.w.split("");
+        chars.forEach((ch, cIdx) => {
+          const slot = document.createElement("span");
+          slot.className = "char-slot";
+
+          const pyGrid = document.createElement("span");
+          pyGrid.className = "pinyin-grid";
+          const pyText = document.createElement("span");
+          pyText.className = "pinyin-text";
+          pyText.textContent = seg.p[cIdx] || "";
+          pyGrid.appendChild(pyText);
+
+          const tzg = document.createElement("span");
+          tzg.className = "tianzige";
+
+          const inp = document.createElement("input");
+          inp.type = "text";
+          inp.maxLength = 2;
+          inp.dataset.ans = ch;
+
+          inp.addEventListener("input", () => {
+            const val = inp.value.trim();
+            if (val.length >= 1 && /^[一-龥]$/.test(val[val.length - 1])) {
+              inp.value = val[val.length - 1];
+              const pos = allInputs.indexOf(inp);
+              if (pos >= 0 && pos < allInputs.length - 1) allInputs[pos + 1].focus();
+            }
+          });
+
+          inp.addEventListener("keydown", (e) => {
+            if (e.key === "Backspace" && inp.value === "") {
+              const pos = allInputs.indexOf(inp);
+              if (pos > 0) allInputs[pos - 1].focus();
+            }
+          });
+
+          tzg.appendChild(inp);
+          slot.appendChild(pyGrid);
+          slot.appendChild(tzg);
+          box.appendChild(slot);
+          allInputs.push(inp);
+        });
+      }
+    });
+    q1Container.appendChild(box);
+  });
+
+  q2Container.innerHTML = "";
+  let q2Pool = [];
+  targetLessons.forEach(l => {
+    q2Pool.push(...l.q2, ...buildExtraQ2FromLesson(l));
+  });
+
+  if (currentMode === "q2" && currentScope === "lesson" && q2Pool.length < 28) {
+    const sameUnitLessons = LESSONS.filter(l => l.unit === curLesson.unit && l.id !== curLesson.id);
+    const otherLessons = LESSONS.filter(l => l.unit !== curLesson.unit);
+    shuffleArray(sameUnitLessons).forEach(l => q2Pool.push(...l.q2, ...buildExtraQ2FromLesson(l)));
+    if (q2Pool.length < 28) {
+      shuffleArray(otherLessons).slice(0, 3).forEach(l => q2Pool.push(...l.q2));
+    }
+  }
+
+  const seenQ2 = new Set();
+  q2Pool = q2Pool.filter(item => {
+    const key = `${item.pre}[${item.opts.join("/")}]${item.post}`;
+    if (seenQ2.has(key)) return false;
+    seenQ2.add(key);
+    return true;
+  });
+
+  const q2Limit = currentMode === "q2" ? 28 : 8;
+  const q2Items = shuffleArray(q2Pool).slice(0, q2Limit);
+
+  q2Items.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "q2-item";
+    const order = Math.random() < 0.5 ? [0, 1] : [1, 0];
+    const mappedOpts = order.map(i => item.opts[i]);
+    const mappedAns = order.indexOf(item.ans);
+    div.dataset.ansIdx = mappedAns;
+
+    if (item.pre) div.appendChild(document.createTextNode(item.pre));
+    div.appendChild(document.createTextNode("（"));
+
+    mappedOpts.forEach((optChar, oIdx) => {
+      const span = document.createElement("span");
+      span.className = "opt-char";
+      span.textContent = optChar;
+      span.dataset.oIdx = oIdx;
+      span.addEventListener("click", () => {
+        if (isGraded) return;
+        div.querySelectorAll(".opt-char").forEach(el => el.classList.remove("selected"));
+        span.classList.add("selected");
+      });
+      div.appendChild(span);
+      if (oIdx < mappedOpts.length - 1) {
+        const sep = document.createElement("span");
+        sep.style.color = "#94a3b8";
+        sep.style.margin = "0 1px";
+        sep.textContent = " ";
+        div.appendChild(sep);
+      }
+    });
+
+    div.appendChild(document.createTextNode("）"));
+    if (item.post) div.appendChild(document.createTextNode(item.post));
+    q2Container.appendChild(div);
+  });
+
+  q3Container.innerHTML = "";
+  let q3Pool = [];
+  targetLessons.forEach(l => q3Pool.push(...l.q3, ...buildExtraQ3FromLesson(l)));
+
+  if (currentMode === "q3" && currentScope === "lesson" && q3Pool.length < 8) {
+    const sameUnitLessons = LESSONS.filter(l => l.unit === curLesson.unit && l.id !== curLesson.id);
+    const otherLessons = LESSONS.filter(l => l.unit !== curLesson.unit);
+    shuffleArray(sameUnitLessons).forEach(l => q3Pool.push(...l.q3, ...buildExtraQ3FromLesson(l)));
+    if (q3Pool.length < 8) {
+      shuffleArray(otherLessons).slice(0, 4).forEach(l => q3Pool.push(...l.q3));
+    }
+  }
+
+  const seenPairs = new Set();
+  q3Pool = q3Pool.filter(g => {
+    const key = g.pair.slice().sort().join("");
+    if (seenPairs.has(key)) return false;
+    seenPairs.add(key);
+    return true;
+  });
+
+  const q3Limit = currentMode === "q3" ? 8 : 2;
+  const q3Groups = shuffleArray(q3Pool).slice(0, q3Limit);
+
+  q3Groups.forEach((group, gIdx) => {
+    const row = document.createElement("div");
+    row.className = "q3-row";
+
+    const pairBox = document.createElement("div");
+    pairBox.className = "q3-pair";
+    pairBox.appendChild(document.createTextNode(`${gIdx + 1}.【`));
+
+    const displayPair = Math.random() < 0.5 ? group.pair : [group.pair[1], group.pair[0]];
+
+    displayPair.forEach((ch, pIdx) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "pair-btn";
+      btn.textContent = ch;
+      btn.addEventListener("click", () => {
+        if (isGraded) return;
+        let target = activeBracket;
+        const rowBrackets = Array.from(row.querySelectorAll(".blank-bracket"));
+        if (!target || !rowBrackets.includes(target)) {
+          target = rowBrackets.find(b => !b.dataset.val) || rowBrackets[0];
+        }
+        if (target) {
+          setBracketValue(target, ch);
+          const nextIdx = rowBrackets.indexOf(target) + 1;
+          if (nextIdx < rowBrackets.length) setActiveBracket(rowBrackets[nextIdx]);
+        }
+      });
+      pairBox.appendChild(btn);
+      if (pIdx === 0) pairBox.appendChild(document.createTextNode(" "));
+    });
+    pairBox.appendChild(document.createTextNode("】"));
+
+    const wordsGrid = document.createElement("div");
+    wordsGrid.className = "q3-words";
+
+    shuffleArray(group.items).forEach(wItem => {
+      const wSpan = document.createElement("span");
+      wSpan.className = "q3-word";
+      if (wItem.pre) wSpan.appendChild(document.createTextNode(wItem.pre));
+
+      const br = document.createElement("span");
+      br.className = "blank-bracket";
+      br.dataset.ans = wItem.ans;
+      br.dataset.pair = JSON.stringify(displayPair);
+      br.dataset.val = "";
+      br.innerHTML = "&nbsp;&nbsp;";
+
+      br.addEventListener("click", () => {
+        if (isGraded) return;
+        setActiveBracket(br);
+        const pair = JSON.parse(br.dataset.pair);
+        const cur = br.dataset.val;
+        if (!cur) setBracketValue(br, pair[0]);
+        else if (cur === pair[0]) setBracketValue(br, pair[1]);
+        else setBracketValue(br, "");
+      });
+
+      wSpan.appendChild(br);
+      if (wItem.post) wSpan.appendChild(document.createTextNode(wItem.post));
+      wordsGrid.appendChild(wSpan);
+    });
+
+    row.appendChild(pairBox);
+    row.appendChild(wordsGrid);
+    q3Container.appendChild(row);
+  });
+
+  if (currentScope === "lesson") {
+    document.getElementById("kktTheme").innerHTML = `<strong>课文主旨：</strong>${curLesson.theme}`;
+    const tagsBox = document.getElementById("kktTags");
+    tagsBox.innerHTML = "";
+    curLesson.writeChars.forEach(wc => {
+      const tag = document.createElement("span");
+      tag.className = "kkt-tag";
+      tag.textContent = wc;
+      tagsBox.appendChild(tag);
+    });
+  } else {
+    const allChars = targetLessons.flatMap(l => l.writeChars);
+    document.getElementById("kktTheme").innerHTML = `<strong>当前汇总范围：</strong>共涵盖 ${targetLessons.length} 篇课文，合计 ${allChars.length} 个《写字表》重点生字。`;
+    const tagsBox = document.getElementById("kktTags");
+    tagsBox.innerHTML = "";
+    allChars.slice(0, 24).forEach(wc => {
+      const tag = document.createElement("span");
+      tag.className = "kkt-tag";
+      tag.textContent = wc;
+      tagsBox.appendChild(tag);
+    });
+  }
+}
+
+function setActiveBracket(el) {
+  document.querySelectorAll(".blank-bracket").forEach(b => b.classList.remove("active"));
+  activeBracket = el;
+  if (el) el.classList.add("active");
+}
+
+function setBracketValue(el, val) {
+  el.dataset.val = val;
+  el.innerHTML = val ? val : "&nbsp;&nbsp;";
+}
+
+function gradePaper() {
+  if (isGraded) return;
+  isGraded = true;
+  setActiveBracket(null);
+
+  let total = 0;
+  let correctCount = 0;
+
+  if (!secQ1.classList.contains("hidden")) {
+    q1Container.querySelectorAll(".tianzige").forEach(tzg => {
+      total++;
+      const inp = tzg.querySelector("input");
+      const ans = inp.dataset.ans;
+      const val = inp.value.trim();
+      inp.readOnly = true;
+      if (val === ans) {
+        correctCount++;
+        tzg.classList.add("correct");
+      } else {
+        tzg.classList.add("wrong");
+        const tip = document.createElement("span");
+        tip.className = "ans-tip";
+        tip.textContent = ans;
+        tzg.appendChild(tip);
+      }
+    });
+  }
+
+  if (!secQ2.classList.contains("hidden")) {
+    q2Container.querySelectorAll(".q2-item").forEach(item => {
+      total++;
+      const ansIdx = item.dataset.ansIdx;
+      const selected = item.querySelector(".opt-char.selected");
+      if (selected && selected.dataset.oIdx === ansIdx) {
+        correctCount++;
+        item.classList.add("correct");
+      } else {
+        item.classList.add("wrong");
+        const rightOpt = item.querySelector(`.opt-char[data-o-idx="${ansIdx}"]`);
+        if (rightOpt) rightOpt.classList.add("right-hint");
+      }
+    });
+  }
+
+  if (!secQ3.classList.contains("hidden")) {
+    q3Container.querySelectorAll(".blank-bracket").forEach(br => {
+      total++;
+      const ans = br.dataset.ans;
+      const val = br.dataset.val;
+      if (val === ans) {
+        correctCount++;
+        br.classList.add("correct");
+      } else {
+        br.classList.add("wrong");
+        br.innerHTML = `${val || "空"}<span style="color:#16a34a;font-size:13px;margin-left:2px;">(${ans})</span>`;
+      }
+    });
+  }
+
+  const score = total > 0 ? Math.round((correctCount / total) * 100) : 100;
+  scoreNum.textContent = `${score}分`;
+  headerScore.textContent = ` ${score}分`;
+  scoreDetail.textContent = `共 ${total} 小题，答对 ${correctCount} 题，答错 ${total - correctCount} 题。`;
+  scoreBanner.classList.add("show");
+
+  if (correctCount < total) retryWrongBtn.style.display = "inline-block";
+}
+
+function retryWrong() {
+  isGraded = false;
+  scoreBanner.classList.remove("show");
+  headerScore.textContent = "";
+  retryWrongBtn.style.display = "none";
+
+  q1Container.querySelectorAll(".tianzige.wrong").forEach(tzg => {
+    tzg.classList.remove("wrong");
+    const tip = tzg.querySelector(".ans-tip");
+    if (tip) tip.remove();
+    const inp = tzg.querySelector("input");
+    inp.value = "";
+    inp.readOnly = false;
+  });
+
+  q2Container.querySelectorAll(".q2-item.wrong").forEach(item => {
+    item.classList.remove("wrong");
+    item.querySelectorAll(".opt-char").forEach(o => o.classList.remove("selected", "right-hint"));
+  });
+
+  q3Container.querySelectorAll(".blank-bracket.wrong").forEach(br => {
+    br.classList.remove("wrong");
+    setBracketValue(br, "");
+  });
+}
+
+document.querySelectorAll(".mode-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    currentMode = btn.dataset.mode;
+    renderLesson();
+  });
+});
+
+scopeSelect.addEventListener("change", () => {
+  currentScope = scopeSelect.value;
+  renderLesson();
+});
+
+unitSelect.addEventListener("change", () => populateLessonOptions(unitSelect.value));
+lessonSelect.addEventListener("change", () => {
+  currentIdx = parseInt(lessonSelect.value, 10);
+  paperVersion = 1;
+  renderLesson();
+});
+
+document.getElementById("prevBtn").addEventListener("click", () => {
+  currentIdx = (currentIdx - 1 + LESSONS.length) % LESSONS.length;
+  unitSelect.value = "全部单元";
+  populateLessonOptions("全部单元");
+  lessonSelect.value = currentIdx;
+  paperVersion = 1;
+  renderLesson();
+});
+
+document.getElementById("nextBtn").addEventListener("click", () => {
+  currentIdx = (currentIdx + 1) % LESSONS.length;
+  unitSelect.value = "全部单元";
+  populateLessonOptions("全部单元");
+  lessonSelect.value = currentIdx;
+  paperVersion = 1;
+  renderLesson();
+});
+
+document.getElementById("refreshBtn").addEventListener("click", () => {
+  paperVersion++;
+  renderLesson();
+});
+
+document.getElementById("submitBtn").addEventListener("click", gradePaper);
+retryWrongBtn.addEventListener("click", retryWrong);
+document.getElementById("resetBtn").addEventListener("click", () => renderLesson());
+document.getElementById("printSyncBtn").addEventListener("click", () => window.print());
+
+initSelectors();
+
+/* ============================================================================
+   2. 模块二：单元测试卷（独立顶级模块，十大题型全还原 + 换一套题 + 自动批改）
+============================================================================ */
+const UNIT_TESTS = [
+  {
+    name: "第一单元",
+    subtitle: "（第1-3课·语文园地一）",
+    p1: [
+      { word: "成长", py: ["chéng", "zhǎng"] }, { word: "辨别", py: ["biàn", "bié"] },
+      { word: "连声", py: ["lián", "shēng"] }, { word: "比如", py: ["bǐ", "rú"] },
+      { word: "孩子", py: ["hái", "zi"] }, { word: "更加", py: ["gèng", "jiā"] },
+      { word: "已然", py: ["yǐ", "rán"] }, { word: "短跑", py: ["duǎn", "pǎo"] },
+      { word: "方法", py: ["fāng", "fǎ"] }, { word: "宽敞", py: ["kuān", "chǎng"] },
+      { word: "起立", py: ["qǐ", "lì"] }, { word: "识字", py: ["shí", "zì"] },
+      { word: "海洋", py: ["hǎi", "yáng"] }, { word: "哪里", py: ["nǎ", "lǐ"] }
+    ],
+    p2: [
+      { stem: "“没有”中的“没”读：", opts: ["A. mò", "B. méi"], ans: 1 },
+      { stem: "“教室”中的“教”读：", opts: ["A. jiāo", "B. jiào"], ans: 1 },
+      { stem: "“得数”中的“得”读：", opts: ["A. de", "B. dé", "C. děi"], ans: 1 },
+      { stem: "“种地”中的“种”读：", opts: ["A. zhòng", "B. zhǒng"], ans: 0 },
+      { stem: "选出读音是 zhuǎn 的字：", opts: ["A. 发", "B. 转", "C. 条"], ans: 1 },
+      { stem: "选出读音是 xǔ 的字：", opts: ["A. 更", "B. 许", "C. 短"], ans: 1 },
+      { stem: "“淹没”中的“没”读：", opts: ["A. mò", "B. méi"], ans: 0 },
+      { stem: "“四海为家”中的“为”读：", opts: ["A. wéi", "B. wèi"], ans: 0 }
+    ],
+    p3: [
+      { chars: [{ c: "那", p: "nà", b: true }, { c: "个", p: "gè", b: false }] },
+      { chars: [{ c: "工", p: "gōng", b: false }, { c: "作", p: "zuò", b: true }] },
+      { chars: [{ c: "轻", p: "qīng", b: true }, { c: "松", p: "sōng", b: false }] },
+      { chars: [{ c: "发", p: "fā", b: true }, { c: "现", p: "xiàn", b: false }] },
+      { chars: [{ c: "肚", p: "dù", b: false }, { c: "皮", p: "pí", b: true }] },
+      { chars: [{ c: "办", p: "bàn", b: true }, { c: "法", p: "fǎ", b: false }] }
+    ],
+    p4: [
+      { stem: "与“快活”意思相近的词语是：", opts: ["A. 快乐", "B. 温和", "C. 分别"], ans: 0 },
+      { stem: "与“天天”意思相近的词语是：", opts: ["A. 粗心", "B. 每天", "C. 快活"], ans: 1 },
+      { stem: "与“连忙”意思相近的词语是：", opts: ["A. 赶忙", "B. 晃动", "C. 平时"], ans: 0 },
+      { stem: "与“无数”意思相近的词语是：", opts: ["A. 马虎", "B. 灾害", "C. 大量"], ans: 2 }
+    ],
+    p5: [
+      { stem: "“宽”的反义词是：", opts: ["A. 窄", "B. 温和", "C. 乌黑"], ans: 0 },
+      { stem: "“离开”的反义词是：", opts: ["A. 停止", "B. 笑", "C. 回来"], ans: 2 },
+      { stem: "“低头”的反义词是：", opts: ["A. 窄", "B. 告别", "C. 抬头"], ans: 2 },
+      { stem: "“温和”的反义词是：", opts: ["A. 粗心", "B. 难过", "C. 暴躁"], ans: 2 }
+    ],
+    p6: [
+      { stem: "（　　）尾巴", opts: ["A. 甩着", "B. 大大的", "C. 群"], ans: 0 },
+      { stem: "一（　　）眼睛", opts: ["A. 鼓着", "B. 对", "C. 群"], ans: 1 },
+      { stem: "（　　）眼睛", opts: ["A. 鼓着", "B. 露着", "C. 条"], ans: 0 },
+      { stem: "两（　　）前腿", opts: ["A. 甩着", "B. 碧绿的", "C. 条"], ans: 2 }
+    ],
+    p7: [
+      { stem: "“铠甲”的意思是：", opts: ["A. 古代军人打仗时穿的护身服装，多用金属片缀成。", "B. 急忙，赶快。", "C. 高兴，快乐。"], ans: 0 },
+      { stem: "“淹没”的意思是：", opts: ["A. (大水)盖过，漫过。", "B. 古代军人打仗时穿的护身服装，多用金属片缀成。", "C. 自然或人为的因素造成的祸害。"], ans: 0 },
+      { stem: "“暗香”的意思是：", opts: ["A. 直接或间接对人类有害的虫类。", "B. 来回摇动；摇摆。", "C. 清幽的香气。"], ans: 2 }
+    ],
+    p8: [
+      { pre: "孩子", py: "rú guǒ", ans: "如果", post: "已经长大，就得告别妈妈，四海为家。" },
+      { pre: "人们想出种种", py: "bàn fǎ", ans: "办法", post: "管住我，让我光做好事，不做坏事。" },
+      { pre: "青蛙妈妈低头一看，笑着说：“好孩子，你们", py: "yǐ jīng", ans: "已经", post: "长成青蛙了，快跳上来吧！”" },
+      { pre: "小蝌蚪游哇游，过了几天，长出了", py: "liǎng tiáo", ans: "两条", post: "后腿。" },
+      { pre: "我做过", py: "xǔ duō", ans: "许多", post: "好事，灌溉田地，发动机器，帮助人们工作。" }
+    ],
+    p9: [
+      { stem: "秋天到了，树叶一片一片地（　　）下来。", opts: ["A. 游", "B. 爬", "C. 落"], ans: 2 },
+      { stem: "妈妈的微笑像春天的阳光，（　　）极了。", opts: ["A. 寒冷", "B. 温暖", "C. 黑暗"], ans: 1 },
+      { stem: "弟弟的脸蛋红扑扑的，像一个熟透的（　　）。", opts: ["A. 苹果", "B. 石头", "C. 雨伞"], ans: 0 }
+    ],
+    p10: [
+      { pre: "他们看见鲤鱼妈妈在教小鲤鱼捕食，就迎上去，问：“鲤鱼阿姨，我们的妈妈在", py: "nǎ lǐ", ans: "哪里", post: "？”" },
+      { pre: "鲤鱼妈妈说：“你们的妈妈四条腿，宽嘴巴。你们到", py: "nà biān", ans: "那边", post: "去找吧！”" },
+      { pre: "平常我在池子里睡觉，在小溪里散步，在江河里奔跑，在", py: "hǎi yáng", ans: "海洋", post: "里跳舞，唱歌，开大会。" },
+      { pre: "墙角数枝梅，凌寒", py: "dú zì", ans: "独自", post: "开。遥知不是雪，为有暗香来。" }
+    ]
+  },
+  {
+    name: "第二单元",
+    subtitle: "（识字1-4·语文园地二）",
+    p1: [
+      { word: "花园", py: ["huā", "yuán"] }, { word: "石桥", py: ["shí", "qiáo"] },
+      { word: "队旗", py: ["duì", "qí"] }, { word: "铜号", py: ["tóng", "hào"] },
+      { word: "杨树", py: ["yáng", "shù"] }, { word: "松柏", py: ["sōng", "bǎi"] },
+      { word: "化石", py: ["huà", "shí"] }, { word: "金桂", py: ["jīn", "guì"] },
+      { word: "世界", py: ["shì", "jiè"] }, { word: "丛林", py: ["cóng", "lín"] },
+      { word: "朋友", py: ["péng", "you"] }, { word: "保护", py: ["bǎo", "hù"] },
+      { word: "农事", py: ["nóng", "shì"] }, { word: "辛苦", py: ["xīn", "kǔ"] }
+    ],
+    p2: [
+      { stem: "“稻上场”中的“场”读：", opts: ["A. chǎng", "B. cháng"], ans: 1 },
+      { stem: "“柏树”中的“柏”读：", opts: ["A. bǎi", "B. bó"], ans: 0 },
+      { stem: "“桦树”中的“桦”读：", opts: ["A. huá", "B. huà"], ans: 1 },
+      { stem: "“麦苗”中的“麦”读：", opts: ["A. mài", "B. miàn"], ans: 0 },
+      { stem: "选出读音是 jǐn 的字：", opts: ["A. 锦", "B. 棉", "C. 银"], ans: 0 },
+      { stem: "选出读音是 xiáng 的字：", opts: ["A. 翔", "B. 雀", "C. 鹰"], ans: 0 }
+    ],
+    p3: [
+      { chars: [{ c: "红", p: "hóng", b: false }, { c: "领", p: "lǐng", b: true }, { c: "巾", p: "jīn", b: false }] },
+      { chars: [{ c: "木", p: "mù", b: false }, { c: "棉", p: "mián", b: true }] },
+      { chars: [{ c: "孔", p: "kǒng", b: true }, { c: "雀", p: "què", b: false }] },
+      { chars: [{ c: "谷", p: "gǔ", b: true }, { c: "粒", p: "lì", b: false }] },
+      { chars: [{ c: "雪", p: "xuě", b: false }, { c: "初", p: "chū", b: true }, { c: "晴", p: "qíng", b: false }] },
+      { chars: [{ c: "四", p: "sì", b: false }, { c: "季", p: "jì", b: true }] }
+    ],
+    p4: [
+      { stem: "与“新奇”意思相近的词语是：", opts: ["A. 奇特", "B. 陈旧", "C. 平常"], ans: 0 },
+      { stem: "与“伙伴”意思相近的词语是：", opts: ["A. 敌人", "B. 朋友", "C. 家人"], ans: 1 },
+      { stem: "与“喜洋洋”意思相近的词语是：", opts: ["A. 气冲冲", "B. 乐呵呵", "C. 泪汪汪"], ans: 1 }
+    ],
+    p5: [
+      { stem: "“喜暖”中“暖”的反义词是：", opts: ["A. 热", "B. 寒", "C. 温"], ans: 1 },
+      { stem: "“深处”中“深”的反义词是：", opts: ["A. 浅", "B. 远", "C. 高"], ans: 0 },
+      { stem: "“辛苦”的反义词是：", opts: ["A. 勤劳", "B. 轻松", "C. 忙碌"], ans: 1 }
+    ],
+    p6: [
+      { stem: "一（　　）鱼塘", opts: ["A. 方", "B. 块", "C. 座"], ans: 0 },
+      { stem: "一（　　）翠竹", opts: ["A. 丛", "B. 道", "C. 把"], ans: 0 },
+      { stem: "一（　　）军舰", opts: ["A. 条", "B. 艘", "C. 只"], ans: 1 },
+      { stem: "一（　　）稻田", opts: ["A. 块", "B. 处", "C. 面"], ans: 0 }
+    ],
+    p7: [
+      { stem: "“喜洋洋”的意思是：", opts: ["A. 形容十分欢喜的样子。", "B. 形容非常生气。", "C. 形容十分寒冷。"], ans: 0 },
+      { stem: "“活化石”指的是：", opts: ["A. 远古时代存留下来、十分珍稀的动植物。", "B. 路边的普通石头。", "C. 人工雕刻的石像。"], ans: 0 }
+    ],
+    p8: [
+      { pre: "十年树木，", py: "bǎi nián", ans: "百年", post: "树人。" },
+      { pre: "树高百尺，叶落", py: "guī gēn", ans: "归根", post: "。" },
+      { pre: "树无根不长，人无", py: "zhì", ans: "志", post: "不立。" },
+      { pre: "你拍十，我拍十，", py: "bǎo hù", ans: "保护", post: "动物是大事。" }
+    ],
+    p9: [
+      { stem: "秋季里，稻上场，谷像黄金（　　）香。", opts: ["A. 粒粒", "B. 朵朵", "C. 片片"], ans: 0 },
+      { stem: "（　　）开花满院香。", opts: ["A. 梧桐", "B. 金桂", "C. 枫树"], ans: 1 },
+      { stem: "己所不欲，（　　）。", opts: ["A. 勿施于人", "B. 言而有信", "C. 不成方圆"], ans: 0 }
+    ],
+    p10: [
+      { pre: "忠厚传家久，", py: "shī shū", ans: "诗书", post: "继世长。" },
+      { pre: "有山皆图画，无水不", py: "wén zhāng", ans: "文章", post: "。" },
+      { pre: "身体虽", py: "xīn kǔ", ans: "辛苦", post: "，心里喜洋洋。" }
+    ]
+  },
+  {
+    name: "第三单元",
+    subtitle: "（第4-6课·语文园地三）",
+    p1: [
+      { word: "美丽", py: ["měi", "lì"] }, { word: "水壶", py: ["shuǐ", "hú"] },
+      { word: "圆月", py: ["yuán", "yuè"] }, { word: "秋千", py: ["qiū", "qiān"] },
+      { word: "宝贝", py: ["bǎo", "bei"] }, { word: "告诉", py: ["gào", "sù"] },
+      { word: "名字", py: ["míng", "zi"] }, { word: "香气", py: ["xiāng", "qì"] },
+      { word: "晚上", py: ["wǎn", "shang"] }, { word: "奶奶", py: ["nǎi", "nai"] },
+      { word: "爷爷", py: ["yé", "ye"] }, { word: "勺子", py: ["sháo", "zi"] }
+    ],
+    p2: [
+      { stem: "“数星星”中的“数”读：", opts: ["A. shǔ", "B. shù"], ans: 0 },
+      { stem: "“小曲”中的“曲”读：", opts: ["A. qū", "B. qǔ"], ans: 1 },
+      { stem: "“山楂”中的“楂”读：", opts: ["A. zhā", "B. chá"], ans: 0 },
+      { stem: "“北斗七星”中的“斗”读：", opts: ["A. dǒu", "B. dòu"], ans: 0 },
+      { stem: "“钻研”中的“钻”读：", opts: ["A. zuān", "B. zuàn"], ans: 0 },
+      { stem: "“高兴”中的“兴”读：", opts: ["A. xīng", "B. xìng"], ans: 1 }
+    ],
+    p3: [
+      { chars: [{ c: "彩", p: "cǎi", b: true }, { c: "虹", p: "hóng", b: false }] },
+      { chars: [{ c: "提", p: "tí", b: true }, { c: "水", p: "shuǐ", b: false }] },
+      { chars: [{ c: "干", p: "gàn", b: false }, { c: "活", p: "huó", b: true }] },
+      { chars: [{ c: "变", p: "biàn", b: true }, { c: "化", p: "huà", b: false }] },
+      { chars: [{ c: "汉", p: "hàn", b: true }, { c: "朝", p: "cháo", b: false }] },
+      { chars: [{ c: "镜", p: "jìng", b: true }, { c: "子", p: "zi", b: false }] }
+    ],
+    p4: [
+      { stem: "与“高兴”意思相近的词语是：", opts: ["A. 开心", "B. 难过", "C. 生气"], ans: 0 },
+      { stem: "与“仔细”意思相近的词语是：", opts: ["A. 粗心", "B. 认真", "C. 马虎"], ans: 1 },
+      { stem: "与“美丽”意思相近的词语是：", opts: ["A. 漂亮", "B. 丑陋", "C. 普通"], ans: 0 }
+    ],
+    p5: [
+      { stem: "“高兴”的反义词是：", opts: ["A. 快乐", "B. 难过", "C. 激动"], ans: 1 },
+      { stem: "“晚上”的反义词是：", opts: ["A. 夜晚", "B. 白天", "C. 黄昏"], ans: 1 },
+      { stem: "“仔细”的反义词是：", opts: ["A. 认真", "B. 细心", "C. 粗心"], ans: 2 }
+    ],
+    p6: [
+      { stem: "（　　）的月亮", opts: ["A. 圆圆", "B. 弯弯", "C. 长长"], ans: 0 },
+      { stem: "（　　）的野花", opts: ["A. 五颜六色", "B. 绿油油", "C. 白茫茫"], ans: 0 },
+      { stem: "一（　　）勺子", opts: ["A. 把", "B. 条", "C. 颗"], ans: 0 },
+      { stem: "一（　　）珍珠", opts: ["A. 棵", "B. 颗", "C. 根"], ans: 1 }
+    ],
+    p7: [
+      { stem: "“香气扑鼻”的意思是：", opts: ["A. 气味非常难闻。", "B. 形容气味很香，迎面扑来。", "C. 一点味道也没有。"], ans: 1 },
+      { stem: "“碧玉盘”在课文中指的是：", opts: ["A. 吃饭的盘子。", "B. 晴朗的夜空。", "C. 绿色的石头。"], ans: 1 }
+    ],
+    p8: [
+      { pre: "雨停了，天上出现了一座", py: "měi lì", ans: "美丽", post: "的桥。" },
+      { pre: "外婆", py: "gào sù", ans: "告诉", post: "我，从小喂大的山雀不会逃。" },
+      { pre: "满天的星星像无数珍珠撒在", py: "bì yù", ans: "碧玉", post: "盘里。" },
+      { pre: "这个孩子名叫张衡，是", py: "hàn cháo", ans: "汉朝", post: "人。" }
+    ],
+    p9: [
+      { stem: "那七颗星，连起来像一把（　　），叫北斗七星。", opts: ["A. 勺子", "B. 剪刀", "C. 扇子"], ans: 0 },
+      { stem: "路人借问遥招手，（　　）。", opts: ["A. 怕得鱼惊不应人", "B. 侧坐莓苔草映身", "C. 蓬头稚子学垂纶"], ans: 0 }
+    ],
+    p10: [
+      { pre: "蓬头稚子学垂纶，侧坐莓苔", py: "cǎo yìng", ans: "草映", post: "身。" },
+      { pre: "路人借问遥招手，怕得鱼惊", py: "bù yìng", ans: "不应", post: "人。" }
+    ]
+  },
+  {
+    name: "第四单元",
+    subtitle: "（第7-10课·语文园地四）",
+    p1: [
+      { word: "黄河", py: ["huáng", "hé"] }, { word: "一层", py: ["yī", "céng"] },
+      { word: "香炉", py: ["xiāng", "lú"] }, { word: "银河", py: ["yín", "hé"] },
+      { word: "山顶", py: ["shān", "dǐng"] }, { word: "巨石", py: ["jù", "shí"] },
+      { word: "形状", py: ["xíng", "zhuàng"] }, { word: "名胜", py: ["míng", "shèng"] },
+      { word: "展现", py: ["zhǎn", "xiàn"] }, { word: "城市", py: ["chéng", "shì"] },
+      { word: "好客", py: ["hào", "kè"] }, { word: "味道", py: ["wèi", "dào"] }
+    ],
+    p2: [
+      { stem: "“好客”中的“好”读：", opts: ["A. hǎo", "B. hào"], ans: 1 },
+      { stem: "“葡萄干”中的“干”读：", opts: ["A. gān", "B. gàn"], ans: 0 },
+      { stem: "“水分”中的“分”读：", opts: ["A. fēn", "B. fèn"], ans: 1 },
+      { stem: "“瀑布”中的“瀑”读：", opts: ["A. pù", "B. bào"], ans: 0 },
+      { stem: "“省会”中的“省”读：", opts: ["A. shěng", "B. xǐng"], ans: 0 },
+      { stem: "“茂盛”中的“盛”读：", opts: ["A. shèng", "B. chéng"], ans: 0 }
+    ],
+    p3: [
+      { chars: [{ c: "金", p: "jīn", b: false }, { c: "光", p: "guāng", b: false }, { c: "闪", p: "shǎn", b: true }, { c: "闪", p: "shǎn", b: false }] },
+      { chars: [{ c: "名", p: "míng", b: false }, { c: "胜", p: "shèng", b: true }, { c: "古", p: "gǔ", b: false }, { c: "迹", p: "jì", b: false }] },
+      { chars: [{ c: "五", p: "wǔ", b: false }, { c: "光", p: "guāng", b: false }, { c: "十", p: "shí", b: false }, { c: "色", p: "sè", b: true }] },
+      { chars: [{ c: "山", p: "shān", b: false }, { c: "穷", p: "qióng", b: true }, { c: "水", p: "shuǐ", b: false }, { c: "尽", p: "jìn", b: false }] }
+    ],
+    p4: [
+      { stem: "与“闻名”意思相近的词语是：", opts: ["A. 有名", "B. 陌生", "C. 奇特"], ans: 0 },
+      { stem: "与“清晰”意思相近的词语是：", opts: ["A. 模糊", "B. 清楚", "C. 朦胧"], ans: 1 },
+      { stem: "与“茂密”意思相近的词语是：", opts: ["A. 稀疏", "B. 茂盛", "C. 干枯"], ans: 1 }
+    ],
+    p5: [
+      { stem: "“清晰”的反义词是：", opts: ["A. 清楚", "B. 模糊", "C. 明显"], ans: 1 },
+      { stem: "“热情”的反义词是：", opts: ["A. 热烈", "B. 冷淡", "C. 友好"], ans: 1 },
+      { stem: "“陡峭”的反义词是：", opts: ["A. 平坦", "B. 高耸", "C. 险峻"], ans: 0 }
+    ],
+    p6: [
+      { stem: "（　　）的凉棚", opts: ["A. 绿色", "B. 白色", "C. 金色"], ans: 0 },
+      { stem: "（　　）的枝叶", opts: ["A. 茂密", "B. 细长", "C. 枯黄"], ans: 0 },
+      { stem: "群山（　　）", opts: ["A. 环绕", "B. 飞舞", "C. 奔跑"], ans: 0 }
+    ],
+    p7: [
+      { stem: "“五光十色”的意思是：", opts: ["A. 形容色彩鲜艳，花样繁多。", "B. 只有五种颜色。", "C. 颜色很暗淡。"], ans: 0 },
+      { stem: "“名不虚传”的意思是：", opts: ["A. 名声是假的。", "B. 确实很好，不是空有虚名。", "C. 没有人知道。"], ans: 1 }
+    ],
+    p8: [
+      { pre: "白日依山尽，", py: "huáng hé", ans: "黄河", post: "入海流。" },
+      { pre: "飞流直下三千尺，疑是", py: "yín hé", ans: "银河", post: "落九天。" },
+      { pre: "那里群山环绕，树木茂盛，周围有许多", py: "míng shèng", ans: "名胜", post: "古迹。" },
+      { pre: "葡萄沟真是个", py: "hǎo dì", ans: "好地", post: "方。" }
+    ],
+    p9: [
+      { stem: "湖中央有个美丽的小岛，把湖水分成两半：北边像圆圆的太阳，叫（　　）。", opts: ["A. 日潭", "B. 月潭", "C. 龙潭"], ans: 0 },
+      { stem: "桂林山水（　　）。", opts: ["A. 甲天下", "B. 归来不看山", "C. 无水不文章"], ans: 0 }
+    ],
+    p10: [
+      { pre: "欲穷千里目，更上", py: "yī céng", ans: "一层", post: "楼。" },
+      { pre: "五岳归来不看山，", py: "huáng shān", ans: "黄山", post: "归来不看岳。" }
+    ]
+  },
+  {
+    name: "第五单元",
+    subtitle: "（第11-13课·语文园地五）",
+    p1: [
+      { word: "回答", py: ["huí", "dá"] }, { word: "大话", py: ["dà", "huà"] },
+      { word: "抬头", py: ["tái", "tóu"] }, { word: "相信", py: ["xiāng", "xìn"] },
+      { word: "做窝", py: ["zuò", "wō"] }, { word: "寒冷", py: ["hán", "lěng"] },
+      { word: "冰窖", py: ["bīng", "jiào"] }, { word: "天亮", py: ["tiān", "liàng"] },
+      { word: "葫芦", py: ["hú", "lu"] }, { word: "邻居", py: ["lín", "jū"] },
+      { word: "奇怪", py: ["qí", "guài"] }, { word: "以后", py: ["yǐ", "hòu"] }
+    ],
+    p2: [
+      { stem: "“寒号鸟”中的“号”读：", opts: ["A. hào", "B. háo"], ans: 1 },
+      { stem: "“当作”中的“当”读：", opts: ["A. dāng", "B. dàng"], ans: 1 },
+      { stem: "“崖缝”中的“缝”读：", opts: ["A. fèng", "B. féng"], ans: 0 },
+      { stem: "“一棵葫芦”中的“棵”读：", opts: ["A. kē", "B. guǒ"], ans: 0 },
+      { stem: "“哀号”中的“哀”读：", opts: ["A. āi", "B. shuāi"], ans: 0 },
+      { stem: "“蚜虫”中的“蚜”读：", opts: ["A. yá", "B. yā"], ans: 0 }
+    ],
+    p3: [
+      { chars: [{ c: "坐", p: "zuò", b: false }, { c: "井", p: "jǐng", b: false }, { c: "观", p: "guān", b: true }, { c: "天", p: "tiān", b: false }] },
+      { chars: [{ c: "大", p: "dà", b: false }, { c: "雪", p: "xuě", b: false }, { c: "纷", p: "fēn", b: true }, { c: "飞", p: "fēi", b: false }] },
+      { chars: [{ c: "自", p: "zì", b: false }, { c: "言", p: "yán", b: true }, { c: "自", p: "zì", b: false }, { c: "语", p: "yǔ", b: false }] },
+      { chars: [{ c: "得", p: "dé", b: false }, { c: "过", p: "guò", b: true }, { c: "且", p: "qiě", b: false }, { c: "过", p: "guò", b: false }] }
+    ],
+    p4: [
+      { stem: "与“奇怪”意思相近的词语是：", opts: ["A. 奇异", "B. 寻常", "C. 普通"], ans: 0 },
+      { stem: "与“劝告”意思相近的词语是：", opts: ["A. 责骂", "B. 劝说", "C. 表扬"], ans: 1 },
+      { stem: "与“晴朗”意思相近的词语是：", opts: ["A. 阴沉", "B. 明朗", "C. 昏暗"], ans: 1 }
+    ],
+    p5: [
+      { stem: "“勤劳”的反义词是：", opts: ["A. 懒惰", "B. 努力", "C. 刻苦"], ans: 0 },
+      { stem: "“温暖”的反义词是：", opts: ["A. 暖和", "B. 寒冷", "C. 炎热"], ans: 1 },
+      { stem: "“雪白”的反义词是：", opts: ["A. 洁白", "B. 乌黑", "C. 金黄"], ans: 1 }
+    ],
+    p6: [
+      { stem: "冻得（　　）", opts: ["A. 直打哆嗦", "B. 冒汗", "C. 哈哈大笑"], ans: 0 },
+      { stem: "冷得像（　　）", opts: ["A. 冰窖", "B. 火炉", "C. 蒸笼"], ans: 0 },
+      { stem: "（　　）的葫芦藤", opts: ["A. 细长", "B. 粗壮", "C. 笔直"], ans: 0 }
+    ],
+    p7: [
+      { stem: "“坐井观天”比喻：", opts: ["A. 坐在井里看风景。", "B. 眼界狭小，所见有限。", "C. 喜欢观察天空。"], ans: 1 },
+      { stem: "“得过且过”的意思是：", opts: ["A. 只要能过得去就这样过下去，形容胸无大志、懒惰敷衍。", "B. 做事非常认真。", "C. 每天都在努力进步。"], ans: 0 }
+    ],
+    p8: [
+      { pre: "青蛙说：“朋友，别说", py: "dà huà", ans: "大话", post: "了！天不过井口那么大，还用飞那么远吗？”" },
+      { pre: "寒冬腊月，", py: "dà xuě", ans: "大雪", post: "纷飞。北风像狮子一样狂吼。" },
+      { pre: "一个", py: "lín jū", ans: "邻居", post: "看见了，对他说：“你别光盯着葫芦了，快治一治吧！”" }
+    ],
+    p9: [
+      { stem: "《我要的是葫芦》中，小葫芦变黄落下来的原因是（　　）。", opts: ["A. 叶子上生了蚜虫没有治", "B. 浇水太多了", "C. 太阳太大了"], ans: 0 },
+      { stem: "《寒号鸟》告诉我们（　　）。", opts: ["A. 美好生活要靠辛勤劳动来创造，不能得过且过", "B. 冬天太冷了", "C. 喜鹊很爱管闲事"], ans: 0 }
+    ],
+    p10: [
+      { pre: "千山鸟飞绝，万径", py: "rén zōng", ans: "人踪", post: "灭。" },
+      { pre: "孤舟蓑笠翁，独钓", py: "hán jiāng", ans: "寒江", post: "雪。" }
+    ]
+  },
+  {
+    name: "第六单元",
+    subtitle: "（第14-17课·语文园地六）",
+    p1: [
+      { word: "年代", py: ["nián", "dài"] }, { word: "八角楼", py: ["bā", "jiǎo", "lóu"] },
+      { word: "胜利", py: ["shèng", "lì"] }, { word: "道路", py: ["dào", "lù"] },
+      { word: "同志", py: ["tóng", "zhì"] }, { word: "红军", py: ["hóng", "jūn"] },
+      { word: "敌人", py: ["dí", "rén"] }, { word: "战士", py: ["zhàn", "shì"] },
+      { word: "难忘", py: ["nán", "wàng"] }, { word: "人民", py: ["rén", "mín"] },
+      { word: "农村", py: ["nóng", "cūn"] }, { word: "消息", py: ["xiāo", "xi"] }
+    ],
+    p2: [
+      { stem: "“扁担”中的“担”读：", opts: ["A. dān", "B. dàn", "C. dan"], ans: 2 },
+      { stem: "“铺上”中的“铺”读：", opts: ["A. pū", "B. pù"], ans: 0 },
+      { stem: "“盛满”中的“盛”读：", opts: ["A. shèng", "B. chéng"], ans: 1 },
+      { stem: "“披着”中的“披”读：", opts: ["A. pī", "B. bèi"], ans: 0 },
+      { stem: "“血淋淋”中的“血”读：", opts: ["A. xuè", "B. xiě"], ans: 1 },
+      { stem: "“题词”中的“词”读：", opts: ["A. cí", "B. chí"], ans: 0 }
+    ],
+    p3: [
+      { chars: [{ c: "星", p: "xīng", b: false }, { c: "星", p: "xīng", b: false }, { c: "之", p: "zhī", b: true }, { c: "火", p: "huǒ", b: false }] },
+      { chars: [{ c: "笑", p: "xiào", b: false }, { c: "容", p: "róng", b: true }, { c: "满", p: "mǎn", b: false }, { c: "面", p: "miàn", b: false }] },
+      { chars: [{ c: "四", p: "sì", b: false }, { c: "面", p: "miàn", b: false }, { c: "八", p: "bā", b: false }, { c: "方", p: "fāng", b: true }] },
+      { chars: [{ c: "山", p: "shān", b: false }, { c: "高", p: "gāo", b: false }, { c: "路", p: "lù", b: true }, { c: "陡", p: "dǒu", b: false }] }
+    ],
+    p4: [
+      { stem: "与“凝视”意思相近的词语是：", opts: ["A. 注视", "B. 忽视", "C. 东张西望"], ans: 0 },
+      { stem: "与“敬爱”意思相近的词语是：", opts: ["A. 尊敬", "B. 讨厌", "C. 害怕"], ans: 0 },
+      { stem: "与“光荣”意思相近的词语是：", opts: ["A. 耻辱", "B. 荣耀", "C. 难过"], ans: 1 }
+    ],
+    p5: [
+      { stem: "“胜利”的反义词是：", opts: ["A. 成功", "B. 失败", "C. 凯旋"], ans: 1 },
+      { stem: "“艰苦”的反义词是：", opts: ["A. 辛苦", "B. 舒适", "C. 困难"], ans: 1 },
+      { stem: "“年轻”的反义词是：", opts: ["A. 年老", "B. 年少", "C. 青春"], ans: 0 }
+    ],
+    p6: [
+      { stem: "（　　）着斗笠", opts: ["A. 戴", "B. 带", "C. 穿"], ans: 0 },
+      { stem: "（　　）着草鞋", opts: ["A. 穿", "B. 戴", "C. 披"], ans: 0 },
+      { stem: "（　　）着粮食", opts: ["A. 挑", "B. 提", "C. 拿"], ans: 0 }
+    ],
+    p7: [
+      { stem: "“笑容满面”的意思是：", opts: ["A. 形容心里非常难过。", "B. 形容十分高兴、喜悦的样子。", "C. 形容非常生气。"], ans: 1 },
+      { stem: "“同甘共苦”的意思是：", opts: ["A. 共同享受幸福，共同担当艰苦。", "B. 自己吃甜的，别人吃苦的。", "C. 只想享福不想吃苦。"], ans: 0 }
+    ],
+    p8: [
+      { pre: "就在这盏清油灯下，毛主席写下了许多光辉著作，照亮了中国革命", py: "shèng lì", ans: "胜利", post: "的道路。" },
+      { pre: "朱德同志也跟", py: "zhàn shì", ans: "战士", post: "们一块儿去挑粮。" },
+      { pre: "多么令人", py: "nán wàng", ans: "难忘", post: "啊，1961年的泼水节！" }
+    ],
+    p9: [
+      { stem: "有志者（　　）。", opts: ["A. 事竟成", "B. 志千里", "C. 不在年高"], ans: 0 },
+      { stem: "志当（　　）。", opts: ["A. 存高远", "B. 事竟成", "C. 穷且益坚"], ans: 0 }
+    ],
+    p10: [
+      { pre: "有志者", py: "shì jìng", ans: "事竟", post: "成。——《后汉书》" },
+      { pre: "穷且益坚，不坠", py: "qīng yún", ans: "青云", post: "之志。——王勃" }
+    ]
+  },
+  {
+    name: "第七单元",
+    subtitle: "（第18-20课·语文园地七）",
+    p1: [
+      { word: "孤舟", py: ["gū", "zhōu"] }, { word: "阴山", py: ["yīn", "shān"] },
+      { word: "田野", py: ["tián", "yě"] }, { word: "低头", py: ["dī", "tóu"] },
+      { word: "无论", py: ["wú", "lùn"] }, { word: "船只", py: ["chuán", "zhī"] },
+      { word: "一切", py: ["yī", "qiè"] }, { word: "散步", py: ["sàn", "bù"] },
+      { word: "消失", py: ["xiāo", "shī"] }, { word: "伙伴", py: ["huǒ", "bàn"] },
+      { word: "唱歌", py: ["chàng", "gē"] }, { word: "水汽", py: ["shuǐ", "qì"] }
+    ],
+    p2: [
+      { stem: "“天似穹庐”中的“似”读：", opts: ["A. sì", "B. shì"], ans: 0 },
+      { stem: "“风吹草低见牛羊”中的“见”读：", opts: ["A. jiàn", "B. xiàn"], ans: 1 },
+      { stem: "“散步”中的“散”读：", opts: ["A. sàn", "B. sǎn"], ans: 0 },
+      { stem: "“一切”中的“切”读：", opts: ["A. qiē", "B. qiè"], ans: 1 },
+      { stem: "“水淋淋”中的“淋”读：", opts: ["A. lín", "B. lìn"], ans: 0 },
+      { stem: "“添柴”中的“柴”读：", opts: ["A. chái", "B. cái"], ans: 0 }
+    ],
+    p3: [
+      { chars: [{ c: "云", p: "yún", b: false }, { c: "开", p: "kāi", b: false }, { c: "雾", p: "wù", b: true }, { c: "散", p: "sàn", b: false }] },
+      { chars: [{ c: "微", p: "wēi", b: true }, { c: "风", p: "fēng", b: false }, { c: "习", p: "xí", b: false }, { c: "习", p: "xí", b: false }] },
+      { chars: [{ c: "冰", p: "bīng", b: false }, { c: "天", p: "tiān", b: false }, { c: "雪", p: "xuě", b: true }, { c: "地", p: "dì", b: false }] },
+      { chars: [{ c: "鹅", p: "é", b: true }, { c: "毛", p: "máo", b: false }, { c: "大", p: "dà", b: false }, { c: "雪", p: "xuě", b: false }] }
+    ],
+    p4: [
+      { stem: "与“悠闲”意思相近的词语是：", opts: ["A. 忙碌", "B. 清闲", "C. 紧张"], ans: 1 },
+      { stem: "与“连忙”意思相近的词语是：", opts: ["A. 赶快", "B. 缓慢", "C. 犹豫"], ans: 0 },
+      { stem: "与“淘气”意思相近的词语是：", opts: ["A. 乖巧", "B. 顽皮", "C. 老实"], ans: 1 }
+    ],
+    p5: [
+      { stem: "“消失”的反义词是：", opts: ["A. 出现", "B. 消散", "C. 离开"], ans: 0 },
+      { stem: "“悠闲”的反义词是：", opts: ["A. 轻松", "B. 忙碌", "C. 自在"], ans: 1 },
+      { stem: "“美丽”的反义词是：", opts: ["A. 好看", "B. 丑陋", "C. 漂亮"], ans: 1 }
+    ],
+    p6: [
+      { stem: "（　　）的雾", opts: ["A. 淘气", "B. 勇敢", "C. 勤劳"], ans: 0 },
+      { stem: "（　　）的白云", opts: ["A. 美丽", "B. 乌黑", "C. 沉重"], ans: 0 },
+      { stem: "悠闲地（　　）", opts: ["A. 散步", "B. 奔跑", "C. 哭泣"], ans: 0 }
+    ],
+    p7: [
+      { stem: "“云开雾散”的意思是：", opts: ["A. 天气突然变坏。", "B. 指天气由阴暗转为明朗。", "C. 刮起大风。"], ans: 1 },
+      { stem: "“微风习习”的意思是：", opts: ["A. 形容微风和煦、缓慢吹动的样子。", "B. 狂风大作。", "C. 一丝风也没有。"], ans: 0 }
+    ],
+    p8: [
+      { pre: "天苍苍，野茫茫，风吹草低", py: "xiàn niú", ans: "见牛", post: "羊。" },
+      { pre: "房屋、街道、树木、桥梁，甚至行人和小黑猫，雾把", py: "yī qiè", ans: "一切", post: "都藏了起来。" },
+      { pre: "瞧，太阳晒着晒着，他变成了很轻很轻的", py: "shuǐ qì", ans: "水汽", post: "。" }
+    ],
+    p9: [
+      { stem: "一九二九（　　），三九四九冰上走。", opts: ["A. 不出手", "B. 沿河看柳", "C. 耕牛遍地走"], ans: 0 },
+      { stem: "五九六九，沿河看柳，七九河开，（　　）。", opts: ["A. 八九雁来", "B. 九九加一九", "C. 不出手"], ans: 0 }
+    ],
+    p10: [
+      { pre: "一九二九不出手，三九四九", py: "bīng shàng", ans: "冰上", post: "走。" },
+      { pre: "九九加一九，耕牛", py: "biàn dì", ans: "遍地", post: "走。" }
+    ]
+  },
+  {
+    name: "第八单元",
+    subtitle: "（第21-23课·语文园地八）",
+    p1: [
+      { word: "仔细", py: ["zǐ", "xì"] }, { word: "椅子", py: ["yǐ", "zi"] },
+      { word: "怎么", py: ["zěn", "me"] }, { word: "收下", py: ["shōu", "xià"] },
+      { word: "纸船", py: ["zhǐ", "chuán"] }, { word: "抓住", py: ["zhuā", "zhù"] },
+      { word: "但是", py: ["dàn", "shì"] }, { word: "一句", py: ["yī", "jù"] },
+      { word: "游戏", py: ["yóu", "xì"] }, { word: "可爱", py: ["kě", "ài"] },
+      { word: "咱们", py: ["zán", "men"] }, { word: "高兴", py: ["gāo", "xìng"] }
+    ],
+    p2: [
+      { stem: "“折纸船”中的“折”读：", opts: ["A. zhé", "B. shé"], ans: 0 },
+      { stem: "“扎风筝”中的“扎”读：", opts: ["A. zā", "B. zhā"], ans: 0 },
+      { stem: "“漂流”中的“漂”读：", opts: ["A. piāo", "B. piào"], ans: 0 },
+      { stem: "“漂亮”中的“漂”读：", opts: ["A. piāo", "B. piào"], ans: 1 },
+      { stem: "“受不了”中的“了”读：", opts: ["A. liǎo", "B. le"], ans: 0 },
+      { stem: "“朝霞”中的“朝”读：", opts: ["A. zhāo", "B. cháo"], ans: 0 }
+    ],
+    p3: [
+      { chars: [{ c: "狼", p: "láng", b: false }, { c: "吞", p: "tūn", b: true }, { c: "虎", p: "hǔ", b: false }, { c: "咽", p: "yàn", b: false }] },
+      { chars: [{ c: "惊", p: "jīng", b: false }, { c: "弓", p: "gōng", b: true }, { c: "之", p: "zhī", b: false }, { c: "鸟", p: "niǎo", b: false }] },
+      { chars: [{ c: "如", p: "rú", b: false }, { c: "鱼", p: "yú", b: true }, { c: "得", p: "dé", b: false }, { c: "水", p: "shuǐ", b: false }] },
+      { chars: [{ c: "害", p: "hài", b: false }, { c: "群", p: "qún", b: true }, { c: "之", p: "zhī", b: false }, { c: "马", p: "mǎ", b: false }] }
+    ],
+    p4: [
+      { stem: "与“称赞”意思相近的词语是：", opts: ["A. 批评", "B. 赞美", "C. 抱怨"], ans: 1 },
+      { stem: "与“难过”意思相近的词语是：", opts: ["A. 伤心", "B. 快乐", "C. 兴奋"], ans: 0 },
+      { stem: "与“勇敢”意思相近的词语是：", opts: ["A. 胆小", "B. 英勇", "C. 懦弱"], ans: 1 }
+    ],
+    p5: [
+      { stem: "“称赞”的反义词是：", opts: ["A. 表扬", "B. 批评", "C. 夸奖"], ans: 1 },
+      { stem: "“勇敢”的反义词是：", opts: ["A. 胆小", "B. 坚强", "C. 无畏"], ans: 0 },
+      { stem: "“快乐”的反义词是：", opts: ["A. 高兴", "B. 悲伤", "C. 欢喜"], ans: 1 }
+    ],
+    p6: [
+      { stem: "（　　）地看了看", opts: ["A. 仔细", "B. 大声", "C. 伤心"], ans: 0 },
+      { stem: "（　　）得哭了", opts: ["A. 高兴", "B. 生气", "C. 着急"], ans: 0 },
+      { stem: "一（　　）心意", opts: ["A. 点儿", "B. 根", "C. 张"], ans: 0 }
+    ],
+    p7: [
+      { stem: "“如鱼得水”的意思是：", opts: ["A. 好像鱼得到水一样，比喻得到跟自己十分投合的人或对自己很合适的环境。", "B. 鱼离开水不能活。", "C. 喜欢吃鱼。"], ans: 0 },
+      { stem: "“狼吞虎咽”的意思是：", opts: ["A. 吃饭慢条斯理。", "B. 形容吃东西又猛又急的样子。", "C. 动物在打架。"], ans: 1 }
+    ],
+    p8: [
+      { pre: "小刺猬走到小獾身边，拿起板凳", py: "zǐ xì", ans: "仔细", post: "地看了看。" },
+      { pre: "小獾拉着小刺猬的手，说：“这是我的一点儿心意，", py: "shōu xià", ans: "收下", post: "吧。”" },
+      { pre: "小河对泉水说：“", py: "zán men", ans: "咱们", post: "做好朋友吧！手拉着手，一块儿向前流。”" }
+    ],
+    p9: [
+      { stem: "下面哪个成语不是描写动物的？（　　）", opts: ["A. 惊弓之鸟", "B. 漏网之鱼", "C. 坐井观天"], ans: 2 },
+      { stem: "《称赞》一课告诉我们（　　）。", opts: ["A. 真诚的称赞能带给人自信和快乐", "B. 小獾做的板凳不好看", "C. 苹果很甜"], ans: 0 }
+    ],
+    p10: [
+      { pre: "如果你愿意和好，就放一只", py: "fēng zheng", ans: "风筝", post: "吧！" },
+      { pre: "野花为我唱歌，青草跟我", py: "yóu xì", ans: "游戏", post: "，大家都跟我好。" }
+    ]
+  },
+  {
+    name: "期末综合",
+    subtitle: "（全册一至八单元综合测评）",
+    p1: [
+      { word: "海洋", py: ["hǎi", "yáng"] }, { word: "知识", py: ["zhī", "shí"] },
+      { word: "朋友", py: ["péng", "you"] }, { word: "辛苦", py: ["xīn", "kǔ"] },
+      { word: "美丽", py: ["měi", "lì"] }, { word: "名胜", py: ["míng", "shèng"] },
+      { word: "城市", py: ["chéng", "shì"] }, { word: "邻居", py: ["lín", "jū"] },
+      { word: "胜利", py: ["shèng", "lì"] }, { word: "战士", py: ["zhàn", "shì"] },
+      { word: "散步", py: ["sàn", "bù"] }, { word: "仔细", py: ["zǐ", "xì"] }
+    ],
+    p2: [
+      { stem: "“淹没”中的“没”读：", opts: ["A. mò", "B. méi"], ans: 0 },
+      { stem: "“稻上场”中的“场”读：", opts: ["A. chǎng", "B. cháng"], ans: 1 },
+      { stem: "“好客”中的“好”读：", opts: ["A. hǎo", "B. hào"], ans: 1 },
+      { stem: "“寒号鸟”中的“号”读：", opts: ["A. hào", "B. háo"], ans: 1 },
+      { stem: "“盛满”中的“盛”读：", opts: ["A. shèng", "B. chéng"], ans: 1 },
+      { stem: "“风吹草低见牛羊”中的“见”读：", opts: ["A. jiàn", "B. xiàn"], ans: 1 }
+    ],
+    p3: [
+      { chars: [{ c: "四", p: "sì", b: false }, { c: "海", p: "hǎi", b: true }, { c: "为", p: "wéi", b: false }, { c: "家", p: "jiā", b: false }] },
+      { chars: [{ c: "名", p: "míng", b: false }, { c: "胜", p: "shèng", b: true }, { c: "古", p: "gǔ", b: false }, { c: "迹", p: "jì", b: false }] },
+      { chars: [{ c: "坐", p: "zuò", b: false }, { c: "井", p: "jǐng", b: false }, { c: "观", p: "guān", b: true }, { c: "天", p: "tiān", b: false }] },
+      { chars: [{ c: "如", p: "rú", b: false }, { c: "鱼", p: "yú", b: true }, { c: "得", p: "dé", b: false }, { c: "水", p: "shuǐ", b: false }] }
+    ],
+    p4: [
+      { stem: "与“连忙”意思相近的词语是：", opts: ["A. 赶忙", "B. 缓慢", "C. 平时"], ans: 0 },
+      { stem: "与“清晰”意思相近的词语是：", opts: ["A. 模糊", "B. 清楚", "C. 昏暗"], ans: 1 },
+      { stem: "与“称赞”意思相近的词语是：", opts: ["A. 批评", "B. 赞美", "C. 抱怨"], ans: 1 }
+    ],
+    p5: [
+      { stem: "“温和”的反义词是：", opts: ["A. 粗心", "B. 难过", "C. 暴躁"], ans: 2 },
+      { stem: "“勤劳”的反义词是：", opts: ["A. 懒惰", "B. 努力", "C. 刻苦"], ans: 0 },
+      { stem: "“胜利”的反义词是：", opts: ["A. 成功", "B. 失败", "C. 凯旋"], ans: 1 }
+    ],
+    p6: [
+      { stem: "一（　　）翠竹", opts: ["A. 丛", "B. 道", "C. 把"], ans: 0 },
+      { stem: "一（　　）珍珠", opts: ["A. 棵", "B. 颗", "C. 根"], ans: 1 },
+      { stem: "（　　）着斗笠", opts: ["A. 戴", "B. 带", "C. 穿"], ans: 0 }
+    ],
+    p7: [
+      { stem: "“五光十色”的意思是：", opts: ["A. 形容色彩鲜艳，花样繁多。", "B. 只有五种颜色。", "C. 颜色很暗淡。"], ans: 0 },
+      { stem: "“坐井观天”比喻：", opts: ["A. 坐在井里看风景。", "B. 眼界狭小，所见有限。", "C. 喜欢观察天空。"], ans: 1 }
+    ],
+    p8: [
+      { pre: "白日依山尽，", py: "huáng hé", ans: "黄河", post: "入海流。" },
+      { pre: "天苍苍，野茫茫，风吹草低", py: "xiàn niú", ans: "见牛", post: "羊。" },
+      { pre: "小刺猬走到小獾身边，拿起板凳", py: "zǐ xì", ans: "仔细", post: "地看了看。" }
+    ],
+    p9: [
+      { stem: "十年树木，（　　）。", opts: ["A. 百年树人", "B. 叶落归根", "C. 人无志不立"], ans: 0 },
+      { stem: "有志者（　　）。", opts: ["A. 事竟成", "B. 存高远", "C. 不出手"], ans: 0 }
+    ],
+    p10: [
+      { pre: "墙角数枝梅，凌寒", py: "dú zì", ans: "独自", post: "开。" },
+      { pre: "欲穷千里目，更上", py: "yī céng", ans: "一层", post: "楼。" }
+    ]
+  }
+];
+
+let utCurrentIdx = 0;
+let utShowAns = false;
+let utChecked = false;
+
+const utUnitTabs = document.getElementById("utUnitTabs");
+const utPaper = document.getElementById("utPaper");
+const utPaperTitle = document.getElementById("utPaperTitle");
+const utMaxScore = document.getElementById("utMaxScore");
+const utScoreDisplay = document.getElementById("utScoreDisplay");
+const utScoreBanner = document.getElementById("utScoreBanner");
+const utBannerScore = document.getElementById("utBannerScore");
+const utBannerDetail = document.getElementById("utBannerDetail");
+const utBody = document.getElementById("utBody");
+
+function initUnitTestTabs() {
+  utUnitTabs.innerHTML = "";
+  UNIT_TESTS.forEach((u, idx) => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "pill-btn" + (idx === utCurrentIdx ? " active" : "");
+    btn.textContent = u.name;
+    btn.addEventListener("click", () => {
+      utCurrentIdx = idx;
+      document.querySelectorAll("#utUnitTabs .pill-btn").forEach(b => b.classList.remove("active"));
+      btn.classList.add("active");
+      renderUnitTest(false);
+    });
+    utUnitTabs.appendChild(btn);
+  });
+  renderUnitTest(false);
+}
+
+function renderUnitTest(shuffleItems) {
+  const data = UNIT_TESTS[utCurrentIdx];
+  utShowAns = false;
+  utChecked = false;
+  utPaper.classList.remove("show-ans");
+  document.getElementById("utToggleAnsBtn").textContent = "显示答案";
+  utScoreDisplay.textContent = "";
+  utScoreBanner.classList.remove("show");
+
+  utPaperTitle.textContent = `二年级上册语文 ${data.name}${data.subtitle}测试卷`;
+
+  const p1List = shuffleItems ? shuffleArray(data.p1) : data.p1;
+  const p2List = shuffleItems ? shuffleArray(data.p2) : data.p2;
+  const p3List = shuffleItems ? shuffleArray(data.p3) : data.p3;
+  const p4List = shuffleItems ? shuffleArray(data.p4) : data.p4;
+  const p5List = shuffleItems ? shuffleArray(data.p5) : data.p5;
+  const p6List = shuffleItems ? shuffleArray(data.p6) : data.p6;
+  const p7List = shuffleItems ? shuffleArray(data.p7) : data.p7;
+  const p8List = shuffleItems ? shuffleArray(data.p8) : data.p8;
+  const p9List = shuffleItems ? shuffleArray(data.p9) : data.p9;
+  const p10List = shuffleItems ? shuffleArray(data.p10) : data.p10;
+
+  const totalMax = p1List.length * 3 + p2List.length * 2 + p3List.length * 3 +
+                   p4List.length * 2 + p5List.length * 2 + p6List.length * 2 +
+                   p7List.length * 2 + p8List.length * 3 + p9List.length * 2 + p10List.length * 3;
+  utMaxScore.textContent = `满分 ${totalMax} 分`;
+
+  let qNum = 1;
+  utBody.innerHTML = "";
+
+  // 一、看拼音，写词语
+  const sec1 = document.createElement("div");
+  sec1.className = "ut-sec";
+  sec1.innerHTML = `<div class="ut-sec-header"><span>一、看拼音，写词语（会写字）</span><span class="ut-sec-score">（每题3分）</span></div>`;
+  const grid1 = document.createElement("div");
+  grid1.className = "ut-p1-grid";
+  p1List.forEach(item => {
+    const cell = document.createElement("div");
+    cell.className = "ut-p1-item";
+    const chars = item.word.split("");
+    let pyHtml = "";
+    let boxHtml = "";
+    chars.forEach((ch, idx) => {
+      pyHtml += `<span class="ut-py-cell">${item.py[idx] || ""}</span>`;
+      boxHtml += `<span class="ut-tzg"><span class="ut-tzg-char">${ch}</span></span>`;
+    });
+    cell.innerHTML = `
+      <span class="ut-qnum">${qNum++}.</span>
+      <div class="ut-word-stack">
+        <div class="ut-py-row">${pyHtml}</div>
+        <div class="ut-box-row">${boxHtml}</div>
+      </div>
+      <button type="button" class="ut-self-check" title="核对答案后点此确认我写对了">✓</button>
+    `;
+    const checkBtn = cell.querySelector(".ut-self-check");
+    checkBtn.addEventListener("click", () => checkBtn.classList.toggle("checked"));
+    grid1.appendChild(cell);
+  });
+  sec1.appendChild(grid1);
+  utBody.appendChild(sec1);
+
+  // 辅助生成单选题大题
+  function buildMcSection(title, scorePer, list, cols = 2, inline = false) {
+    const sec = document.createElement("div");
+    sec.className = "ut-sec";
+    sec.innerHTML = `<div class="ut-sec-header"><span>${title}</span><span class="ut-sec-score">（每题${scorePer}分）</span></div>`;
+    const wrap = document.createElement("div");
+    wrap.className = cols === 2 ? "ut-mc-grid-2" : "ut-mc-list-1";
+    list.forEach(q => {
+      const card = document.createElement("div");
+      card.className = "ut-mc-item" + (inline ? " inline-opts" : "");
+      card.dataset.ans = q.ans;
+      card.dataset.pts = scorePer;
+      const stem = document.createElement("div");
+      stem.className = "ut-mc-stem";
+      stem.innerHTML = `<b>${qNum++}.</b> ${q.stem}`;
+      const optsDiv = document.createElement("div");
+      optsDiv.className = "ut-opts";
+      q.opts.forEach((optText, oIdx) => {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "ut-opt-pill";
+        btn.textContent = optText;
+        btn.dataset.idx = oIdx;
+        btn.addEventListener("click", () => {
+          if (utChecked) return;
+          optsDiv.querySelectorAll(".ut-opt-pill").forEach(b => b.classList.remove("selected"));
+          btn.classList.add("selected");
+        });
+        optsDiv.appendChild(btn);
+      });
+      card.appendChild(stem);
+      card.appendChild(optsDiv);
+      wrap.appendChild(card);
+    });
+    sec.appendChild(wrap);
+    utBody.appendChild(sec);
+  }
+
+  // 二、会认字
+  buildMcSection("二、会认字：选读音、认汉字", 2, p2List, 2, false);
+
+  // 三、词语补全
+  const sec3 = document.createElement("div");
+  sec3.className = "ut-sec";
+  sec3.innerHTML = `<div class="ut-sec-header"><span>三、词语补全（会写字词语，写出缺的字）</span><span class="ut-sec-score">（每题3分）</span></div>`;
+  const grid3 = document.createElement("div");
+  grid3.className = "ut-p3-grid";
+  p3List.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "ut-p3-item";
+    div.innerHTML = `<span class="ut-qnum" style="padding-bottom:0;">${qNum++}.</span>`;
+    item.chars.forEach(chObj => {
+      const col = document.createElement("span");
+      col.className = "ut-char-col";
+      if (chObj.b) {
+        col.innerHTML = `<small>${chObj.p}</small><input type="text" maxlength="1" class="ut-blank-input" data-ans="${chObj.c}">`;
+      } else {
+        col.innerHTML = `<small>${chObj.p}</small><span style="border-bottom:1.5px solid #1e293b;padding:0 4px;">${chObj.c}</span>`;
+      }
+      div.appendChild(col);
+    });
+    grid3.appendChild(div);
+  });
+  sec3.appendChild(grid3);
+  utBody.appendChild(sec3);
+
+  // 四~七选择题
+  buildMcSection("四、近义词：选一选", 2, p4List, 2, false);
+  buildMcSection("五、反义词：选一选", 2, p5List, 2, false);
+  buildMcSection("六、词语搭配：选一选", 2, p6List, 2, false);
+  buildMcSection("七、词语解释：选一选", 2, p7List, 1, false);
+
+  // 辅助生成句子拼音填空大题（八、十）
+  function buildSentSection(title, scorePer, list) {
+    const sec = document.createElement("div");
+    sec.className = "ut-sec";
+    sec.innerHTML = `<div class="ut-sec-header"><span>${title}</span><span class="ut-sec-score">（每题${scorePer}分）</span></div>`;
+    const wrap = document.createElement("div");
+    wrap.className = "ut-sent-list";
+    list.forEach(s => {
+      const row = document.createElement("div");
+      row.className = "ut-sent-item";
+      row.innerHTML = `
+        <b style="font-family:'Microsoft YaHei',sans-serif;font-size:14.5px;">${qNum++}.</b>
+        ${s.pre}<span class="ut-sent-blank"><small>${s.py}</small><input type="text" class="ut-sent-input" data-ans="${s.ans}" data-pts="${scorePer}"></span>${s.post}
+      `;
+      wrap.appendChild(row);
+    });
+    sec.appendChild(wrap);
+    utBody.appendChild(sec);
+  }
+
+  // 八、补充句子
+  buildSentSection("八、补充句子：根据拼音，在横线上写出缺少的词语", 3, p8List);
+
+  // 九、选词填空
+  buildMcSection("九、选词填空：选一选", 2, p9List, 1, true);
+
+  // 十、日积月累/课文句子
+  buildSentSection("十、日积月累 / 课文句子：把句子补充完整", 3, p10List);
+}
+
+document.getElementById("utNewSetBtn").addEventListener("click", () => renderUnitTest(true));
+
+document.getElementById("utToggleAnsBtn").addEventListener("click", () => {
+  utShowAns = !utShowAns;
+  utPaper.classList.toggle("show-ans", utShowAns);
+  document.getElementById("utToggleAnsBtn").textContent = utShowAns ? "隐藏答案" : "显示答案";
+
+  utBody.querySelectorAll(".ut-mc-item").forEach(card => {
+    const ansIdx = card.dataset.ans;
+    const rightBtn = card.querySelector(`.ut-opt-pill[data-idx="${ansIdx}"]`);
+    if (rightBtn) rightBtn.classList.toggle("correct-ans", utShowAns);
+  });
+
+  utBody.querySelectorAll(".ut-blank-input, .ut-sent-input").forEach(inp => {
+    if (utShowAns) {
+      if (!inp.value.trim()) {
+        inp.value = inp.dataset.ans;
+        inp.dataset.autoFilled = "1";
+      }
+    } else if (inp.dataset.autoFilled === "1") {
+      inp.value = "";
+      delete inp.dataset.autoFilled;
+    }
+  });
+});
+
+document.getElementById("utCheckBtn").addEventListener("click", () => {
+  utChecked = true;
+  let earned = 0;
+  let total = 0;
+
+  // 第一题自评
+  utBody.querySelectorAll(".ut-self-check").forEach(btn => {
+    total += 3;
+    if (btn.classList.contains("checked")) earned += 3;
+  });
+
+  // 单选题
+  utBody.querySelectorAll(".ut-mc-item").forEach(card => {
+    const pts = parseInt(card.dataset.pts, 10);
+    total += pts;
+    const ansIdx = card.dataset.ans;
+    const sel = card.querySelector(".ut-opt-pill.selected");
+    const rightBtn = card.querySelector(`.ut-opt-pill[data-idx="${ansIdx}"]`);
+    if (sel && sel.dataset.idx === ansIdx) {
+      earned += pts;
+      sel.classList.add("correct-ans");
+    } else {
+      if (sel) sel.classList.add("wrong-ans");
+      if (rightBtn) rightBtn.classList.add("correct-ans");
+    }
+  });
+
+  // 词语补全
+  utBody.querySelectorAll(".ut-blank-input").forEach(inp => {
+    total += 3;
+    const ans = inp.dataset.ans;
+    if (inp.value.trim() === ans) {
+      earned += 3;
+      inp.classList.add("correct");
+    } else {
+      inp.classList.add("wrong");
+      inp.value = `${inp.value.trim() || ""}(${ans})`;
+    }
+  });
+
+  // 句子填空
+  utBody.querySelectorAll(".ut-sent-input").forEach(inp => {
+    const pts = parseInt(inp.dataset.pts, 10);
+    total += pts;
+    const ans = inp.dataset.ans;
+    if (inp.value.trim() === ans) {
+      earned += pts;
+      inp.classList.add("correct");
+    } else {
+      inp.classList.add("wrong");
+      const span = document.createElement("span");
+      span.className = "ut-inline-ans";
+      span.textContent = `[${ans}]`;
+      inp.parentNode.appendChild(span);
+    }
+  });
+
+  utScoreDisplay.textContent = `${earned}`;
+  utBannerScore.textContent = `${earned} 分 / 满分 ${total} 分`;
+  utBannerDetail.textContent = earned === total ? "太棒了，全对满分！" : "已标出所有错题及正确答案，继续加油！";
+  utScoreBanner.classList.add("show");
+});
+
+document.getElementById("utPrintBtn").addEventListener("click", () => window.print());
+
+initUnitTestTabs();
+
+/* ============================================================================
+   3. 模块三：段落练字（独立顶级模块，精选美文 + 拼音 + 描红 + 横线仿写）
+============================================================================ */
+const COPYBOOK_PASSAGES = [
+  {
+    title: "1. 春天来了",
+    tokens: [
+      { c: "春", p: "chūn" }, { c: "风", p: "fēng" }, { c: "轻", p: "qīng" }, { c: "轻", p: "qīng" }, { c: "地", p: "de" },
+      { c: "吹", p: "chuī" }, { c: "过", p: "guò" }, { c: "田", p: "tián" }, { c: "野", p: "yě" }, { c: "，", p: "" },
+      { c: "小", p: "xiǎo" }, { c: "草", p: "cǎo" }, { c: "从", p: "cóng" }, { c: "泥", p: "ní" }, { c: "土", p: "tǔ" },
+      { c: "里", p: "lǐ" }, { c: "探", p: "tàn" }, { c: "出", p: "chū" }, { c: "头", p: "tóu" }, { c: "来", p: "lái" },
+      { c: "，", p: "" }, { c: "嫩", p: "nèn" }, { c: "嫩", p: "nèn" }, { c: "的", p: "de" }, { c: "，", p: "" },
+      { c: "绿", p: "lǜ" }, { c: "绿", p: "lǜ" }, { c: "的", p: "de" }, { c: "。", p: "" },
+      { c: "柳", p: "liǔ" }, { c: "树", p: "shù" }, { c: "姑", p: "gū" }, { c: "娘", p: "niáng" }, { c: "梳", p: "shū" },
+      { c: "着", p: "zhe" }, { c: "长", p: "cháng" }, { c: "长", p: "cháng" }, { c: "的", p: "de" }, { c: "辫", p: "biàn" },
+      { c: "子", p: "zǐ" }, { c: "，", p: "" }, { c: "在", p: "zài" }, { c: "河", p: "hé" }, { c: "边", p: "biān" },
+      { c: "照", p: "zhào" }, { c: "镜", p: "jìng" }, { c: "子", p: "zi" }, { c: "。", p: "" },
+      { c: "桃", p: "táo" }, { c: "花", p: "huā" }, { c: "开", p: "kāi" }, { c: "了", p: "le" }, { c: "，", p: "" },
+      { c: "粉", p: "fěn" }, { c: "红", p: "hóng" }, { c: "粉", p: "fěn" }, { c: "红", p: "hóng" }, { c: "的", p: "de" },
+      { c: "，", p: "" }, { c: "像", p: "xiàng" }, { c: "一", p: "yì" }, { c: "张", p: "zhāng" }, { c: "张", p: "zhāng" },
+      { c: "笑", p: "xiào" }, { c: "脸", p: "liǎn" }, { c: "。", p: "" },
+      { c: "燕", p: "yàn" }, { c: "子", p: "zi" }, { c: "从", p: "cóng" }, { c: "南", p: "nán" }, { c: "方", p: "fāng" },
+      { c: "飞", p: "fēi" }, { c: "回", p: "huí" }, { c: "来", p: "lái" }, { c: "，", p: "" },
+      { c: "在", p: "zài" }, { c: "屋", p: "wū" }, { c: "檐", p: "yán" }, { c: "下", p: "xià" },
+      { c: "唱", p: "chàng" }, { c: "着", p: "zhe" }, { c: "歌", p: "gē" }, { c: "。", p: "" },
+      { c: "小", p: "xiǎo" }, { c: "朋", p: "péng" }, { c: "友", p: "yǒu" }, { c: "们", p: "men" },
+      { c: "脱", p: "tuō" }, { c: "下", p: "xià" }, { c: "厚", p: "hòu" }, { c: "厚", p: "hòu" }, { c: "的", p: "de" },
+      { c: "棉", p: "mián" }, { c: "衣", p: "yī" }, { c: "，", p: "" }, { c: "在", p: "zài" }, { c: "草", p: "cǎo" },
+      { c: "地", p: "dì" }, { c: "上", p: "shàng" }, { c: "放", p: "fàng" }, { c: "风", p: "fēng" }, { c: "筝", p: "zheng" },
+      { c: "，", p: "" }, { c: "笑", p: "xiào" }, { c: "声", p: "shēng" }, { c: "飞", p: "fēi" }, { c: "得", p: "de" },
+      { c: "和", p: "hé" }, { c: "风", p: "fēng" }, { c: "筝", p: "zheng" }, { c: "一", p: "yí" }, { c: "样", p: "yàng" },
+      { c: "高", p: "gāo" }, { c: "。", p: "" }
+    ]
+  },
+  {
+    title: "2. 夏夜的荷塘",
+    tokens: [
+      { c: "夏", p: "xià" }, { c: "天", p: "tiān" }, { c: "的", p: "de" }, { c: "晚", p: "wǎn" }, { c: "上", p: "shang" },
+      { c: "，", p: "" }, { c: "池", p: "chí" }, { c: "塘", p: "táng" }, { c: "里", p: "lǐ" }, { c: "真", p: "zhēn" },
+      { c: "热", p: "rè" }, { c: "闹", p: "nao" }, { c: "。", p: "" },
+      { c: "圆", p: "yuán" }, { c: "圆", p: "yuán" }, { c: "的", p: "de" }, { c: "荷", p: "hé" }, { c: "叶", p: "yè" },
+      { c: "挨", p: "āi" }, { c: "挨", p: "āi" }, { c: "挤", p: "jǐ" }, { c: "挤", p: "jǐ" }, { c: "的", p: "de" },
+      { c: "，", p: "" }, { c: "像", p: "xiàng" }, { c: "一", p: "yí" }, { c: "个", p: "gè" }, { c: "个", p: "gè" },
+      { c: "碧", p: "bì" }, { c: "绿", p: "lǜ" }, { c: "的", p: "de" }, { c: "大", p: "dà" }, { c: "圆", p: "yuán" },
+      { c: "盘", p: "pán" }, { c: "。", p: "" },
+      { c: "粉", p: "fěn" }, { c: "红", p: "hóng" }, { c: "的", p: "de" }, { c: "荷", p: "hé" }, { c: "花", p: "huā" },
+      { c: "从", p: "cóng" }, { c: "大", p: "dà" }, { c: "圆", p: "yuán" }, { c: "盘", p: "pán" }, { c: "之", p: "zhī" },
+      { c: "间", p: "jiān" }, { c: "冒", p: "mào" }, { c: "出", p: "chū" }, { c: "来", p: "lái" }, { c: "，", p: "" },
+      { c: "散", p: "sàn" }, { c: "发", p: "fā" }, { c: "出", p: "chū" }, { c: "阵", p: "zhèn" }, { c: "阵", p: "zhèn" },
+      { c: "清", p: "qīng" }, { c: "香", p: "xiāng" }, { c: "。", p: "" },
+      { c: "小", p: "xiǎo" }, { c: "青", p: "qīng" }, { c: "蛙", p: "wā" }, { c: "蹲", p: "dūn" }, { c: "在", p: "zài" },
+      { c: "荷", p: "hé" }, { c: "叶", p: "yè" }, { c: "上", p: "shàng" }, { c: "，", p: "" }, { c: "呱", p: "guā" },
+      { c: "呱", p: "guā" }, { c: "地", p: "de" }, { c: "放", p: "fàng" }, { c: "声", p: "shēng" }, { c: "歌", p: "gē" },
+      { c: "唱", p: "chàng" }, { c: "。", p: "" },
+      { c: "萤", p: "yíng" }, { c: "火", p: "huǒ" }, { c: "虫", p: "chóng" }, { c: "提", p: "tí" }, { c: "着", p: "zhe" },
+      { c: "小", p: "xiǎo" }, { c: "灯", p: "dēng" }, { c: "笼", p: "long" }, { c: "，", p: "" }, { c: "在", p: "zài" },
+      { c: "草", p: "cǎo" }, { c: "丛", p: "cóng" }, { c: "里", p: "lǐ" }, { c: "飞", p: "fēi" }, { c: "来", p: "lái" },
+      { c: "飞", p: "fēi" }, { c: "去", p: "qù" }, { c: "，", p: "" }, { c: "像", p: "xiàng" }, { c: "天", p: "tiān" },
+      { c: "上", p: "shàng" }, { c: "眨", p: "zhǎ" }, { c: "眼", p: "yǎn" }, { c: "的", p: "de" }, { c: "小", p: "xiǎo" },
+      { c: "星", p: "xīng" }, { c: "星", p: "xīng" }, { c: "。", p: "" }
+    ]
+  },
+  {
+    title: "3. 秋天的雨",
+    tokens: [
+      { c: "秋", p: "qiū" }, { c: "天", p: "tiān" }, { c: "的", p: "de" }, { c: "雨", p: "yǔ" }, { c: "，", p: "" },
+      { c: "有", p: "yǒu" }, { c: "一", p: "yì" }, { c: "盒", p: "hé" }, { c: "五", p: "wǔ" }, { c: "彩", p: "cǎi" },
+      { c: "缤", p: "bīn" }, { c: "纷", p: "fēn" }, { c: "的", p: "de" }, { c: "颜", p: "yán" }, { c: "料", p: "liào" },
+      { c: "。", p: "" },
+      { c: "它", p: "tā" }, { c: "把", p: "bǎ" }, { c: "黄", p: "huáng" }, { c: "色", p: "sè" }, { c: "给", p: "gěi" },
+      { c: "了", p: "le" }, { c: "银", p: "yín" }, { c: "杏", p: "xìng" }, { c: "树", p: "shù" }, { c: "，", p: "" },
+      { c: "黄", p: "huáng" }, { c: "黄", p: "huáng" }, { c: "的", p: "de" }, { c: "叶", p: "yè" }, { c: "子", p: "zi" },
+      { c: "像", p: "xiàng" }, { c: "一", p: "yì" }, { c: "把", p: "bǎ" }, { c: "把", p: "bǎ" }, { c: "小", p: "xiǎo" },
+      { c: "扇", p: "shàn" }, { c: "子", p: "zi" }, { c: "，", p: "" }, { c: "扇", p: "shān" }, { c: "哪", p: "na" },
+      { c: "扇", p: "shān" }, { c: "哪", p: "na" }, { c: "，", p: "" }, { c: "扇", p: "shān" }, { c: "走", p: "zǒu" },
+      { c: "了", p: "le" }, { c: "夏", p: "xià" }, { c: "天", p: "tiān" }, { c: "的", p: "de" }, { c: "炎", p: "yán" },
+      { c: "热", p: "rè" }, { c: "。", p: "" },
+      { c: "它", p: "tā" }, { c: "把", p: "bǎ" }, { c: "红", p: "hóng" }, { c: "色", p: "sè" }, { c: "给", p: "gěi" },
+      { c: "了", p: "le" }, { c: "枫", p: "fēng" }, { c: "树", p: "shù" }, { c: "，", p: "" }, { c: "红", p: "hóng" },
+      { c: "红", p: "hóng" }, { c: "的", p: "de" }, { c: "枫", p: "fēng" }, { c: "叶", p: "yè" }, { c: "像", p: "xiàng" },
+      { c: "一", p: "yì" }, { c: "枚", p: "méi" }, { c: "枚", p: "méi" }, { c: "邮", p: "yóu" }, { c: "票", p: "piào" },
+      { c: "，", p: "" }, { c: "飘", p: "piāo" }, { c: "哇", p: "wa" }, { c: "飘", p: "piāo" }, { c: "哇", p: "wa" },
+      { c: "，", p: "" }, { c: "邮", p: "yóu" }, { c: "来", p: "lái" }, { c: "了", p: "le" }, { c: "秋", p: "qiū" },
+      { c: "天", p: "tiān" }, { c: "的", p: "de" }, { c: "凉", p: "liáng" }, { c: "爽", p: "shuǎng" }, { c: "。", p: "" }
+    ]
+  },
+  {
+    title: "4. 冬天的小雪花",
+    tokens: [
+      { c: "冬", p: "dōng" }, { c: "天", p: "tiān" }, { c: "来", p: "lái" }, { c: "了", p: "le" }, { c: "，", p: "" },
+      { c: "北", p: "běi" }, { c: "风", p: "fēng" }, { c: "呼", p: "hū" }, { c: "呼", p: "hū" }, { c: "地", p: "de" },
+      { c: "吹", p: "chuī" }, { c: "着", p: "zhe" }, { c: "。", p: "" },
+      { c: "一", p: "yí" }, { c: "片", p: "piàn" }, { c: "片", p: "piàn" }, { c: "洁", p: "jié" }, { c: "白", p: "bái" },
+      { c: "的", p: "de" }, { c: "雪", p: "xuě" }, { c: "花", p: "huā" }, { c: "从", p: "cóng" }, { c: "天", p: "tiān" },
+      { c: "空", p: "kōng" }, { c: "中", p: "zhōng" }, { c: "飘", p: "piāo" }, { c: "落", p: "luò" }, { c: "下", p: "xià" },
+      { c: "来", p: "lái" }, { c: "，", p: "" }, { c: "像", p: "xiàng" }, { c: "鹅", p: "é" }, { c: "毛", p: "máo" },
+      { c: "，", p: "" }, { c: "像", p: "xiàng" }, { c: "柳", p: "liǔ" }, { c: "絮", p: "xù" }, { c: "，", p: "" },
+      { c: "轻", p: "qīng" }, { c: "轻", p: "qīng" }, { c: "地", p: "de" }, { c: "落", p: "luò" }, { c: "在", p: "zài" },
+      { c: "大", p: "dà" }, { c: "地", p: "dì" }, { c: "上", p: "shàng" }, { c: "。", p: "" },
+      { c: "树", p: "shù" }, { c: "枝", p: "zhī" }, { c: "上", p: "shàng" }, { c: "开", p: "kāi" }, { c: "满", p: "mǎn" },
+      { c: "了", p: "le" }, { c: "银", p: "yín" }, { c: "花", p: "huā" }, { c: "，", p: "" }, { c: "房", p: "fáng" },
+      { c: "顶", p: "dǐng" }, { c: "上", p: "shàng" }, { c: "盖", p: "gài" }, { c: "上", p: "shàng" }, { c: "了", p: "le" },
+      { c: "厚", p: "hòu" }, { c: "厚", p: "hòu" }, { c: "的", p: "de" }, { c: "棉", p: "mián" }, { c: "被", p: "bèi" },
+      { c: "。", p: "" },
+      { c: "孩", p: "hái" }, { c: "子", p: "zi" }, { c: "们", p: "men" }, { c: "跑", p: "pǎo" }, { c: "出", p: "chū" },
+      { c: "家", p: "jiā" }, { c: "门", p: "mén" }, { c: "，", p: "" }, { c: "堆", p: "duī" }, { c: "雪", p: "xuě" },
+      { c: "人", p: "rén" }, { c: "，", p: "" }, { c: "打", p: "dǎ" }, { c: "雪", p: "xuě" }, { c: "仗", p: "zhàng" },
+      { c: "，", p: "" }, { c: "院", p: "yuàn" }, { c: "子", p: "zi" }, { c: "里", p: "lǐ" }, { c: "充", p: "chōng" },
+      { c: "满", p: "mǎn" }, { c: "了", p: "le" }, { c: "欢", p: "huān" }, { c: "声", p: "shēng" }, { c: "笑", p: "xiào" },
+      { c: "语", p: "yǔ" }, { c: "。", p: "" }
+    ]
+  },
+  {
+    title: "5. 美丽的日月潭",
+    tokens: [
+      { c: "清", p: "qīng" }, { c: "晨", p: "chén" }, { c: "，", p: "" }, { c: "湖", p: "hú" }, { c: "面", p: "miàn" },
+      { c: "上", p: "shàng" }, { c: "飘", p: "piāo" }, { c: "着", p: "zhe" }, { c: "薄", p: "báo" }, { c: "薄", p: "báo" },
+      { c: "的", p: "de" }, { c: "雾", p: "wù" }, { c: "。", p: "" },
+      { c: "天", p: "tiān" }, { c: "边", p: "biān" }, { c: "的", p: "de" }, { c: "晨", p: "chén" }, { c: "星", p: "xīng" },
+      { c: "和", p: "hé" }, { c: "山", p: "shān" }, { c: "上", p: "shàng" }, { c: "的", p: "de" }, { c: "点", p: "diǎn" },
+      { c: "点", p: "diǎn" }, { c: "灯", p: "dēng" }, { c: "光", p: "guāng" }, { c: "，", p: "" }, { c: "隐", p: "yǐn" },
+      { c: "隐", p: "yǐn" }, { c: "约", p: "yuē" }, { c: "约", p: "yuē" }, { c: "地", p: "de" }, { c: "倒", p: "dào" },
+      { c: "映", p: "yìng" }, { c: "在", p: "zài" }, { c: "湖", p: "hú" }, { c: "水", p: "shuǐ" }, { c: "中", p: "zhōng" },
+      { c: "。", p: "" },
+      { c: "中", p: "zhōng" }, { c: "午", p: "wǔ" }, { c: "，", p: "" }, { c: "太", p: "tài" }, { c: "阳", p: "yáng" },
+      { c: "高", p: "gāo" }, { c: "照", p: "zhào" }, { c: "，", p: "" }, { c: "整", p: "zhěng" }, { c: "个", p: "gè" },
+      { c: "日", p: "rì" }, { c: "月", p: "yuè" }, { c: "潭", p: "tán" }, { c: "的", p: "de" }, { c: "美", p: "měi" },
+      { c: "景", p: "jǐng" }, { c: "和", p: "hé" }, { c: "周", p: "zhōu" }, { c: "围", p: "wéi" }, { c: "的", p: "de" },
+      { c: "建", p: "jiàn" }, { c: "筑", p: "zhù" }, { c: "，", p: "" }, { c: "都", p: "dōu" }, { c: "清", p: "qīng" },
+      { c: "晰", p: "xī" }, { c: "地", p: "de" }, { c: "展", p: "zhǎn" }, { c: "现", p: "xiàn" }, { c: "在", p: "zài" },
+      { c: "眼", p: "yǎn" }, { c: "前", p: "qián" }, { c: "。", p: "" },
+      { c: "日", p: "rì" }, { c: "月", p: "yuè" }, { c: "潭", p: "tán" }, { c: "风", p: "fēng" }, { c: "光", p: "guāng" },
+      { c: "秀", p: "xiù" }, { c: "丽", p: "lì" }, { c: "，", p: "" }, { c: "吸", p: "xī" }, { c: "引", p: "yǐn" },
+      { c: "了", p: "le" }, { c: "许", p: "xǔ" }, { c: "许", p: "xǔ" }, { c: "多", p: "duō" }, { c: "多", p: "duō" },
+      { c: "的", p: "de" }, { c: "中", p: "zhōng" }, { c: "外", p: "wài" }, { c: "游", p: "yóu" }, { c: "客", p: "kè" },
+      { c: "。", p: "" }
+    ]
+  },
+  {
+    title: "6. 星空下的梦想",
+    tokens: [
+      { c: "夏", p: "xià" }, { c: "夜", p: "yè" }, { c: "的", p: "de" }, { c: "天", p: "tiān" }, { c: "空", p: "kōng" },
+      { c: "像", p: "xiàng" }, { c: "一", p: "yí" }, { c: "块", p: "kuài" }, { c: "深", p: "shēn" }, { c: "蓝", p: "lán" },
+      { c: "色", p: "sè" }, { c: "的", p: "de" }, { c: "大", p: "dà" }, { c: "绒", p: "róng" }, { c: "布", p: "bù" },
+      { c: "，", p: "" }, { c: "上", p: "shàng" }, { c: "面", p: "miàn" }, { c: "镶", p: "xiāng" }, { c: "嵌", p: "qiàn" },
+      { c: "着", p: "zhe" }, { c: "许", p: "xǔ" }, { c: "多", p: "duō" }, { c: "闪", p: "shǎn" }, { c: "闪", p: "shǎn" },
+      { c: "发", p: "fā" }, { c: "光", p: "guāng" }, { c: "的", p: "de" }, { c: "宝", p: "bǎo" }, { c: "石", p: "shí" },
+      { c: "。", p: "" },
+      { c: "弯", p: "wān" }, { c: "弯", p: "wān" }, { c: "的", p: "de" }, { c: "月", p: "yuè" }, { c: "儿", p: "er" },
+      { c: "像", p: "xiàng" }, { c: "一", p: "yì" }, { c: "只", p: "zhī" }, { c: "小", p: "xiǎo" }, { c: "船", p: "chuán" },
+      { c: "，", p: "" }, { c: "静", p: "jìng" }, { c: "静", p: "jìng" }, { c: "地", p: "de" }, { c: "停", p: "tíng" },
+      { c: "泊", p: "bó" }, { c: "在", p: "zài" }, { c: "银", p: "yín" }, { c: "河", p: "hé" }, { c: "的", p: "de" },
+      { c: "港", p: "gǎng" }, { c: "湾", p: "wān" }, { c: "里", p: "lǐ" }, { c: "。", p: "" },
+      { c: "晚", p: "wǎn" }, { c: "风", p: "fēng" }, { c: "吹", p: "chuī" }, { c: "过", p: "guò" }, { c: "树", p: "shù" },
+      { c: "梢", p: "shāo" }, { c: "，", p: "" }, { c: "沙", p: "shā" }, { c: "沙", p: "shā" }, { c: "地", p: "de" },
+      { c: "响", p: "xiǎng" }, { c: "，", p: "" }, { c: "好", p: "hǎo" }, { c: "像", p: "xiàng" }, { c: "在", p: "zài" },
+      { c: "给", p: "gěi" }, { c: "大", p: "dà" }, { c: "地", p: "dì" }, { c: "唱", p: "chàng" }, { c: "摇", p: "yáo" },
+      { c: "篮", p: "lán" }, { c: "曲", p: "qǔ" }, { c: "。", p: "" }
+    ]
+  },
+  {
+    title: "7. 书香伴我成长",
+    tokens: [
+      { c: "书", p: "shū" }, { c: "是", p: "shì" }, { c: "人", p: "rén" }, { c: "类", p: "lèi" }, { c: "进", p: "jìn" },
+      { c: "步", p: "bù" }, { c: "的", p: "de" }, { c: "阶", p: "jiē" }, { c: "梯", p: "tī" }, { c: "，", p: "" },
+      { c: "也", p: "yě" }, { c: "是", p: "shì" }, { c: "我", p: "wǒ" }, { c: "们", p: "men" }, { c: "最", p: "zuì" },
+      { c: "亲", p: "qīn" }, { c: "密", p: "mì" }, { c: "的", p: "de" }, { c: "好", p: "hǎo" }, { c: "伙", p: "huǒ" },
+      { c: "伴", p: "bàn" }, { c: "。", p: "" },
+      { c: "打", p: "dǎ" }, { c: "开", p: "kāi" }, { c: "书", p: "shū" }, { c: "本", p: "běn" }, { c: "，", p: "" },
+      { c: "我", p: "wǒ" }, { c: "们", p: "men" }, { c: "可", p: "kě" }, { c: "以", p: "yǐ" }, { c: "看", p: "kàn" },
+      { c: "见", p: "jiàn" }, { c: "奔", p: "bēn" }, { c: "腾", p: "téng" }, { c: "的", p: "de" }, { c: "黄", p: "huáng" },
+      { c: "河", p: "hé" }, { c: "，", p: "" }, { c: "雄", p: "xióng" }, { c: "伟", p: "wěi" }, { c: "的", p: "de" },
+      { c: "长", p: "cháng" }, { c: "城", p: "chéng" }, { c: "，", p: "" }, { c: "还", p: "hái" }, { c: "有", p: "yǒu" },
+      { c: "神", p: "shén" }, { c: "奇", p: "qí" }, { c: "的", p: "de" }, { c: "童", p: "tóng" }, { c: "话", p: "huà" },
+      { c: "世", p: "shì" }, { c: "界", p: "jiè" }, { c: "。", p: "" },
+      { c: "每", p: "měi" }, { c: "天", p: "tiān" }, { c: "读", p: "dú" }, { c: "一", p: "yì" }, { c: "点", p: "diǎn" },
+      { c: "好", p: "hǎo" }, { c: "书", p: "shū" }, { c: "，", p: "" }, { c: "就", p: "jiù" }, { c: "像", p: "xiàng" },
+      { c: "和", p: "hé" }, { c: "智", p: "zhì" }, { c: "慧", p: "huì" }, { c: "的", p: "de" }, { c: "老", p: "lǎo" },
+      { c: "师", p: "shī" }, { c: "对", p: "duì" }, { c: "话", p: "huà" }, { c: "，", p: "" }, { c: "让", p: "ràng" },
+      { c: "心", p: "xīn" }, { c: "灵", p: "líng" }, { c: "充", p: "chōng" }, { c: "满", p: "mǎn" }, { c: "阳", p: "yáng" },
+      { c: "光", p: "guāng" }, { c: "。", p: "" }
+    ]
+  },
+  {
+    title: "8. 热爱大自然",
+    tokens: [
+      { c: "大", p: "dà" }, { c: "自", p: "zì" }, { c: "然", p: "rán" }, { c: "是", p: "shì" }, { c: "一", p: "yí" },
+      { c: "位", p: "wèi" }, { c: "神", p: "shén" }, { c: "奇", p: "qí" }, { c: "的", p: "de" }, { c: "画", p: "huà" },
+      { c: "家", p: "jiā" }, { c: "，", p: "" }, { c: "画", p: "huà" }, { c: "出", p: "chū" }, { c: "了", p: "le" },
+      { c: "山", p: "shān" }, { c: "川", p: "chuān" }, { c: "湖", p: "hú" }, { c: "海", p: "hǎi" }, { c: "，", p: "" },
+      { c: "画", p: "huà" }, { c: "出", p: "chū" }, { c: "了", p: "le" }, { c: "鸟", p: "niǎo" }, { c: "语", p: "yǔ" },
+      { c: "花", p: "huā" }, { c: "香", p: "xiāng" }, { c: "。", p: "" },
+      { c: "清", p: "qīng" }, { c: "晨", p: "chén" }, { c: "，", p: "" }, { c: "露", p: "lù" }, { c: "珠", p: "zhū" },
+      { c: "在", p: "zài" }, { c: "绿", p: "lǜ" }, { c: "叶", p: "yè" }, { c: "上", p: "shàng" }, { c: "滚", p: "gǔn" },
+      { c: "动", p: "dòng" }, { c: "；", p: "" }, { c: "傍", p: "bàng" }, { c: "晚", p: "wǎn" }, { c: "，", p: "" },
+      { c: "晚", p: "wǎn" }, { c: "霞", p: "xiá" }, { c: "把", p: "bǎ" }, { c: "天", p: "tiān" }, { c: "空", p: "kōng" },
+      { c: "染", p: "rǎn" }, { c: "成", p: "chéng" }, { c: "了", p: "le" }, { c: "金", p: "jīn" }, { c: "红", p: "hóng" },
+      { c: "色", p: "sè" }, { c: "。", p: "" },
+      { c: "我", p: "wǒ" }, { c: "们", p: "men" }, { c: "要", p: "yào" }, { c: "爱", p: "ài" }, { c: "护", p: "hù" },
+      { c: "每", p: "měi" }, { c: "一", p: "yì" }, { c: "棵", p: "kē" }, { c: "小", p: "xiǎo" }, { c: "树", p: "shù" },
+      { c: "，", p: "" }, { c: "保", p: "bǎo" }, { c: "护", p: "hù" }, { c: "每", p: "měi" }, { c: "一", p: "yì" },
+      { c: "只", p: "zhī" }, { c: "小", p: "xiǎo" }, { c: "鸟", p: "niǎo" }, { c: "，", p: "" }, { c: "让", p: "ràng" },
+      { c: "地", p: "dì" }, { c: "球", p: "qiú" }, { c: "家", p: "jiā" }, { c: "园", p: "yuán" }, { c: "永", p: "yǒng" },
+      { c: "远", p: "yuǎn" }, { c: "美", p: "měi" }, { c: "丽", p: "lì" }, { c: "。", p: "" }
+    ]
+  }
+];
+
+let cwCurrentIdx = 0;
+let cwCols = 20;
+let cwTraceGray = false;
+let cwShowPinyin = true;
+
+const cwSelect = document.getElementById("cwSelect");
+const cwColsInput = document.getElementById("cwColsInput");
+const cwSheetTitle = document.getElementById("cwSheetTitle");
+const cwRowsContainer = document.getElementById("cwRowsContainer");
+
+function initCopybook() {
+  cwSelect.innerHTML = "";
+  COPYBOOK_PASSAGES.forEach((p, idx) => {
+    const opt = document.createElement("option");
+    opt.value = idx;
+    opt.textContent = p.title;
+    cwSelect.appendChild(opt);
+  });
+  renderCopybook();
+}
+
+function renderCopybook() {
+  const passage = COPYBOOK_PASSAGES[cwCurrentIdx];
+  cwSelect.value = cwCurrentIdx;
+  cwColsInput.value = cwCols;
+
+  const cleanTitle = passage.title.replace(/^\d+\.\s*/, "");
+  cwSheetTitle.textContent = `练字 · ${cleanTitle}`;
+
+  document.querySelectorAll(".cw-col-preset").forEach(btn => {
+    btn.classList.toggle("active", parseInt(btn.dataset.cols, 10) === cwCols);
+  });
+
+  // 根据每行字数自动缩放楷体字号与写字行高，确保左右对齐美观
+  const fontSize = Math.max(17, Math.min(32, Math.floor(620 / cwCols)));
+  const writeHeight = Math.round(fontSize * 1.35);
+
+  cwRowsContainer.innerHTML = "";
+  const tokens = passage.tokens;
+
+  for (let i = 0; i < tokens.length; i += cwCols) {
+    const slice = tokens.slice(i, i + cwCols);
+    const block = document.createElement("div");
+    block.className = "cw-row-block";
+
+    const modelLine = document.createElement("div");
+    modelLine.className = "cw-model-line";
+    modelLine.style.gridTemplateColumns = `repeat(${cwCols}, 1fr)`;
+
+    for (let c = 0; c < cwCols; c++) {
+      const cell = document.createElement("div");
+      cell.className = "cw-char-cell";
+      const tok = slice[c];
+      if (tok) {
+        const pySpan = document.createElement("span");
+        pySpan.className = "cw-py" + (cwShowPinyin ? "" : " hide-py");
+        pySpan.textContent = tok.p || "\u00A0";
+
+        const glyphSpan = document.createElement("span");
+        glyphSpan.className = "cw-glyph" + (cwTraceGray ? " trace-gray" : "");
+        glyphSpan.style.fontSize = `${fontSize}px`;
+        glyphSpan.textContent = tok.c;
+
+        cell.appendChild(pySpan);
+        cell.appendChild(glyphSpan);
+      }
+      modelLine.appendChild(cell);
+    }
+
+    const writeLine = document.createElement("div");
+    writeLine.className = "cw-write-line";
+    writeLine.style.height = `${writeHeight}px`;
+
+    block.appendChild(modelLine);
+    block.appendChild(writeLine);
+    cwRowsContainer.appendChild(block);
+  }
+}
+
+cwSelect.addEventListener("change", () => {
+  cwCurrentIdx = parseInt(cwSelect.value, 10);
+  renderCopybook();
+});
+
+document.getElementById("cwPrevBtn").addEventListener("click", () => {
+  cwCurrentIdx = (cwCurrentIdx - 1 + COPYBOOK_PASSAGES.length) % COPYBOOK_PASSAGES.length;
+  renderCopybook();
+});
+
+document.getElementById("cwNextBtn").addEventListener("click", () => {
+  cwCurrentIdx = (cwCurrentIdx + 1) % COPYBOOK_PASSAGES.length;
+  renderCopybook();
+});
+
+document.getElementById("cwColsMinus").addEventListener("click", () => {
+  cwCols = Math.max(10, cwCols - 1);
+  renderCopybook();
+});
+
+document.getElementById("cwColsPlus").addEventListener("click", () => {
+  cwCols = Math.min(28, cwCols + 1);
+  renderCopybook();
+});
+
+cwColsInput.addEventListener("change", () => {
+  const val = parseInt(cwColsInput.value, 10);
+  if (!isNaN(val)) {
+    cwCols = Math.max(10, Math.min(28, val));
+    renderCopybook();
+  }
+});
+
+document.querySelectorAll(".cw-col-preset").forEach(btn => {
+  btn.addEventListener("click", () => {
+    cwCols = parseInt(btn.dataset.cols, 10);
+    renderCopybook();
+  });
+});
+
+document.getElementById("cwColorBlack").addEventListener("click", (e) => {
+  cwTraceGray = false;
+  e.target.classList.add("active");
+  document.getElementById("cwColorGray").classList.remove("active");
+  renderCopybook();
+});
+
+document.getElementById("cwColorGray").addEventListener("click", (e) => {
+  cwTraceGray = true;
+  e.target.classList.add("active");
+  document.getElementById("cwColorBlack").classList.remove("active");
+  renderCopybook();
+});
+
+document.getElementById("cwPyHide").addEventListener("click", (e) => {
+  cwShowPinyin = false;
+  e.target.classList.add("active");
+  document.getElementById("cwPyShow").classList.remove("active");
+  renderCopybook();
+});
+
+document.getElementById("cwPyShow").addEventListener("click", (e) => {
+  cwShowPinyin = true;
+  e.target.classList.add("active");
+  document.getElementById("cwPyHide").classList.remove("active");
+  renderCopybook();
+});
+
+document.getElementById("cwPrintBtn").addEventListener("click", () => window.print());
+
+initCopybook();
+</script>
+</body>
+</html>
